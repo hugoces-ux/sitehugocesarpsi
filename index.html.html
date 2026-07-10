@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hugo César — Psicologia Clínica</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink: #1C1712;
+    --ink-soft: #55493C;
+    --paper: #FAF7F1;
+    --paper-deep: #F1E9DB;
+    --brown-dark: #3E2C1E;
+    --brown-deep: #2A1D13;
+    --brown-light: #C9AE8C;
+    --stone: #EDE4D3;
+    --line: rgba(28,23,18,0.14);
+    --max: 720px;
+  }
+
+  *{ box-sizing: border-box; margin:0; padding:0; }
+  html{ scroll-behavior: smooth; }
+
+  body{
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Work Sans', sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  ::selection{ background: var(--brown-dark); color: var(--paper); }
+  a{ color: inherit; text-decoration: none; }
+
+  .wrap{ max-width: var(--max); margin: 0 auto; padding: 0 28px; }
+
+  .eyebrow{
+    font-family: 'Work Sans', sans-serif;
+    font-weight: 600;
+    font-size: 12.5px;
+    letter-spacing: 0.08em;
+    text-transform: lowercase;
+    color: var(--brown-dark);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 22px;
+  }
+  .eyebrow::before{
+    content: '';
+    width: 22px;
+    height: 1px;
+    background: var(--brown-light);
+    display: inline-block;
+  }
+
+  h1, h2, h3{
+    font-family: 'Libre Caslon Text', serif;
+    font-weight: 400;
+    letter-spacing: -0.005em;
+    color: var(--ink);
+  }
+
+  header.hero{ position: relative; padding: 120px 0 100px; overflow: hidden; }
+
+  .contour{
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    z-index: 0; opacity: 0;
+    animation: fadeContour 2.4s ease-out 0.2s forwards;
+  }
+  @keyframes fadeContour{ to{ opacity: 1; } }
+
+  .contour path{
+    fill: none; stroke: var(--stone); stroke-width: 1;
+    stroke-dasharray: 900; stroke-dashoffset: 900;
+    animation: drawLine 3.2s ease-out forwards;
+  }
+  .contour path:nth-child(2){ animation-delay: 0.15s; stroke: var(--brown-light); opacity: 0.6; }
+  .contour path:nth-child(3){ animation-delay: 0.3s; }
+  .contour path:nth-child(4){ animation-delay: 0.45s; stroke: var(--brown-light); opacity: 0.6; }
+  @keyframes drawLine{ to{ stroke-dashoffset: 0; } }
+
+  .hero .wrap{ position: relative; z-index: 1; }
+
+  .epigraph{
+    font-family: 'Libre Caslon Text', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 16px;
+    color: var(--ink-soft);
+    max-width: 440px;
+    padding-left: 18px;
+    border-left: 2px solid var(--brown-dark);
+    margin-bottom: 48px;
+  }
+  .epigraph span{
+    display: block;
+    font-family: 'Work Sans', sans-serif;
+    font-weight: 600;
+    font-style: normal;
+    font-size: 11.5px;
+    letter-spacing: 0.05em;
+    color: var(--brown-dark);
+    margin-top: 10px;
+    text-transform: lowercase;
+  }
+
+  h1.title{
+    font-size: clamp(32px, 5.4vw, 48px);
+    line-height: 1.22;
+    max-width: 15ch;
+    margin-bottom: 28px;
+  }
+
+  .hero-sub{ max-width: 46ch; font-size: 17px; color: var(--ink-soft); margin-bottom: 40px; }
+
+  .cta-row{ display: flex; flex-wrap: wrap; align-items: center; gap: 22px; }
+
+  .btn-primary{
+    background: var(--brown-dark);
+    color: var(--paper);
+    font-family: 'Work Sans', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.02em;
+    padding: 15px 26px;
+    border-radius: 2px;
+    display: inline-block;
+    transition: background 0.25s ease, transform 0.25s ease;
+  }
+  .btn-primary:hover{ background: var(--brown-deep); transform: translateY(-1px); }
+  .btn-primary:focus-visible{ outline: 2px solid var(--brown-light); outline-offset: 3px; }
+
+  .link-quiet{
+    font-family: 'Work Sans', sans-serif;
+    font-weight: 500;
+    font-size: 13.5px;
+    color: var(--ink-soft);
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 2px;
+    transition: border-color 0.2s ease, color 0.2s ease;
+  }
+  .link-quiet:hover{ color: var(--brown-dark); border-color: var(--brown-dark); }
+  .link-quiet:focus-visible{ outline: 2px solid var(--brown-light); outline-offset: 3px; }
+
+  section{ padding: 88px 0; border-top: 1px solid var(--line); }
+
+  h2.heading{ font-size: clamp(24px, 3.6vw, 30px); max-width: 22ch; margin-bottom: 28px; }
+
+  .prose{ max-width: 60ch; font-size: 16px; color: var(--ink-soft); }
+  .prose p + p{ margin-top: 16px; }
+
+  .services{ margin-top: 40px; display: flex; flex-direction: column; }
+  .service{
+    padding: 26px 0; border-top: 1px solid var(--line);
+    display: grid; grid-template-columns: 1fr 1.6fr; gap: 20px;
+  }
+  .service:last-child{ border-bottom: 1px solid var(--line); }
+  .service h3{ font-size: 18px; font-weight: 400; }
+  .service p{ font-size: 14.5px; color: var(--ink-soft); }
+
+  .service.highlight{
+    background: var(--paper-deep);
+    margin: 0 -24px; padding: 26px 24px; border-top: 1px solid var(--line);
+  }
+
+  .badge{
+    display: inline-block;
+    font-family: 'Work Sans', sans-serif;
+    font-weight: 600;
+    font-size: 11px; letter-spacing: 0.04em;
+    color: var(--brown-dark);
+    background: rgba(62,44,30,0.09);
+    padding: 3px 9px; border-radius: 2px; margin-top: 8px;
+  }
+
+  .coupon-note{
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+  }
+  .coupon-label{
+    font-family: 'Work Sans', sans-serif;
+    font-weight: 500;
+    font-size: 12px;
+    color: var(--ink-soft);
+    text-transform: lowercase;
+  }
+  .coupon-code{
+    font-family: 'Work Sans', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    color: var(--brown-deep);
+    background: var(--stone);
+    padding: 4px 9px;
+    border-radius: 2px;
+  }
+
+  .social-block{ margin-top: 48px; }
+  .social-block-head{
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 18px; gap: 16px; flex-wrap: wrap;
+  }
+  .social-block-head h3{ font-size: 19px; font-weight: 400; }
+
+  .yt-grid{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .yt-card{
+    display: block;
+    border: 1px solid var(--line);
+    background: var(--paper-deep);
+    overflow: hidden;
+  }
+  .yt-card img{ display: block; width: 100%; height: auto; }
+  .yt-card-title{
+    display: block;
+    padding: 14px 16px;
+    font-size: 14.5px;
+    font-weight: 500;
+    color: var(--ink);
+  }
+  .yt-card:hover .yt-card-title{ color: var(--brown-dark); }
+
+  .newsletter-list{ display: flex; flex-direction: column; }
+  .newsletter-item{
+    display: flex; align-items: baseline; gap: 14px;
+    padding: 14px 0; border-top: 1px solid var(--line);
+    font-size: 15px; color: var(--ink);
+    transition: color 0.2s ease;
+  }
+  .newsletter-item:last-child{ border-bottom: 1px solid var(--line); }
+  .newsletter-item:hover{ color: var(--brown-dark); }
+  .newsletter-num{
+    font-family: 'Work Sans', sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    color: var(--brown-light);
+    flex-shrink: 0;
+  }
+
+  .contact-grid{ margin-top: 40px; display: grid; gap: 18px; }
+  .contact-row{
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding: 16px 0; border-top: 1px solid var(--line); font-size: 15px;
+  }
+  .contact-row:last-child{ border-bottom: 1px solid var(--line); }
+  .contact-row span:first-child{
+    font-family: 'Work Sans', sans-serif;
+    font-weight: 500;
+    font-size: 12.5px;
+    color: var(--ink-soft); text-transform: lowercase;
+  }
+  .contact-row a{ color: var(--brown-dark); font-weight: 600; }
+  .contact-row a:hover{ text-decoration: underline; }
+
+  footer{
+    padding: 40px 0 60px;
+    font-family: 'Work Sans', sans-serif;
+    font-weight: 500;
+    font-size: 12.5px; color: var(--ink-soft);
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px;
+  }
+
+  @media (max-width: 640px){
+    header.hero{ padding: 90px 0 70px; }
+    .service{ grid-template-columns: 1fr; gap: 8px; }
+    .service.highlight{ margin: 0 -20px; padding: 22px 20px; }
+    .wrap{ padding: 0 20px; }
+    .yt-grid{ grid-template-columns: 1fr; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .contour, .contour path{ animation: none !important; opacity: 1; stroke-dashoffset: 0; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <svg class="contour" viewBox="0 0 720 500" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M -20,120 C 120,60 220,180 340,110 C 460,40 560,140 740,90" />
+    <path d="M -20,220 C 140,170 260,270 380,210 C 500,150 600,240 740,190" />
+    <path d="M -20,320 C 130,260 250,360 370,300 C 490,240 610,330 740,280" />
+    <path d="M -20,410 C 150,370 270,440 390,390 C 510,340 620,410 740,370" />
+  </svg>
+
+  <div class="wrap">
+    <div class="eyebrow">atendimento online — psicologia clínica</div>
+    <p class="epigraph">"Os homens agem sobre o mundo e o modificam e, por sua vez, são modificados pelas consequências de sua ação."<span>B. F. Skinner</span></p>
+    <h1 class="title">Busque construir uma vida que valha a pena ser vivida.</h1>
+    <p class="hero-sub">Atendimento psicológico online para adolescentes (a partir de 16 anos) e adultos, com base em Terapias Contextuais Comportamentais.</p>
+    <div class="cta-row">
+      <a class="btn-primary" href="https://forms.gle/FozsHnwTb6gfpxmg8" target="_blank" rel="noopener">entrar na lista de espera</a>
+      <a class="link-quiet" href="#atendimentos">ver atendimentos</a>
+      <a class="link-quiet" href="#profissionais">para profissionais</a>
+      <a class="link-quiet" href="#redes">redes sociais</a>
+    </div>
+  </div>
+</header>
+
+<section id="sobre">
+  <div class="wrap">
+    <div class="eyebrow">sobre o trabalho</div>
+    <h2 class="heading">Quem está do outro lado</h2>
+    <div class="prose">
+      <p>Sou Hugo César, psicólogo clínico e criador de conteúdo.</p>
+      <p>Graduado pela Universidade Federal Fluminense (UFF), pós-graduado em Psicologia Baseada em Evidências pelo Instituto de Psicologia Baseada em Evidências (InPBE) e pós-graduando em Neuropsicologia pelo Instituto de Pós-Graduação e Graduação (IPOG). Tenho ainda formação em Terapia Comportamental Dialética (DBT) com o Professor e Psicólogo Diego Souza, e em Sexualidade com a Psicóloga e Professora Gabriela Cruz.</p>
+    </div>
+  </div>
+</section>
+
+<section id="atendimentos">
+  <div class="wrap">
+    <div class="eyebrow">atendimentos</div>
+    <h2 class="heading">Onde posso ajudar</h2>
+
+    <div class="services">
+      <div class="service">
+        <h3>Psicoterapia individual</h3>
+        <p>Para adolescentes a partir de 16 anos e adultos. Sessões semanais, por videochamada.</p>
+        <div class="cta-row" style="margin-top: 18px; grid-column: 2;">
+          <a class="btn-primary" href="https://forms.gle/FozsHnwTb6gfpxmg8" target="_blank" rel="noopener">entrar na lista de espera</a>
+        </div>
+      </div>
+      <div class="service highlight">
+        <h3>Avaliação Neuropsicológica</h3>
+        <p>Investigação e identificação e/ou diagnóstico de TDAH, Altas Habilidades e Superdotação, Transtorno do Espectro Autista, entre outras condições.</p>
+        <span class="badge">em breve</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="profissionais">
+  <div class="wrap">
+    <div class="eyebrow">para profissionais e estudantes</div>
+    <h2 class="heading">Recursos para quem também está construindo a carreira</h2>
+
+    <div class="services">
+      <div class="service">
+        <h3><a href="https://humantrack.io/" target="_blank" rel="noopener" style="border-bottom: 1px solid var(--line);">HumanTrack</a></h3>
+        <p>Plataforma de mensuração e monitoramento clínico, feita para ajudar psicólogos a acompanhar sinais, sintomas e progresso dos pacientes ao longo do processo terapêutico — de forma intuitiva, sem depender de planilhas manuais.</p>
+        <div class="coupon-note"><span class="coupon-label">cupom de desconto</span><span class="coupon-code">HUGOPSI</span></div>
+      </div>
+      <div class="service">
+        <h3><a href="https://sintropia.me/" target="_blank" rel="noopener" style="border-bottom: 1px solid var(--line);">Sintropia</a></h3>
+        <p>Sistema para psicólogos que centraliza Smart Notes, LUMA, prontuário, agenda, financeiro e lembretes em uma rotina clínica organizada.</p>
+        <div class="coupon-note"><span class="coupon-label">cupom de desconto</span><span class="coupon-code">HUGOPSI</span></div>
+      </div>
+      <div class="service highlight">
+        <h3>Acompanhamento Digital</h3>
+        <p>Duas reuniões comigo para conversarmos sobre produção de conteúdo — pensado para profissionais e estudantes que querem começar ou organizar a própria produção de conteúdo.</p>
+      </div>
+    </div>
+
+    <div class="cta-row" style="margin-top: 40px;">
+      <a class="btn-primary" href="https://forms.gle/XCspSPbF5F8L5FLz9" target="_blank" rel="noopener">quero o acompanhamento digital</a>
+    </div>
+  </div>
+</section>
+
+<section id="redes">
+  <div class="wrap">
+    <div class="eyebrow">redes sociais</div>
+    <h2 class="heading">Continue por aqui</h2>
+    <p class="prose">Conteúdo sobre psicologia, comportamento e reflexão, espalhado entre Instagram, YouTube e a newsletter.</p>
+
+    <div class="social-block">
+      <div class="social-block-head">
+        <h3>Instagram</h3>
+        <a class="link-quiet" href="https://www.instagram.com/hugocesarpsi/" target="_blank" rel="noopener">@hugocesarpsi →</a>
+      </div>
+    </div>
+
+    <div class="social-block">
+      <div class="social-block-head">
+        <h3>YouTube</h3>
+        <a class="link-quiet" href="https://www.youtube.com/@hugocesarpsi" target="_blank" rel="noopener">ver canal →</a>
+      </div>
+      <div class="yt-grid">
+        <a class="yt-card" href="https://www.youtube.com/watch?v=nBRXbktiBn0" target="_blank" rel="noopener">
+          <img src="https://i.ytimg.com/vi/nBRXbktiBn0/hqdefault.jpg" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/nBRXbktiBn0/mqdefault.jpg';" alt="A psicologia por trás do jiu-jitsu">
+          <span class="yt-card-title">A psicologia por trás do jiu-jitsu</span>
+        </a>
+        <a class="yt-card" href="https://www.youtube.com/watch?v=CRX2vOcGVkA" target="_blank" rel="noopener">
+          <img src="https://i.ytimg.com/vi/CRX2vOcGVkA/hqdefault.jpg" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/CRX2vOcGVkA/mqdefault.jpg';" alt="24 Horas Com um Psicólogo">
+          <span class="yt-card-title">24 Horas Com um Psicólogo | Atendimentos, jiu-jítsu, reflexão, café</span>
+        </a>
+        <a class="yt-card" href="https://www.youtube.com/watch?v=qIvXOZbz7jM" target="_blank" rel="noopener">
+          <img src="https://i.ytimg.com/vi/qIvXOZbz7jM/hqdefault.jpg" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/qIvXOZbz7jM/mqdefault.jpg';" alt="isso vai acabar com seu namoro/casamento">
+          <span class="yt-card-title">isso vai acabar com seu namoro/casamento</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="social-block">
+      <div class="social-block-head">
+        <h3>Newsletter — Ruído Silencioso</h3>
+        <a class="link-quiet" href="https://ruidosilencioso.substack.com/" target="_blank" rel="noopener">inscrever-se gratuitamente →</a>
+      </div>
+      <div class="newsletter-list">
+        <a class="newsletter-item" href="https://ruidosilencioso.substack.com/p/porque-esta-tao-dificil-ser-jovem" target="_blank" rel="noopener">
+          <span class="newsletter-num">#15</span>
+          <span>jovens têm a vida mais difícil</span>
+        </a>
+        <a class="newsletter-item" href="https://ruidosilencioso.substack.com/p/comemore-enquanto-ha-vida" target="_blank" rel="noopener">
+          <span class="newsletter-num">#14</span>
+          <span>comemore enquanto há vida</span>
+        </a>
+        <a class="newsletter-item" href="https://ruidosilencioso.substack.com/p/a-maldicao-do-domingo-a-noite" target="_blank" rel="noopener">
+          <span class="newsletter-num">#13</span>
+          <span>a maldição do domingo à noite</span>
+        </a>
+        <a class="newsletter-item" href="https://ruidosilencioso.substack.com/p/porque-comecei-a-treinar-jiu-jitsu" target="_blank" rel="noopener">
+          <span class="newsletter-num">#12</span>
+          <span>porque comecei a treinar jiu-jitsu</span>
+        </a>
+        <a class="newsletter-item" href="https://ruidosilencioso.substack.com/p/voce-podia-ser-incrivel-mas-e-solitario" target="_blank" rel="noopener">
+          <span class="newsletter-num">#09</span>
+          <span>você podia ser incrível, mas é solitário</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contato">
+  <div class="wrap">
+    <div class="eyebrow">contato</div>
+    <h2 class="heading">Fale comigo</h2>
+    <div class="contact-grid">
+      <div class="contact-row">
+        <span>lista de espera</span>
+        <a href="https://forms.gle/FozsHnwTb6gfpxmg8" target="_blank" rel="noopener">preencher formulário</a>
+      </div>
+      <div class="contact-row">
+        <span>e-mail</span>
+        <a href="mailto:psicologohugocesar@gmail.com">psicologohugocesar@gmail.com</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="wrap">
+  <span>Hugo César — Psicólogo Clínico</span>
+  <span>CRP 05/79287</span>
+</footer>
+
+</body>
+</html>
