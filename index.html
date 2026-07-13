@@ -455,8 +455,30 @@
   }
   .site-nav-links a:hover{ color: var(--brown-light); }
 
+  .site-nav-partners{
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding-left: 18px;
+    margin-left: 4px;
+    border-left: 1px solid var(--line);
+  }
+  .site-nav-partners img{
+    height: 16px;
+    width: auto;
+    display: block;
+    opacity: 0.75;
+    filter: grayscale(1) brightness(1.8);
+    transition: opacity 0.2s ease, filter 0.2s ease;
+  }
+  .site-nav-partners a:hover img{
+    opacity: 1;
+    filter: none;
+  }
+
   @media (max-width: 780px){
     .site-nav-links{ display: none; }
+    .site-nav-partners{ display: none; }
   }
 
   .faq-list{ margin-top: 40px; display: flex; flex-direction: column; }
@@ -577,6 +599,14 @@
       <a href="#redes">redes</a>
       <a href="#faq">faq</a>
       <a href="#contato">contato</a>
+    </div>
+    <div class="site-nav-partners">
+      <a href="https://humantrack.io/" target="_blank" rel="noopener" title="HumanTrack">
+        <img src="https://humantrack.io/images/brand/logo.svg" alt="HumanTrack">
+      </a>
+      <a href="https://sintropia.me/" target="_blank" rel="noopener" title="Sintropia">
+        <img src="https://sintropia.app/assets/icons/logo.svg" alt="Sintropia">
+      </a>
     </div>
   </div>
 </nav>
