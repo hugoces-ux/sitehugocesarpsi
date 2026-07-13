@@ -172,6 +172,31 @@
   .prose{ max-width: 60ch; font-size: 16px; color: var(--ink-soft); }
   .prose p + p{ margin-top: 16px; }
 
+  .credentials-list{
+    list-style: none;
+    margin-top: 28px;
+    max-width: 60ch;
+    display: flex;
+    flex-direction: column;
+  }
+  .credentials-list li{
+    position: relative;
+    padding: 14px 0 14px 22px;
+    border-top: 1px solid var(--line);
+    font-size: 15.5px;
+    color: var(--ink);
+  }
+  .credentials-list li:last-child{ border-bottom: 1px solid var(--line); }
+  .credentials-list li::before{
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 22px;
+    width: 10px;
+    height: 1px;
+    background: var(--brown-light);
+  }
+
   .services{ margin-top: 40px; display: flex; flex-direction: column; }
   .service{
     padding: 26px 0; border-top: 1px solid var(--line);
@@ -669,8 +694,14 @@
     <h2 class="heading reveal">Quem está do outro lado</h2>
     <div class="prose">
       <p>Sou Hugo César, psicólogo clínico e criador de conteúdo.</p>
-      <p>Graduado pela Universidade Federal Fluminense (UFF), pós-graduado em Psicologia Baseada em Evidências pelo Instituto de Psicologia Baseada em Evidências (InPBE) e pós-graduando em Neuropsicologia pelo Instituto de Pós-Graduação e Graduação (IPOG). Tenho ainda formação em Terapia Comportamental Dialética (DBT) com o Professor e Psicólogo Diego Souza, e em Sexualidade com a Psicóloga e Professora Gabriela Cruz.</p>
     </div>
+    <ul class="credentials-list">
+      <li class="reveal">Graduado em Psicologia pela Universidade Federal Fluminense (UFF)</li>
+      <li class="reveal">Pós-graduado em Psicologia Baseada em Evidências pelo InPBE</li>
+      <li class="reveal">Pós-graduando em Neuropsicologia pelo IPOG</li>
+      <li class="reveal">Formação em Terapia Comportamental Dialética (DBT) — Prof. Diego Souza</li>
+      <li class="reveal">Formação em Sexualidade — Profa. Gabriela Cruz</li>
+    </ul>
   </div>
 </section>
 
