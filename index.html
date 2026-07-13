@@ -433,17 +433,20 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 16px 28px;
+    padding: 14px 28px;
+    gap: 16px;
   }
   .site-nav-brand{
     font-family: 'Libre Caslon Text', serif;
     font-size: 16px;
     color: var(--ink);
+    flex-shrink: 0;
   }
   .site-nav-links{
     display: flex;
-    gap: 22px;
-    flex-wrap: wrap;
+    gap: 16px;
+    flex-wrap: nowrap;
+    white-space: nowrap;
   }
   .site-nav-links a{
     font-family: 'Work Sans', sans-serif;
@@ -458,25 +461,24 @@
   .site-nav-partners{
     display: flex;
     align-items: center;
-    gap: 14px;
-    padding-left: 18px;
-    margin-left: 4px;
+    gap: 12px;
+    padding-left: 16px;
+    margin-left: 2px;
     border-left: 1px solid var(--line);
+    flex-shrink: 0;
   }
   .site-nav-partners img{
-    height: 16px;
+    height: 18px;
     width: auto;
     display: block;
-    opacity: 0.75;
-    filter: grayscale(1) brightness(1.8);
-    transition: opacity 0.2s ease, filter 0.2s ease;
+    opacity: 0.85;
+    transition: opacity 0.2s ease;
   }
   .site-nav-partners a:hover img{
     opacity: 1;
-    filter: none;
   }
 
-  @media (max-width: 780px){
+  @media (max-width: 900px){
     .site-nav-links{ display: none; }
     .site-nav-partners{ display: none; }
   }
@@ -602,10 +604,10 @@
     </div>
     <div class="site-nav-partners">
       <a href="https://humantrack.io/" target="_blank" rel="noopener" title="HumanTrack">
-        <img src="https://humantrack.io/images/brand/logo.svg" alt="HumanTrack">
+        <img src="logo-humantrack.png" alt="HumanTrack">
       </a>
       <a href="https://sintropia.me/" target="_blank" rel="noopener" title="Sintropia">
-        <img src="https://sintropia.app/assets/icons/logo.svg" alt="Sintropia">
+        <img src="logo-sintropia.png" alt="Sintropia">
       </a>
     </div>
   </div>
