@@ -934,7 +934,7 @@
     const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
     progressBar.style.width = pct + '%';
 
-    if (contourSvg && !prefersReducedMotion) {
+    if (contourSvg) {
       contourSvg.style.transform = `translateY(${scrollTop * -0.18}px)`;
     }
 
