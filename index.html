@@ -135,10 +135,20 @@
     font-weight: 600;
     font-size: 13px;
     letter-spacing: 0.02em;
-    padding: 15px 26px;
+    line-height: 1.35;
+    padding: 13px 26px;
     border-radius: 2px;
-    display: inline-block;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0px;
     transition: background 0.25s ease, transform 0.25s ease;
+  }
+  .btn-primary .btn-sub{
+    font-style: italic;
+    font-weight: 400;
+    font-size: 11.5px;
+    opacity: 0.75;
   }
   .btn-primary:hover{ background: var(--stone); transform: translateY(-1px); }
   .btn-primary:focus-visible{ outline: 2px solid var(--stone); outline-offset: 3px; }
@@ -638,7 +648,7 @@
     <h1 class="title">Busque construir uma vida que valha a pena ser vivida.</h1>
     <p class="hero-sub">Atendimento psicológico online para adolescentes (a partir de 16 anos) e adultos, com base em Terapias Contextuais Comportamentais.</p>
     <div class="cta-row">
-      <a class="btn-primary" href="https://forms.gle/FozsHnwTb6gfpxmg8" target="_blank" rel="noopener">Psicoterapia comigo</a>
+      <a class="btn-primary" href="https://forms.gle/FozsHnwTb6gfpxmg8" target="_blank" rel="noopener"><span>Psicoterapia comigo</span><span class="btn-sub">clique e agende</span></a>
       <a class="link-quiet" href="#atendimentos">serviços</a>
       <a class="link-quiet" href="#profissionais">para psicólogos e estudantes</a>
       <a class="link-quiet" href="#redes">redes sociais</a>
@@ -667,7 +677,7 @@
         <h3>Psicoterapia individual</h3>
         <p>Para adolescentes a partir de 16 anos e adultos. Sessões semanais, por videochamada.</p>
         <div class="cta-row" style="margin-top: 18px; grid-column: 2;">
-          <a class="btn-primary" href="https://forms.gle/FozsHnwTb6gfpxmg8" target="_blank" rel="noopener">Psicoterapia comigo</a>
+          <a class="btn-primary" href="https://forms.gle/FozsHnwTb6gfpxmg8" target="_blank" rel="noopener"><span>Psicoterapia comigo</span><span class="btn-sub">clique e agende</span></a>
         </div>
       </div>
       <div class="service highlight reveal">
@@ -818,7 +828,7 @@
 <section class="closing-cta">
   <div class="wrap">
     <h2>Busque construir uma vida que valha a pena ser vivida.</h2>
-    <a class="btn-primary" href="https://forms.gle/FozsHnwTb6gfpxmg8" target="_blank" rel="noopener">Psicoterapia comigo</a>
+    <a class="btn-primary" href="https://forms.gle/FozsHnwTb6gfpxmg8" target="_blank" rel="noopener"><span>Psicoterapia comigo</span><span class="btn-sub">clique e agende</span></a>
   </div>
 </section>
 
