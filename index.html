@@ -479,8 +479,19 @@
   }
 
   @media (max-width: 900px){
-    .site-nav-links{ display: none; }
-    .site-nav-partners{ display: none; }
+    .site-nav-inner{ flex-wrap: wrap; row-gap: 10px; }
+    .site-nav-brand{ order: 1; }
+    .site-nav-partners{ order: 2; border-left: none; padding-left: 0; margin-left: 0; }
+    .site-nav-links{
+      order: 3;
+      display: flex;
+      flex-basis: 100%;
+      flex-wrap: wrap;
+      white-space: normal;
+      gap: 10px 16px;
+      font-size: 12.5px;
+    }
+    body{ padding-top: 92px; }
   }
 
   .faq-list{ margin-top: 40px; display: flex; flex-direction: column; }
