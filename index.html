@@ -438,6 +438,13 @@
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     border-bottom: 1px solid var(--line);
+    transition: background 0.3s ease, backdrop-filter 0.3s ease, border-color 0.3s ease;
+  }
+  .site-nav.is-scrolled{
+    background: rgba(20,17,16,0.35);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom-color: rgba(243,237,224,0.08);
   }
   .site-nav-inner{
     display: flex;
@@ -745,7 +752,7 @@
       </div>
       <div class="resource-card resource-card--highlight reveal">
         <span class="resource-tag">meu infoproduto</span>
-        <h3>Acompanhamento Digital</h3>
+        <h3>Acompanhamento Digital para Profissionais e Estudantes de Psicologia</h3>
         <p>Duas reuniões comigo para conversarmos sobre produção de conteúdo — pensado para profissionais e estudantes que querem começar ou organizar a própria produção.</p>
         <a class="btn-primary" style="margin-top: 16px;" href="https://forms.gle/XCspSPbF5F8L5FLz9" target="_blank" rel="noopener">quero o acompanhamento digital</a>
       </div>
@@ -887,6 +894,7 @@
   // Barra de progresso de leitura
   const progressBar = document.getElementById('progressBar');
   const contourSvg = document.getElementById('contourSvg');
+  const siteNav = document.querySelector('.site-nav');
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   window.addEventListener('scroll', () => {
@@ -897,6 +905,10 @@
 
     if (contourSvg && !prefersReducedMotion) {
       contourSvg.style.transform = `translateY(${scrollTop * -0.18}px)`;
+    }
+
+    if (siteNav) {
+      siteNav.classList.toggle('is-scrolled', scrollTop > 40);
     }
   });
 
