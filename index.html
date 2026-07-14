@@ -306,6 +306,42 @@
   }
   .resource-link:hover{ text-decoration: underline; }
 
+  .gmap-card{
+    margin-top: 40px;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    filter: grayscale(0.3) contrast(1.05);
+  }
+  .gmap-card iframe{ display: block; }
+
+  .gmap-cta{
+    margin-top: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 18px 22px;
+    background: var(--paper-deep);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+  .gmap-cta:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 14px 28px rgba(0,0,0,0.25);
+  }
+  .gmap-cta span:first-child{
+    font-family: 'Libre Caslon Text', serif;
+    font-size: 16px;
+    color: var(--ink);
+  }
+  .gmap-cta-arrow{
+    font-size: 20px;
+    color: var(--brown-light);
+    flex-shrink: 0;
+  }
+
   .closing-cta{
     text-align: center;
     padding: 90px 0;
@@ -659,6 +695,7 @@
       <a href="#atendimentos">serviços</a>
       <a href="#profissionais">psicólogos e estudantes</a>
       <a href="#redes">redes</a>
+      <a href="#avaliacoes">google</a>
       <a href="#faq">faq</a>
       <a href="#contato">contato</a>
     </div>
@@ -867,6 +904,20 @@
         </a>
       </div>
     </div>
+  </div>
+</section>
+
+<section id="avaliacoes">
+  <div class="wrap">
+    <div class="eyebrow">perfil no google</div>
+    <h2 class="heading reveal">Me encontre no Google</h2>
+    <div class="gmap-card reveal">
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14922880.1890021!2d-51.3700712774993!3d-16.968289253074932!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x99737793ddc660d%3A0xa9f4fd45b0abbebe!2sHugo%20Cesar%20-%20Psic%C3%B3logo%20Cl%C3%ADnico!5e1!3m2!1spt-BR!2sbr!4v1784052795219!5m2!1spt-BR!2sbr" width="100%" height="280" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+    </div>
+    <a class="gmap-cta" href="https://share.google/v7HTjaQfLlzd2leJt" target="_blank" rel="noopener">
+      <span>Ver perfil completo e deixar uma avaliação</span>
+      <span class="gmap-cta-arrow">→</span>
+    </a>
   </div>
 </section>
 
