@@ -27,6 +27,11 @@
     --line: rgba(243,237,224,0.14);
     --max: 720px;
     --max-wide: 1100px;
+
+    /* Curvas de easing custom (Emil Kowalski) */
+    --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+    --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+    --ease-reveal: cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   *{ box-sizing: border-box; margin:0; padding:0; }
@@ -72,6 +77,8 @@
     font-family: 'Libre Caslon Text', serif;
     font-weight: 400;
     letter-spacing: -0.005em;
+    line-height: 1.2;
+    font-optical-sizing: auto;
     color: var(--ink);
   }
 
@@ -119,7 +126,8 @@
 
   h1.title{
     font-size: clamp(32px, 5.4vw, 48px);
-    line-height: 1.22;
+    line-height: 1.15;
+    letter-spacing: -0.015em;
     max-width: 15ch;
     margin-bottom: 28px;
   }
@@ -142,7 +150,7 @@
     flex-direction: column;
     align-items: center;
     gap: 0px;
-    transition: background 0.25s ease, transform 0.25s ease;
+    transition: background 250ms var(--ease-out), transform 160ms var(--ease-out);
   }
   .btn-primary .btn-sub{
     font-style: italic;
@@ -150,7 +158,10 @@
     font-size: 11.5px;
     opacity: 0.75;
   }
-  .btn-primary:hover{ background: var(--stone); transform: translateY(-1px); }
+  @media (hover: hover) and (pointer: fine) {
+    .btn-primary:hover{ background: var(--stone); transform: translateY(-1px); }
+  }
+  .btn-primary:active{ transform: scale(0.97); }
   .btn-primary:focus-visible{ outline: 2px solid var(--stone); outline-offset: 3px; }
 
   .link-quiet{
@@ -160,7 +171,7 @@
     color: var(--ink-soft);
     border-bottom: 1px solid var(--line);
     padding-bottom: 2px;
-    transition: border-color 0.2s ease, color 0.2s ease;
+    transition: border-color 200ms var(--ease-out), color 200ms var(--ease-out);
   }
   .link-quiet:hover{ color: var(--brown-light); border-color: var(--brown-light); }
   .link-quiet:focus-visible{ outline: 2px solid var(--brown-light); outline-offset: 3px; }
@@ -272,7 +283,7 @@
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    transition: transform 250ms var(--ease-out), box-shadow 250ms var(--ease-out);
   }
   .resource-card-img{
     width: 100%;
@@ -297,9 +308,11 @@
     margin-right: 22px;
   }
   .resource-card .resource-tag{ margin-top: 20px; }
-  .resource-card:hover{
-    transform: translateY(-4px);
-    box-shadow: 0 14px 28px rgba(28,23,18,0.10);
+  @media (hover: hover) and (pointer: fine) {
+    .resource-card:hover{
+      transform: translateY(-4px);
+      box-shadow: 0 14px 28px rgba(28,23,18,0.10);
+    }
   }
   .resource-card--highlight{
     background: var(--brown-light);
@@ -357,11 +370,13 @@
     background: var(--paper-deep);
     border: 1px solid var(--line);
     border-radius: 6px;
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    transition: transform 250ms var(--ease-out), box-shadow 250ms var(--ease-out);
   }
-  .gmap-cta:hover{
-    transform: translateY(-2px);
-    box-shadow: 0 14px 28px rgba(0,0,0,0.25);
+  @media (hover: hover) and (pointer: fine) {
+    .gmap-cta:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 14px 28px rgba(0,0,0,0.25);
+    }
   }
   .gmap-cta span:first-child{
     font-family: 'Libre Caslon Text', serif;
@@ -394,11 +409,13 @@
     border: 1px solid var(--line);
     background: var(--paper-deep);
     overflow: hidden;
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    transition: transform 250ms var(--ease-out), box-shadow 250ms var(--ease-out);
   }
-  .yt-card:hover{
-    transform: translateY(-4px);
-    box-shadow: 0 14px 28px rgba(28,23,18,0.10);
+  @media (hover: hover) and (pointer: fine) {
+    .yt-card:hover{
+      transform: translateY(-4px);
+      box-shadow: 0 14px 28px rgba(28,23,18,0.10);
+    }
   }
   .yt-card img{ display: block; width: 100%; height: auto; }
   .yt-card-title{
@@ -421,11 +438,13 @@
     background: var(--paper-deep);
     border: 1px solid var(--line);
     border-radius: 6px;
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    transition: transform 250ms var(--ease-out), box-shadow 250ms var(--ease-out);
   }
-  .newsletter-cta:hover{
-    transform: translateY(-2px);
-    box-shadow: 0 14px 28px rgba(0,0,0,0.25);
+  @media (hover: hover) and (pointer: fine) {
+    .newsletter-cta:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 14px 28px rgba(0,0,0,0.25);
+    }
   }
   .newsletter-cta-title{
     display: block;
@@ -450,7 +469,7 @@
     display: flex; align-items: baseline; gap: 14px;
     padding: 14px 0; border-top: 1px solid var(--line);
     font-size: 15px; color: var(--ink);
-    transition: color 0.2s ease;
+    transition: color 200ms var(--ease-out);
   }
   .newsletter-item:last-child{ border-bottom: 1px solid var(--line); }
   .newsletter-item:hover{ color: var(--brown-light); }
@@ -508,7 +527,8 @@
   .reveal{
     opacity: 0;
     transform: translateY(18px);
-    transition: opacity 0.7s ease, transform 0.7s ease;
+    transition: opacity 400ms var(--ease-reveal), transform 400ms var(--ease-reveal);
+    transition-delay: var(--reveal-delay, 0ms);
   }
   .reveal.is-visible{
     opacity: 1;
@@ -522,10 +542,13 @@
     position: fixed;
     top: 0; left: 0;
     height: 3px;
-    width: 0%;
+    width: 100%;
+    transform: scaleX(0);
+    transform-origin: left;
     background: var(--brown-light);
     z-index: 100;
-    transition: width 0.1s linear;
+    transition: transform 100ms linear;
+    will-change: transform;
   }
 
   body{ padding-top: 60px; }
@@ -538,7 +561,7 @@
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     border-bottom: 1px solid var(--line);
-    transition: background 0.3s ease, backdrop-filter 0.3s ease, border-color 0.3s ease;
+    transition: background 300ms var(--ease-out), backdrop-filter 300ms var(--ease-out), border-color 300ms var(--ease-out);
   }
   .site-nav.is-scrolled{
     background: rgba(20,17,16,0.35);
@@ -571,9 +594,23 @@
     font-size: 13px;
     color: var(--ink-soft);
     text-transform: lowercase;
-    transition: color 0.2s ease;
+    transition: color 200ms var(--ease-out);
   }
   .site-nav-links a:hover{ color: var(--brown-light); }
+
+  /* Respeitar preferência de transparência reduzida (acessibilidade) */
+  @media (prefers-reduced-transparency: reduce){
+    .site-nav{
+      background: var(--paper);
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+    }
+    .site-nav.is-scrolled{
+      background: var(--paper);
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+    }
+  }
 
   .site-nav-partners{
     display: flex;
@@ -589,7 +626,7 @@
     width: auto;
     display: block;
     opacity: 0.85;
-    transition: opacity 0.2s ease;
+    transition: opacity 200ms var(--ease-out);
   }
   .site-nav-partners a:hover img{
     opacity: 1;
@@ -635,7 +672,7 @@
     font-size: 22px;
     color: var(--brown-light);
     flex-shrink: 0;
-    transition: transform 0.25s ease;
+    transition: transform 250ms var(--ease-out);
   }
   .faq-item[open] summary::after{ transform: rotate(45deg); }
   .faq-item p{
@@ -643,6 +680,26 @@
     font-size: 15px;
     color: var(--ink-soft);
     max-width: 60ch;
+  }
+
+  /* Animação suave de abrir/fechar do FAQ (truque grid-template-rows 0fr → 1fr) */
+  .faq-body{
+    display: grid;
+    grid-template-rows: 0fr;
+    opacity: 0;
+    transition: grid-template-rows 400ms var(--ease-out), opacity 400ms var(--ease-out);
+  }
+  .faq-body > p{
+    overflow: hidden;
+    min-height: 0;
+  }
+  .faq-item[open] .faq-body{
+    grid-template-rows: 1fr;
+    opacity: 1;
+  }
+  @media (prefers-reduced-motion: reduce){
+    .faq-body{ transition: opacity 200ms ease; grid-template-rows: 1fr; }
+    .faq-item:not([open]) .faq-body{ opacity: 0; height: 0; overflow: hidden; }
   }
 
   .about-closing{
@@ -703,12 +760,15 @@
     border: 1px solid rgba(243,237,224,0.3);
     border-radius: 8px;
     color: var(--ink);
-    transition: background 0.2s ease, border-color 0.2s ease;
+    transition: background 200ms var(--ease-out), border-color 200ms var(--ease-out), transform 160ms var(--ease-out);
   }
-  .about-socials a:hover{
-    background: rgba(243,237,224,0.1);
-    border-color: var(--ink);
+  @media (hover: hover) and (pointer: fine) {
+    .about-socials a:hover{
+      background: rgba(243,237,224,0.1);
+      border-color: var(--ink);
+    }
   }
+  .about-socials a:active{ transform: scale(0.92); }
 
   @media (max-width: 640px){
     .about-inner{ grid-template-columns: 1fr; text-align: center; }
@@ -811,27 +871,27 @@
     <div class="faq-list">
       <details class="faq-item reveal">
         <summary>Qual a sua abordagem?</summary>
-        <p>Trabalho com Terapias Contextuais Comportamentais — um conjunto de abordagens que entende o sofrimento a partir do contexto e da função do comportamento, não apenas do sintoma isolado. Essa linha tem raiz na Análise do Comportamento e na Terapia Cognitivo-Comportamental (TCC), e dentro ainda há a Terapia de Aceitação e Compromisso (ACT), que ajuda a construir uma vida com sentido mesmo diante de pensamentos e emoções difíceis; a Psicoterapia Analítica Funcional (FAP), que usa a própria relação terapêutica como espaço de mudança; e a Terapia Comportamental Dialética (DBT), voltada para regulação emocional e equilíbrio entre aceitação e mudança.</p>
+        <div class="faq-body"><p>Trabalho com Terapias Contextuais Comportamentais — um conjunto de abordagens que entende o sofrimento a partir do contexto e da função do comportamento, não apenas do sintoma isolado. Essa linha tem raiz na Análise do Comportamento e na Terapia Cognitivo-Comportamental (TCC), e dentro ainda há a Terapia de Aceitação e Compromisso (ACT), que ajuda a construir uma vida com sentido mesmo diante de pensamentos e emoções difíceis; a Psicoterapia Analítica Funcional (FAP), que usa a própria relação terapêutica como espaço de mudança; e a Terapia Comportamental Dialética (DBT), voltada para regulação emocional e equilíbrio entre aceitação e mudança.</p></div>
       </details>
       <details class="faq-item reveal">
         <summary>O que é Psicologia Baseada em Evidências?</summary>
-        <p>Não é uma abordagem terapêutica, mas um modo de conduzir o atendimento a partir da integração entre evidências científicas, prática clínica e a singularidade de cada pessoa.</p>
+        <div class="faq-body"><p>Não é uma abordagem terapêutica, mas um modo de conduzir o atendimento a partir da integração entre evidências científicas, prática clínica e a singularidade de cada pessoa.</p></div>
       </details>
       <details class="faq-item reveal">
         <summary>Atende convênio?</summary>
-        <p>Não atendo por convênio, mas emito Nota Fiscal para que você solicite reembolso no seu plano, caso ele permita.</p>
+        <div class="faq-body"><p>Não atendo por convênio, mas emito Nota Fiscal para que você solicite reembolso no seu plano, caso ele permita.</p></div>
       </details>
       <details class="faq-item reveal">
         <summary>Quanto tempo até sair da lista de espera?</summary>
-        <p>Não há um tempo certo, mas geralmente não demora muito — o prazo máximo é de 2 semanas.</p>
+        <div class="faq-body"><p>Não há um tempo certo, mas geralmente não demora muito — o prazo máximo é de 2 semanas.</p></div>
       </details>
       <details class="faq-item reveal">
         <summary>Quanto tempo dura o tratamento?</summary>
-        <p>Não existe um tempo exato. Isso depende da sua demanda, dos seus objetivos e do seu ritmo. Pode durar alguns meses ou mais tempo.</p>
+        <div class="faq-body"><p>Não existe um tempo exato. Isso depende da sua demanda, dos seus objetivos e do seu ritmo. Pode durar alguns meses ou mais tempo.</p></div>
       </details>
       <details class="faq-item reveal">
         <summary>Como faço para agendar uma consulta?</summary>
-        <p>Clique no link para preencher o formulário da lista de espera e aguarde ser contatado pelo WhatsApp.</p>
+        <div class="faq-body"><p>Clique no link para preencher o formulário da lista de espera e aguarde ser contatado pelo WhatsApp.</p></div>
       </details>
     </div>
   </div>
@@ -1027,8 +1087,9 @@
   window.addEventListener('scroll', () => {
     const scrollTop = window.scrollY;
     const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-    const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-    progressBar.style.width = pct + '%';
+    const pct = docHeight > 0 ? scrollTop / docHeight : 0;
+    // transform: scaleX é hardware-accelerated (GPU), width não
+    progressBar.style.transform = `scaleX(${pct})`;
 
     if (contourSvg) {
       contourSvg.style.transform = `translateY(${scrollTop * -0.18}px)`;
@@ -1037,17 +1098,27 @@
     if (siteNav) {
       siteNav.classList.toggle('is-scrolled', scrollTop > 40);
     }
-  });
+  }, { passive: true });
 
-  // Fade-in ao rolar
+  // Fade-in ao rolar com stagger entre elementos irmãos
   const revealEls = document.querySelectorAll('.reveal');
   if ('IntersectionObserver' in window) {
     const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('is-visible');
-          observer.unobserve(entry.target);
-        }
+      // Agrupa entradas visíveis por elemento pai pra aplicar stagger só entre irmãos
+      const byParent = new Map();
+      entries.filter(e => e.isIntersecting).forEach(entry => {
+        const parent = entry.target.parentElement;
+        if (!byParent.has(parent)) byParent.set(parent, []);
+        byParent.get(parent).push(entry.target);
+      });
+
+      byParent.forEach(siblings => {
+        siblings.forEach((el, i) => {
+          // Delay incremental de 60ms entre irmãos (curto o suficiente pra não parecer lento)
+          el.style.setProperty('--reveal-delay', `${i * 60}ms`);
+          el.classList.add('is-visible');
+          observer.unobserve(el);
+        });
       });
     }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
     revealEls.forEach(el => observer.observe(el));
