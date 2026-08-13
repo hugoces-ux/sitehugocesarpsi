@@ -15,6 +15,33 @@
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Hugo César — Psicologia Clínica">
 <meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Hugo César",
+  "alternateName": "Psicólogo Hugo César",
+  "jobTitle": "Psicólogo Clínico",
+  "url": "https://hugocesarpsi.com.br",
+  "image": "https://hugocesarpsi.com.br/og-image.jpg",
+  "sameAs": [
+    "https://www.instagram.com/hugocesarpsi/",
+    "https://www.youtube.com/@hugocesarpsi",
+    "https://ruidosilencioso.substack.com/"
+  ],
+  "hasCredential": {
+    "@type": "EducationalOccupationalCredential",
+    "credentialCategory": "CRP 05/79287"
+  },
+  "knowsAbout": [
+    "Terapia de Aceitação e Compromisso",
+    "Psicoterapia Analítica Funcional",
+    "Terapia Comportamental Dialética",
+    "Psicologia Baseada em Evidências",
+    "Análise do Comportamento"
+  ]
+}
+</script>
 <meta name="twitter:title" content="Hugo César — Psicólogo Clínico">
 <meta name="twitter:description" content="Atendimento psicológico online para adolescentes e adultos, com base em Terapias Contextuais Comportamentais.">
 <meta name="twitter:image" content="https://www.hugocesarpsi.com.br/og-image.jpg">
@@ -113,22 +140,22 @@
     font-family: 'Libre Caslon Text', serif;
     font-style: italic;
     font-weight: 400;
-    font-size: 16px;
+    font-size: 13px;
     color: var(--ink-soft);
-    max-width: 440px;
-    padding-left: 18px;
+    max-width: 380px;
+    padding-left: 14px;
     border-left: 2px solid var(--brown-light);
-    margin-bottom: 48px;
+    margin-bottom: 32px;
   }
   .epigraph span{
     display: block;
     font-family: 'Work Sans', sans-serif;
     font-weight: 600;
     font-style: normal;
-    font-size: 11.5px;
+    font-size: 10.5px;
     letter-spacing: 0.05em;
     color: var(--brown-light);
-    margin-top: 10px;
+    margin-top: 8px;
   }
 
   h1.title{
@@ -315,10 +342,14 @@
     margin-right: 22px;
   }
   .resource-card .resource-tag{ margin-top: 20px; }
+  .resource-card h3{ font-size: 19px; margin-bottom: 10px; }
+  .services-grid .resource-card h3{ margin-top: 20px; }
+  .resource-card h3 a{ border-bottom: 1px solid var(--line); }
+  .resource-card p{ font-size: 14px; color: var(--ink-soft); flex-grow: 1; }
   @media (hover: hover) and (pointer: fine) {
-    .resource-card:hover{
-      transform: translateY(-4px);
-      box-shadow: 0 14px 28px rgba(28,23,18,0.10);
+    .resource-card.reveal:hover{
+      transform: translateY(-6px);
+      box-shadow: 0 18px 32px rgba(0,0,0,0.35);
     }
   }
   .resource-card--highlight{
@@ -334,6 +365,7 @@
   .resource-card--highlight .btn-primary:hover{
     background: var(--paper);
   }
+  .resource-card--highlight .resource-tag{ color: var(--brown-deep); }
   .resource-tag{
     font-family: 'Work Sans', sans-serif;
     font-weight: 600;
@@ -343,11 +375,6 @@
     color: var(--brown-light);
     margin-bottom: 14px;
   }
-  .resource-card--highlight .resource-tag{ color: var(--brown-deep); }
-  .resource-card h3{ font-size: 19px; margin-bottom: 10px; }
-  .services-grid .resource-card h3{ margin-top: 20px; }
-  .resource-card h3 a{ border-bottom: 1px solid var(--line); }
-  .resource-card p{ font-size: 14px; color: var(--ink-soft); flex-grow: 1; }
   .resource-link{
     display: inline-block;
     margin-top: 16px;
@@ -543,6 +570,16 @@
   }
   @media (prefers-reduced-motion: reduce){
     .reveal{ opacity: 1; transform: none; transition: none; }
+  }
+
+  #bgCanvas{
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.1;
   }
 
   .progress-bar{
@@ -782,13 +819,75 @@
     .about-photo{ margin: 0 auto; }
     .about-socials{ justify-content: center; }
   }
+  /* Skip to content */
+  .skip-link{
+    position: absolute;
+    top: -60px;
+    left: 12px;
+    z-index: 200;
+    background: var(--brown-light);
+    color: var(--brown-deep);
+    font-family: 'Work Sans', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    padding: 10px 16px;
+    border-radius: 3px;
+    transition: top 0.2s ease;
+  }
+  .skip-link:focus{ top: 12px; }
+
+  /* Voltar ao topo */
+  .back-to-top{
+    position: fixed;
+    right: 22px;
+    bottom: 22px;
+    z-index: 80;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: var(--brown-light);
+    color: var(--brown-deep);
+    font-size: 18px;
+    line-height: 1;
+    border: none;
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(8px);
+    transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  }
+  .back-to-top.is-visible{
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+  .back-to-top:hover{ background: var(--stone); }
+
+  /* Scrollbar customizada */
+  ::-webkit-scrollbar{ width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track{ background: var(--paper); }
+  ::-webkit-scrollbar-thumb{ background: var(--brown-dark); border-radius: 6px; border: 2px solid var(--paper); }
+  ::-webkit-scrollbar-thumb:hover{ background: var(--brown-light); }
+  html{ scrollbar-color: var(--brown-dark) var(--paper); scrollbar-width: thin; }
+
+  /* Impressão */
+  @media print{
+    .site-nav, .progress-bar, .back-to-top, .skip-link, #bgCanvas, .contour{ display: none !important; }
+    body{ background: #fff; color: #000; }
+    a{ color: #000; text-decoration: underline; }
+    .resource-card, .service, .about-closing{ background: #fff !important; border-color: #999 !important; }
+  }
 </style>
 </head>
 <body>
+<a href="#main-content" class="skip-link">Pular para o conteúdo</a>
+<canvas id="bgCanvas"></canvas>
 <div class="progress-bar" id="progressBar"></div>
+<button type="button" id="backToTop" class="back-to-top" aria-label="Voltar ao topo">↑</button>
 <nav class="site-nav">
   <div class="wrap site-nav-inner">
-    <a class="site-nav-brand" href="#">Hugo Cesar</a>
+    <a class="site-nav-brand" href="#">Hugo César</a>
     <div class="site-nav-links">
       <a href="#sobre">sobre</a>
       <a href="#atendimentos">serviços</a>
@@ -810,7 +909,7 @@
 </nav>
 
 
-<header class="hero">
+<header class="hero" id="main-content">
   <svg class="contour" id="contourSvg" viewBox="0 0 720 500" preserveAspectRatio="none" aria-hidden="true">
     <path d="M -20,220 C 140,170 260,270 380,210 C 500,150 600,240 740,190" />
     <path d="M -20,320 C 130,260 250,360 370,300 C 490,240 610,330 740,280" />
@@ -818,7 +917,6 @@
   </svg>
 
   <div class="wrap">
-    <div class="eyebrow">atendimento online — psicologia clínica</div>
     <p class="epigraph">"Os homens agem sobre o mundo e o modificam e, por sua vez, são modificados pelas consequências de sua ação."<span>B. F. Skinner</span></p>
     <h1 class="title">Busque construir uma vida que valha a pena ser vivida.</h1>
     <p class="hero-sub">Atendimento psicológico online para adolescentes (a partir de 16 anos) e adultos, com base em Terapias Contextuais Comportamentais.</p>
@@ -866,6 +964,7 @@
         <p>Investigação e identificação e/ou diagnóstico de TDAH, Altas Habilidades e Superdotação, Transtorno do Espectro Autista, entre outras condições.</p>
         <span class="badge badge-center">em breve</span>
       </div>
+    
     </div>
   </div>
 </section>
@@ -1089,6 +1188,7 @@
   const progressBar = document.getElementById('progressBar');
   const contourSvg = document.getElementById('contourSvg');
   const siteNav = document.querySelector('.site-nav');
+  const backToTop = document.getElementById('backToTop');
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   window.addEventListener('scroll', () => {
@@ -1105,7 +1205,132 @@
     if (siteNav) {
       siteNav.classList.toggle('is-scrolled', scrollTop > 40);
     }
+
+    if (backToTop) {
+      backToTop.classList.toggle('is-visible', scrollTop > 600);
+    }
   }, { passive: true });
+
+  if (backToTop) {
+    backToTop.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
+    });
+  }
+
+  // Fundo reativo ao mouse — rede de neurônios
+  const bgCanvas = document.getElementById('bgCanvas');
+  if (bgCanvas && !prefersReducedMotion) {
+    const ctx = bgCanvas.getContext('2d');
+    let w, h, particles, signals = [];
+    const mouse = { x: null, y: null };
+    const nodeColor = '201,174,140';
+    const glowColor = '201,174,140';
+    const connectDist = 150;
+
+    function resize() {
+      w = bgCanvas.width = window.innerWidth;
+      h = bgCanvas.height = window.innerHeight;
+      const count = window.innerWidth < 640 ? 24 : 46;
+      particles = Array.from({ length: count }, () => ({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        vx: (Math.random() - 0.5) * 0.2,
+        vy: (Math.random() - 0.5) * 0.2,
+        r: Math.random() * 1.4 + 1.4,
+        phase: Math.random() * Math.PI * 2
+      }));
+      signals = [];
+    }
+    resize();
+    window.addEventListener('resize', resize);
+    window.addEventListener('mousemove', (e) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+    });
+    window.addEventListener('mouseleave', () => { mouse.x = null; mouse.y = null; });
+
+    let frame = 0;
+
+    function tick() {
+      frame++;
+      ctx.clearRect(0, 0, w, h);
+
+      // Conexões (sinapses)
+      const edges = [];
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const a = particles[i], b = particles[j];
+          const dx = a.x - b.x, dy = a.y - b.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < connectDist) {
+            edges.push({ a, b, dist });
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
+            ctx.strokeStyle = `rgba(${nodeColor},${0.08 * (1 - dist / connectDist)})`;
+            ctx.lineWidth = 1;
+            ctx.stroke();
+          }
+        }
+      }
+
+      // Dispara sinais elétricos aleatórios entre neurônios conectados
+      if (edges.length && frame % 26 === 0 && signals.length < 6) {
+        const e = edges[Math.floor(Math.random() * edges.length)];
+        signals.push({ a: e.a, b: e.b, t: 0 });
+      }
+      signals = signals.filter(s => s.t < 1);
+      signals.forEach(s => {
+        s.t += 0.02;
+        const x = s.a.x + (s.b.x - s.a.x) * s.t;
+        const y = s.a.y + (s.b.y - s.a.y) * s.t;
+        ctx.beginPath();
+        ctx.arc(x, y, 2, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${glowColor},${0.6 * (1 - s.t)})`;
+        ctx.shadowColor = `rgba(${glowColor},0.8)`;
+        ctx.shadowBlur = 8;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      });
+
+      // Neurônios (nós com leve brilho pulsante)
+      particles.forEach(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.x < 0 || p.x > w) p.vx *= -1;
+        if (p.y < 0 || p.y > h) p.vy *= -1;
+
+        if (mouse.x !== null) {
+          const dx = mouse.x - p.x, dy = mouse.y - p.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 140) {
+            p.x -= dx * 0.0025;
+            p.y -= dy * 0.0025;
+          }
+        }
+
+        const pulse = 0.5 + Math.sin(frame * 0.02 + p.phase) * 0.2;
+
+        // brilho suave ao redor do neurônio
+        const glow = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 6);
+        glow.addColorStop(0, `rgba(${glowColor},${0.12 * pulse})`);
+        glow.addColorStop(1, `rgba(${glowColor},0)`);
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r * 6, 0, Math.PI * 2);
+        ctx.fillStyle = glow;
+        ctx.fill();
+
+        // núcleo do neurônio
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${nodeColor},${0.45 * pulse + 0.12})`;
+        ctx.fill();
+      });
+
+      requestAnimationFrame(tick);
+    }
+    tick();
+  }
 
   // Fade-in ao rolar com stagger entre elementos irmãos
   const revealEls = document.querySelectorAll('.reveal');
