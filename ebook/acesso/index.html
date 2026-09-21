@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>acesso ao material â€” Hugo CÃ©sar</title>
-<meta name="description" content="Acesso ao material 'Criar sem se perder no meio', ebook para psicÃ³logos e estudantes de psicologia.">
+<title>acesso ao material — Hugo César</title>
+<meta name="description" content="Acesso ao material 'Criar sem se perder no meio', ebook para psicólogos e estudantes de psicologia.">
 <meta name="robots" content="noindex, nofollow">
 <link rel="icon" type="image/png" href="/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -248,10 +248,10 @@ input[type="email"]:focus {
 
 <div class="container">
 
-  <span class="mark">Hugo CÃ©sar Â· Psicologia ClÃ­nica</span>
+  <span class="mark">Hugo César · Psicologia Clínica</span>
 
   <h1>acesso ao material</h1>
-  <p class="subtitle">digite o e-mail que vocÃª usou na compra.</p>
+  <p class="subtitle">digite o e-mail que você usou na compra.</p>
 
   <div class="card">
     <form id="accessForm" onsubmit="return verificarAcesso(event)">
@@ -259,11 +259,11 @@ input[type="email"]:focus {
       <input type="email" id="email" name="email" placeholder="voce@exemplo.com" required autocomplete="email">
       <button type="submit" class="cta-button" id="submitBtn">
         Acessar material
-        <span>â†’</span>
+        <span>→</span>
       </button>
       <div class="error-msg" id="errorMsg">
-        <strong>E-mail nÃ£o encontrado.</strong><br>
-        Verifica se vocÃª digitou o mesmo e-mail que usou na compra. Se vocÃª acabou de comprar, aguarda alguns minutos e tenta de novo.
+        <strong>E-mail não encontrado.</strong><br>
+        Verifica se você digitou o mesmo e-mail que usou na compra. Se você acabou de comprar, aguarda alguns minutos e tenta de novo.
       </div>
     </form>
   </div>
@@ -272,64 +272,60 @@ input[type="email"]:focus {
     Problemas pra acessar? Me chama no <a href="https://instagram.com/hugocesarpsi" target="_blank" rel="noopener">Instagram</a> que eu resolvo pessoalmente.
   </p>
 
-  <a href="/" class="back-home">â† voltar pro site</a>
+  <a href="/" class="back-home">← voltar pro site</a>
 
-  <p class="frase-cabeca">crie, mas enquanto cria, nÃ£o esqueÃ§a de vocÃª.</p>
+  <p class="frase-cabeca">crie, mas enquanto cria, não esqueça de você.</p>
 
 </div>
 
 <script>
 // =====================================================
-// LISTA DE E-MAILS AUTORIZADOS
-// =====================================================
-// Adiciona um e-mail por linha, dentro das aspas, separados por vÃ­rgula.
-// Sempre em MINÃšSCULAS. Sem espaÃ§os antes ou depois.
-//
-// Exemplo de como fica com 3 compradores:
-//   const emailsAutorizados = [
-//     "psicologohugocesar@gmail.com",
-//     "maria@gmail.com",
-//     "joao.silva@hotmail.com",
-//     "pedro@yahoo.com.br",
-//   ];
-//
-// Depois de adicionar, salva o arquivo e sobe pro GitHub.
-// O Vercel faz deploy automatico em 1 minuto.
-// =====================================================
-
-const emailsAutorizados = [
-  "psicologohugocesar@gmail.com",
-  // adiciona os e-mails dos compradores aqui embaixo, um por linha:
-  
-];
-
-// =====================================================
-// LINK DO NOTION (nÃ£o precisa mexer)
+// LINK DO NOTION
 // =====================================================
 const linkNotion = "https://puzzled-sheet-aa4.notion.site/Por-Hugo-C-sar-3badc09debad8079a2e7e081848d1be6";
 
 // =====================================================
-// LÃ“GICA DE VERIFICAÃ‡ÃƒO (nÃ£o precisa mexer)
+// LÓGICA DE VERIFICAÇÃO
+// A lista de e-mails autorizados vem do arquivo emails.json,
+// atualizado automaticamente pela integração Kiwify → Make → GitHub.
 // =====================================================
-function verificarAcesso(event) {
+async function verificarAcesso(event) {
   event.preventDefault();
   
   const email = document.getElementById('email').value.trim().toLowerCase();
   const errorMsg = document.getElementById('errorMsg');
   const submitBtn = document.getElementById('submitBtn');
   
-  const listaNormalizada = emailsAutorizados.map(e => e.trim().toLowerCase());
+  submitBtn.disabled = true;
+  submitBtn.innerHTML = 'Verificando... <span>→</span>';
+  errorMsg.classList.remove('show');
   
-  if (listaNormalizada.includes(email)) {
-    submitBtn.disabled = true;
-    submitBtn.innerHTML = 'Abrindo material... <span>â†’</span>';
-    errorMsg.classList.remove('show');
-    setTimeout(() => {
-      window.location.href = linkNotion;
-    }, 400);
-  } else {
+  try {
+    // Busca a lista de e-mails do arquivo emails.json
+    // Usa cache-busting pra sempre pegar a versão mais recente
+    const response = await fetch('emails.json?t=' + Date.now(), { cache: 'no-store' });
+    
+    if (!response.ok) throw new Error('Falha ao carregar lista');
+    
+    const emailsAutorizados = await response.json();
+    const listaNormalizada = emailsAutorizados.map(e => e.trim().toLowerCase());
+    
+    if (listaNormalizada.includes(email)) {
+      submitBtn.innerHTML = 'Abrindo material... <span>→</span>';
+      setTimeout(() => {
+        window.location.href = linkNotion;
+      }, 400);
+    } else {
+      errorMsg.classList.add('show');
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = 'Acessar material <span>→</span>';
+      document.getElementById('email').focus();
+    }
+  } catch (err) {
+    errorMsg.innerHTML = '<strong>Erro ao verificar acesso.</strong><br>Tenta de novo em alguns segundos, ou me chama no Instagram se persistir.';
     errorMsg.classList.add('show');
-    document.getElementById('email').focus();
+    submitBtn.disabled = false;
+    submitBtn.innerHTML = 'Acessar material <span>→</span>';
   }
   
   return false;
