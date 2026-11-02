@@ -1,0 +1,1562 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Da faculdade à clínica</title>
+<meta name="description" content="Trilha de estudos clínicos de Hugo César, psicólogo: dos fundamentos da Psicologia à prática baseada em evidências.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Work+Sans:wght@400;500;600&display=swap">
+<style>
+body { margin: 0; }
+[hidden] { display: none !important; }
+img { max-width: 100%; }
+/* Layout: mapa com eixo vertical; nó escuro de cada etapa no centro e cartões de módulo dos dois lados, ligados por curvas */
+/* Paleta do hugocesarpsi.com.br: papel, tinta marrom, bege e pedra */
+:root {
+  --bg: #FFFFFF;
+  --card: #FFFFFF;
+  --ink: #2A1D13;
+  --muted: #7A6A5B;
+  --line: rgba(42,29,19,0.14);
+  --box: #C2B29C;
+  --spine: rgba(42,29,19,0.14);
+  --curve: #D9C7A6;
+  --node: #2A1D13;
+  --node-ink: #F3EDE0;
+  --node-track: #4E3D2F;
+  --node-fill: #C9AE8C;
+  --done: #A9835B;
+  --tick: #FFFFFF;
+  --chip-hover: #FAF6EF;
+  --soft: #FAF6EF;
+  --shadow: 0 1px 2px rgba(42,29,19,.05), 0 2px 6px rgba(42,29,19,.04);
+  --sans: "Work Sans", "Segoe UI", system-ui, sans-serif;
+  --serif: "Libre Caslon Text", Georgia, "Times New Roman", serif;
+  --mono: "Work Sans", "Segoe UI", system-ui, sans-serif;
+}
+:root { color-scheme: light; }
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--sans); font-size: 13px; line-height: 1.4; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--node-fill); outline-offset: 2px; border-radius: 6px; }
+.wrap {
+  max-width: 980px; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 32px 64px;
+}
+
+/* Cabeçalho */
+.top { display: grid; justify-items: center; gap: 4px; text-align: center; margin-bottom: 28px; }
+.title-row { display: flex; align-items: center; gap: 10px; }
+.logo { width: 30px; height: 30px; flex: none; }
+h1 { margin: 0; font-family: var(--serif); font-size: 27px; font-weight: 400; letter-spacing: -0.01em; }
+.sub { font-size: 11.5px; color: var(--muted); }
+.goal { margin: 8px 0 8px; max-width: 58ch; font-size: 12.5px; text-wrap: balance; }
+.goal b { font-weight: 600; }
+.legend { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin: 2px 0 10px; }
+.legend span { border: 1px solid var(--line); border-radius: 999px; padding: 2px 9px; font-size: 10.5px; color: var(--muted); }
+.legend b { color: var(--ink); font-weight: 600; margin-right: 4px; }
+.pill {
+  display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--line); background: var(--card);
+  border-radius: 999px; padding: 5px 12px; font-size: 12px; font-weight: 500; cursor: pointer; box-shadow: var(--shadow);
+}
+.pill svg { width: 12px; height: 12px; }
+.pill:hover { border-color: var(--box); }
+
+/* Mapa */
+.map { position: relative; }
+.spine { position: absolute; left: 50%; width: 1px; background: var(--spine); transform: translateX(-50%); }
+.row { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) 146px minmax(0, 1fr); align-items: center; padding-block: 22px; }
+.row + .row { margin-top: 12px; }
+.row svg.links { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
+.row svg.links path { fill: none; stroke: var(--curve); stroke-width: 1.2; }
+.col { display: grid; gap: 8px; min-width: 0; position: relative; z-index: 1; align-content: center; }
+.col.left { padding-right: 44px; }
+.col.right { padding-left: 44px; }
+
+.node {
+  position: relative; z-index: 2; justify-self: center; width: 146px; text-align: left; cursor: pointer;
+  background: var(--node); color: var(--node-ink); border: 0; border-radius: 8px; padding: 10px 11px 9px;
+  display: grid; gap: 8px; box-shadow: 0 2px 8px rgba(42,29,19,.14);
+}
+.node-step { font-size: 9px; letter-spacing: .14em; text-transform: uppercase; opacity: .6; }
+.node-top { display: flex; justify-content: space-between; align-items: baseline; gap: 6px; }
+.node-title { font-weight: 600; font-size: 12.5px; line-height: 1.2; }
+.node-count { font-family: var(--mono); font-size: 9.5px; opacity: .75; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.node-bar { height: 3px; border-radius: 3px; background: var(--node-track); overflow: hidden; }
+.node-bar span { display: block; height: 100%; background: var(--node-fill); width: 0; transition: width .3s; }
+
+/* Cartões */
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; box-shadow: var(--shadow); }
+.head { display: flex; align-items: center; gap: 10px; padding: 9px 10px 9px 10px; }
+.box {
+  flex: none; width: 16px; height: 16px; border-radius: 4px; border: 1.3px solid var(--box); background: var(--card);
+  display: grid; place-items: center; padding: 0; cursor: pointer;
+}
+.box svg { width: 10px; height: 10px; opacity: 0; }
+.box svg path { stroke: var(--tick); }
+.box[aria-checked="true"] { background: var(--done); border-color: var(--done); }
+.box[aria-checked="true"] svg { opacity: 1; }
+.head-btn { flex: 1; min-width: 0; display: flex; align-items: center; gap: 10px; background: none; border: 0; padding: 0; cursor: pointer; text-align: left; }
+.head-text { flex: 1; min-width: 0; display: grid; gap: 1px; }
+.eyebrow { font-family: var(--mono); font-size: 9px; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+.mname { font-weight: 500; font-size: 12px; line-height: 1.3; }
+.count { font-family: var(--mono); font-size: 9.5px; color: var(--muted); font-variant-numeric: tabular-nums; flex: none; }
+.count.full { color: var(--done); }
+.chev { width: 14px; height: 14px; color: var(--ink); flex: none; transition: transform .18s; }
+.card[data-open="true"] .chev { transform: rotate(90deg); }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; padding: 0 10px 10px; }
+.card[data-open="false"] .chips { display: none; }
+.chip { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--line); border-radius: 6px; padding: 3px 8px 3px 5px; max-width: 100%; background: var(--card); }
+.chip:hover { background: var(--chip-hover); }
+.chip .box { width: 14px; height: 14px; }
+.chip-label { background: none; border: 0; padding: 0; cursor: pointer; font-size: 11px; text-align: left; min-width: 0; }
+.chip.active { border-color: var(--ink); }
+.chip.done .chip-label { color: var(--muted); }
+.tag-next { font-size: 9px; font-weight: 600; background: var(--node); color: var(--node-ink); border-radius: 99px; padding: 1px 6px; }
+
+/* Painel */
+.scrim { position: fixed; inset: 0; background: rgba(20,17,16,.35); z-index: 30; }
+.drawer {
+  position: fixed; top: 0; right: 0; bottom: 0; z-index: 31; width: min(520px, 100%);
+  background: var(--card); border-left: 1px solid var(--line); overflow-y: auto; box-shadow: -10px 0 32px rgba(20,17,16,.12);
+  padding-top: calc(env(safe-area-inset-top, 0px) + 20px);
+  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 28px);
+  padding-left: 26px; padding-right: max(26px, env(safe-area-inset-right, 0px));
+}
+.d-bar { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; margin-bottom: 18px; }
+.crumbs { font-size: 11.5px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 6px; }
+.crumbs span + span::before { content: "›"; margin-right: 6px; }
+.x { border: 1px solid var(--line); background: var(--card); border-radius: 8px; width: 30px; height: 30px; cursor: pointer; flex: none; }
+.d-eyebrow { font-family: var(--mono); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+.drawer h2 { font-family: var(--serif); font-weight: 400; font-size: 25px; line-height: 1.2; margin: 6px 0 12px; text-wrap: balance; }
+.lead { font-size: 14.5px; line-height: 1.6; margin: 0 0 22px; }
+.label { font-family: var(--mono); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin: 0 0 8px; }
+.tags { list-style: none; padding: 0; margin: 0 0 22px; display: flex; flex-wrap: wrap; gap: 6px; }
+.tags li { border: 1px solid var(--line); border-radius: 6px; padding: 3px 8px; font-size: 12px; }
+.levels { list-style: none; padding: 0; margin: 0 0 22px; display: grid; gap: 0; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+.lvl { display: grid; grid-template-columns: 26px 1fr; gap: 10px; padding: 12px 13px; }
+.lvl + .lvl { border-top: 1px solid var(--line); }
+.lvl-n { width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; font-size: 10.5px; font-weight: 600; border: 1px solid var(--box); color: var(--ink); }
+.lvl:nth-child(2) .lvl-n { background: var(--soft); }
+.lvl:nth-child(3) .lvl-n { background: var(--node); color: var(--node-ink); border-color: var(--node); }
+.lvl-name { font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); font-weight: 600; display: block; margin-bottom: 3px; }
+.lvl p { margin: 0; font-size: 13.5px; line-height: 1.55; }
+.prompt { border: 1px solid var(--line); border-left: 3px solid var(--curve); border-radius: 0 8px 8px 0; padding: 11px 13px; margin: 0 0 22px; font-size: 13.5px; }
+.note { font-size: 12.5px; color: var(--muted); margin: -10px 0 22px; }
+.mats { list-style: none; padding: 0; margin: 0 0 22px; display: grid; gap: 8px; }
+.mat { border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; display: grid; gap: 3px; }
+.mat-type { font-family: var(--mono); font-size: 9.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+.mat-ref { font-size: 13px; line-height: 1.45; }
+.mat a { font-size: 12px; color: var(--ink); text-decoration: underline; text-decoration-color: var(--box); justify-self: start; }
+.mlist { list-style: none; padding: 0; margin: 0 0 22px; display: grid; gap: 6px; }
+.mlist button { width: 100%; text-align: left; border: 1px solid var(--line); background: var(--card); border-radius: 8px; padding: 9px 11px; cursor: pointer; display: grid; gap: 2px; }
+.mlist button:hover { background: var(--chip-hover); }
+.d-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; border-top: 1px solid var(--line); padding-top: 16px; }
+.mark { border: 1px solid var(--done); color: var(--done); background: transparent; border-radius: 8px; padding: 6px 12px; font-weight: 600; font-size: 12.5px; cursor: pointer; }
+.mark[aria-pressed="true"] { background: var(--done); color: var(--tick); }
+.nav { margin-left: auto; display: flex; gap: 6px; }
+.nav button { border: 1px solid var(--line); background: var(--card); border-radius: 8px; padding: 6px 10px; font-size: 12px; cursor: pointer; }
+.nav button:disabled { opacity: .35; cursor: default; }
+.foot { margin-top: 40px; text-align: center; font-size: 11.5px; color: var(--muted); }
+.foot a { color: var(--ink); text-decoration-color: var(--box); }
+
+@media (max-width: 760px) {
+  .spine { left: 14px; transform: none; }
+  .row { display: flex; flex-direction: column; align-items: stretch; gap: 8px; padding-block: 12px; }
+  .col.left, .col.right { display: contents; }
+  .row .card { margin-left: 28px; }
+  .row svg.links { display: none; }
+  .node { align-self: flex-start; order: -1; width: auto; min-width: 210px; }
+  .drawer { padding-left: max(18px, env(safe-area-inset-left, 0px)); padding-right: max(18px, env(safe-area-inset-right, 0px)); }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="title-row">
+      <svg class="logo" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="var(--node)"/><text x="16" y="22.5" text-anchor="middle" font-family="Libre Caslon Text, Georgia, serif" font-size="19" fill="var(--node-ink)">Ψ</text></svg>
+      <h1>Da faculdade à clínica</h1>
+    </div>
+    <div class="sub" id="sub"></div>
+    <p class="goal"><b>Objetivo:</b> Formar um profissional que compreende o comportamento humano, identifica processos psicopatológicos, formula hipóteses clínicas e toma decisões fundamentadas em evidências.</p>
+    <div class="legend" aria-label="Níveis de aprendizagem em cada tópico">
+      <span><b>1</b>Fundamental: entender o conceito</span>
+      <span><b>2</b>Clínico: reconhecer no paciente</span>
+      <span><b>3</b>Aplicado: formular, intervir e avaliar</span>
+    </div>
+    <button class="pill" id="toggleAll" type="button"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3.5 4.5L6 2l2.5 2.5M3.5 7.5L6 10l2.5-2.5" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg><span id="toggleLabel"></span></button>
+  </header>
+  <main class="map" id="map"></main>
+  <footer class="foot"><a href="/">hugocesarpsi.com.br</a> · Hugo César, psicólogo · CRP 05/79287</footer>
+</div>
+<div class="scrim" id="scrim" hidden></div>
+<aside class="drawer" id="drawer" hidden aria-label="Detalhes"></aside>
+
+<script>
+const STAGES = [];
+STAGES.push({
+  id: "fundamentos", title: "Fundamentos da Psicologia", short: "Fundamentos", sub: "Ciência do comportamento humano",
+  goal: "Compreender o ser humano e a ciência psicológica: como conhecemos, aprendemos, sentimos, nos desenvolvemos e como o corpo e o cérebro participam disso.",
+  modules: [
+    { title: "História, epistemologia e método", topics: [
+      { id: "historia-psicologia", title: "História da Psicologia",
+        summary: "A Psicologia nasce como ciência no fim do século XIX, com o laboratório de Wundt, e se divide em escolas como estruturalismo, funcionalismo, psicanálise, behaviorismo, Gestalt e cognitivismo. Conhecer essa história ajuda a entender por que as abordagens atuais pensam e intervêm de formas tão diferentes.",
+        concepts: ["Wundt e o laboratório de Leipzig", "Funcionalismo", "Behaviorismo metodológico e radical", "Revolução cognitiva", "Psicologia no Brasil"],
+        lv: ["Situar as principais escolas no tempo e entender a pergunta que cada uma tentou responder sobre o ser humano.",
+             "Perceber de que tradição vêm os conceitos que você usa ao descrever um caso, e quando está misturando linguagens de escolas diferentes.",
+             "Escolher conscientemente o modelo explicativo que vai orientar a formulação, sabendo o que ele explica bem e o que deixa de fora."],
+        prompt: "Que pergunta central cada escola tentou responder sobre o ser humano?",
+        mats: [
+          { type: "Livro", ref: "Schultz, D. P., & Schultz, S. E. <em>História da psicologia moderna.</em> Cengage.", q: "Schultz História da psicologia moderna" },
+          { type: "Livro", ref: "Figueiredo, L. C., & Santi, P. L. R. <em>Psicologia: uma (nova) introdução.</em> EDUC.", q: "Figueiredo Santi Psicologia uma nova introdução" } ] },
+      { id: "epistemologia", title: "Epistemologia",
+        summary: "A epistemologia estuda como o conhecimento científico é produzido e justificado. Debates como o falsificacionismo de Popper e os paradigmas de Kuhn ajudam a avaliar teorias psicológicas e a entender por que nem toda explicação plausível é uma explicação científica.",
+        concepts: ["Indução e dedução", "Falseabilidade", "Paradigmas científicos", "Pragmatismo e contextualismo", "Critérios de verdade"],
+        lv: ["Diferenciar critérios de verdade como correspondência e utilidade pragmática, e entender o que torna uma teoria testável.",
+             "Notar quando uma explicação sobre o paciente é tão ampla que serve para qualquer resultado e, por isso, não pode ser testada.",
+             "Escrever hipóteses clínicas que possam ser contrariadas pelos dados e definir antes o que mudaria sua leitura do caso."],
+        prompt: "Que tipo de evidência faria você abandonar uma teoria em que acredita?",
+        mats: [
+          { type: "Livro", ref: "Chalmers, A. F. <em>O que é ciência afinal?</em> Brasiliense.", q: "Chalmers What is this thing called science" },
+          { type: "Livro", ref: "Kuhn, T. S. <em>A estrutura das revoluções científicas.</em> Perspectiva.", q: "Kuhn structure of scientific revolutions" } ] },
+      { id: "metodos", title: "Métodos científicos",
+        summary: "A Psicologia usa delineamentos experimentais, correlacionais, de caso único e qualitativos para responder perguntas diferentes. Saber ler um estudo, reconhecer vieses e entender tamanho de efeito é o que permite usar a pesquisa na clínica com critério.",
+        concepts: ["Validade interna e externa", "Ensaios clínicos randomizados", "Delineamento de caso único", "Tamanho de efeito", "Metanálise"],
+        lv: ["Entender os principais delineamentos de pesquisa, o que cada um permite concluir e conceitos como validade e tamanho de efeito.",
+             "Avaliar se os participantes de um estudo se parecem com o paciente à sua frente antes de generalizar os resultados.",
+             "Tratar cada caso como um pequeno delineamento de caso único, com linha de base, intervenção e medidas repetidas."],
+        prompt: "Por que um estudo com resultado estatisticamente significativo pode ter pouca relevância clínica?",
+        mats: [
+          { type: "Livro", ref: "Cozby, P. C. <em>Métodos de pesquisa em ciências do comportamento.</em> Atlas.", q: "Cozby Methods in behavioral research" },
+          { type: "Livro", ref: "Kazdin, A. E. <em>Research design in clinical psychology.</em> Cambridge University Press.", q: "Kazdin Research design in clinical psychology" } ] }
+    ] },
+    { title: "Aprendizagem, emoção e cognição", topics: [
+      { id: "aprendizagem", title: "Aprendizagem",
+        summary: "Aprendizagem é a mudança relativamente duradoura no comportamento que resulta da experiência. Ela inclui associação entre estímulos, aprendizagem pelas consequências, observação de modelos e aprendizagem mediada pela linguagem, e é a base para entender tanto problemas quanto mudanças terapêuticas.",
+        concepts: ["Habituação e sensibilização", "Aprendizagem associativa", "Aprendizagem por consequências", "Aprendizagem observacional", "Generalização"],
+        lv: ["Conhecer os principais tipos de aprendizagem e os processos de aquisição, manutenção e generalização.",
+             "Identificar na história do paciente como um padrão atual foi aprendido: por associação, por consequência, por modelo ou por regra.",
+             "Planejar novas experiências de aprendizagem na terapia, sabendo qual processo cada intervenção pretende acionar."],
+        prompt: "Que comportamento seu foi aprendido por observação, sem que ninguém precisasse ensinar diretamente?",
+        mats: [
+          { type: "Livro", ref: "Catania, A. C. <em>Aprendizagem: comportamento, linguagem e cognição.</em> Artmed.", q: "Catania Learning behavior language cognition" },
+          { type: "Livro", ref: "Domjan, M. <em>Princípios de aprendizagem e comportamento.</em> Cengage.", q: "Domjan principles of learning and behavior" } ] },
+      { id: "emocao", title: "Emoção",
+        summary: "Emoções são respostas que envolvem fisiologia, avaliação da situação, expressão e tendência à ação. Elas têm função adaptativa, preparam o organismo para agir, e se tornam problemáticas quando são intensas demais, duradouras demais ou desencontradas do contexto.",
+        concepts: ["Componentes da emoção", "Função adaptativa", "Emoções básicas e construídas", "Valência e ativação", "Tendência à ação"],
+        lv: ["Compreender os componentes da emoção, as principais teorias e a função adaptativa de cada emoção.",
+             "Avaliar se a emoção do paciente combina com o contexto em intensidade, duração e direção, ou se está desajustada.",
+             "Usar a função da emoção para orientar a intervenção, validando o que faz sentido e trabalhando o que perdeu a utilidade."],
+        prompt: "Que função a ansiedade cumpre, e em que momento ela deixa de ser útil?",
+        mats: [
+          { type: "Livro", ref: "Damásio, A. <em>O erro de Descartes: emoção, razão e o cérebro humano.</em> Companhia das Letras.", q: "Damasio Descartes error emotion reason human brain" },
+          { type: "Artigo", ref: "Gross, J. J., & Barrett, L. F. (2011). <em>Emotion generation and emotion regulation: One or two depends on your point of view.</em> Emotion Review.", q: "Gross Barrett 2011 emotion generation and emotion regulation one or two" } ] },
+      { id: "cognicao", title: "Cognição",
+        summary: "A psicologia cognitiva estuda atenção, percepção, memória, linguagem, raciocínio e tomada de decisão. Esses processos explicam vieses que aparecem em vários quadros clínicos, como a atenção voltada a ameaças na ansiedade ou a memória enviesada para o negativo na depressão.",
+        concepts: ["Atenção seletiva", "Memória de trabalho", "Heurísticas e vieses", "Funções executivas", "Processamento automático e controlado"],
+        lv: ["Conhecer os grandes processos cognitivos e a diferença entre processamento automático e controlado.",
+             "Reconhecer vieses de atenção, interpretação e memória no relato do paciente, como lembrar só do que deu errado.",
+             "Incluir os vieses na formulação como fatores de manutenção e escolher intervenções que os tornem visíveis para o paciente."],
+        prompt: "Que viés cognitivo você reconhece no seu próprio dia a dia?",
+        mats: [
+          { type: "Livro", ref: "Sternberg, R. J. <em>Psicologia cognitiva.</em> Cengage.", q: "Sternberg Cognitive psychology" },
+          { type: "Livro", ref: "Eysenck, M. W., & Keane, M. T. <em>Manual de psicologia cognitiva.</em> Artmed.", q: "Eysenck Keane Cognitive psychology student's handbook" } ] }
+    ] },
+    { title: "Desenvolvimento, apego e adversidades", topics: [
+      { id: "desenvolvimento", title: "Desenvolvimento humano",
+        summary: "O desenvolvimento humano estuda as mudanças físicas, cognitivas, emocionais e sociais ao longo da vida. Na clínica, ajuda a diferenciar o que é esperado para cada fase do que merece atenção, e a situar a queixa no momento de vida da pessoa.",
+        concepts: ["Ciclo vital", "Marcos do desenvolvimento", "Tarefas de cada fase", "Fatores de risco e proteção", "Contexto e cultura"],
+        lv: ["Conhecer as principais mudanças e tarefas de cada fase da vida, da infância ao envelhecimento.",
+             "Diferenciar o que é esperado para a idade e o contexto do paciente do que indica sofrimento ou atraso.",
+             "Ajustar metas e intervenções à fase de vida, considerando família, escola, trabalho e transições que o paciente atravessa."],
+        prompt: "Como uma mesma queixa, como a irritabilidade, pode ter significados diferentes numa criança, num adolescente e num adulto?",
+        mats: [
+          { type: "Livro", ref: "Papalia, D. E., & Feldman, R. D. <em>Desenvolvimento humano.</em> AMGH.", q: "Papalia Feldman Human development" },
+          { type: "Livro", ref: "Bee, H., & Boyd, D. <em>A criança em desenvolvimento.</em> Artmed.", q: "Bee Boyd The developing child" } ] },
+      { id: "apego", title: "Teoria do apego",
+        summary: "A teoria do apego, iniciada por Bowlby e ampliada por Ainsworth, descreve como os vínculos com os cuidadores organizam a busca de proteção e conforto. Os padrões de apego construídos cedo influenciam, sem determinar, a forma como o adulto lida com proximidade, separação e pedidos de ajuda.",
+        concepts: ["Base segura", "Situação Estranha", "Apego seguro, ansioso e evitativo", "Modelos internos de funcionamento", "Apego no adulto"],
+        lv: ["Entender os conceitos de base segura, padrões de apego e modelos internos de funcionamento.",
+             "Reconhecer padrões de aproximação e afastamento nas relações do paciente, inclusive na relação terapêutica.",
+             "Usar a relação terapêutica como experiência de vínculo mais segura e trabalhar os padrões que se repetem nas relações atuais."],
+        prompt: "Como um padrão de apego ansioso poderia aparecer no modo como o paciente lida com as faltas ou férias do terapeuta?",
+        mats: [
+          { type: "Livro", ref: "Bowlby, J. <em>Apego e perda: apego</em> (vol. 1). Martins Fontes.", q: "Bowlby Attachment and loss volume 1 attachment" },
+          { type: "Livro", ref: "Mikulincer, M., & Shaver, P. R. (2016). <em>Attachment in adulthood: Structure, dynamics, and change.</em> Guilford Press.", q: "Mikulincer Shaver Attachment in adulthood structure dynamics change" } ] },
+      { id: "socioemocional", title: "Desenvolvimento socioemocional e da personalidade",
+        summary: "O temperamento aparece cedo e, na interação com o ambiente, vai formando traços de personalidade, habilidades de regulação emocional e competências sociais. A personalidade é relativamente estável, mas continua mudando ao longo da vida, especialmente com novos papéis e relações.",
+        concepts: ["Temperamento", "Traços de personalidade", "Continuidade e mudança", "Regulação emocional na infância", "Interação pessoa e ambiente"],
+        lv: ["Conhecer os conceitos de temperamento e traço e o que as pesquisas mostram sobre estabilidade e mudança da personalidade.",
+             "Diferenciar na avaliação o que parece traço estável do paciente e o que é reação a um momento difícil.",
+             "Formular como o temperamento do paciente interagiu com o ambiente e ajustar o ritmo e o estilo da terapia a esse perfil."],
+        prompt: "Que características do paciente você acredita que vieram do temperamento, e quais foram aprendidas no ambiente?",
+        mats: [
+          { type: "Artigo", ref: "McAdams, D. P., & Olson, B. D. (2010). <em>Personality development: Continuity and change over the life course.</em> Annual Review of Psychology.", q: "McAdams Olson 2010 Personality development continuity and change over the life course" },
+          { type: "Artigo", ref: "Shiner, R., & Caspi, A. (2003). <em>Personality differences in childhood and adolescence: Measurement, development, and consequences.</em> Journal of Child Psychology and Psychiatry.", q: "Shiner Caspi 2003 Personality differences in childhood and adolescence" } ] },
+      { id: "parentalidade", title: "Parentalidade e modelos familiares",
+        summary: "Estilos parentais combinam afeto e exigência de formas diferentes e se associam a padrões distintos de autonomia, autoestima e comportamento. A análise das interações familiares mostra como ciclos coercitivos se instalam e como pequenas mudanças nas contingências da casa alteram o comportamento de todos.",
+        concepts: ["Estilos parentais", "Responsividade e exigência", "Processos coercitivos", "Configurações familiares", "Práticas educativas"],
+        lv: ["Conhecer os estilos parentais, o modelo de coerção familiar e a diversidade de configurações familiares.",
+             "Identificar na história e no presente do paciente práticas educativas que reforçaram ou puniram certos comportamentos.",
+             "Incluir a família na formulação quando ela mantém o problema e planejar orientação parental quando for indicada."],
+        prompt: "Que ciclo de interação na família de um paciente mantém o problema que ele traz?",
+        mats: [
+          { type: "Artigo", ref: "Baumrind, D. (1966). <em>Effects of authoritative parental control on child behavior.</em> Child Development.", q: "Baumrind 1966 Effects of authoritative parental control on child behavior" },
+          { type: "Livro", ref: "Patterson, G. R. (1982). <em>Coercive family process.</em> Castalia.", q: "Patterson 1982 Coercive family process" } ] },
+      { id: "adversidades", title: "Adversidades na infância",
+        summary: "Experiências adversas na infância, como negligência, violência, perdas e disfunção familiar, aumentam o risco de problemas de saúde física e mental ao longo da vida. O efeito depende do tipo, da intensidade e da presença de fatores de proteção, e não define o destino da pessoa.",
+        concepts: ["Experiências adversas na infância (ACE)", "Ameaça e privação", "Efeito cumulativo", "Fatores de proteção", "Resiliência"],
+        lv: ["Conhecer os estudos sobre experiências adversas, os tipos de adversidade e os mecanismos que ligam infância e saúde adulta.",
+             "Investigar adversidades na anamnese com cuidado e perceber como elas aparecem nos padrões atuais do paciente.",
+             "Incluir adversidades como fatores predisponentes na formulação, sem determinismo, e fortalecer os fatores de proteção disponíveis."],
+        prompt: "Como perguntar sobre adversidades na infância numa primeira sessão sem que o paciente se sinta invadido?",
+        mats: [
+          { type: "Artigo", ref: "Felitti, V. J., et al. (1998). <em>Relationship of childhood abuse and household dysfunction to many of the leading causes of death in adults.</em> American Journal of Preventive Medicine.", q: "Felitti 1998 Relationship of childhood abuse and household dysfunction leading causes of death" },
+          { type: "Artigo", ref: "McLaughlin, K. A. (2016). <em>Future directions in childhood adversity and youth psychopathology.</em> Journal of Clinical Child & Adolescent Psychology.", q: "McLaughlin 2016 Future directions in childhood adversity and youth psychopathology" } ] }
+    ] },
+    { title: "Cérebro e funções cognitivas", topics: [
+      { id: "neuropsicologia", title: "Neuropsicologia introdutória",
+        summary: "A neuropsicologia estuda a relação entre cérebro e comportamento, com foco em funções como atenção, memória, linguagem e funções executivas. Na prática clínica, ajuda a reconhecer quando uma queixa pode ter base cognitiva ou neurológica e quando vale encaminhar para avaliação.",
+        concepts: ["Funções corticais superiores", "Organização cerebral", "Plasticidade", "Avaliação neuropsicológica", "Reabilitação cognitiva"],
+        lv: ["Conhecer a organização geral do cérebro e as principais funções cognitivas estudadas pela neuropsicologia.",
+             "Reconhecer na entrevista sinais que sugerem um problema cognitivo ou neurológico, como mudanças recentes e desproporcionais.",
+             "Decidir quando encaminhar para avaliação neuropsicológica e usar o laudo para ajustar a terapia às capacidades do paciente."],
+        prompt: "Que sinais numa entrevista levariam você a pedir uma avaliação neuropsicológica?",
+        mats: [
+          { type: "Livro", ref: "Malloy-Diniz, L. F., et al. (Orgs.). <em>Avaliação neuropsicológica.</em> Artmed.", q: "Malloy-Diniz Avaliação neuropsicológica" },
+          { type: "Livro", ref: "Kolb, B., & Whishaw, I. Q. <em>Neurociência do comportamento.</em> Manole.", q: "Kolb Whishaw Fundamentals of human neuropsychology" } ] },
+      { id: "atencao-memoria", title: "Atenção e memória",
+        summary: "A atenção seleciona, sustenta e alterna o foco entre estímulos, e a memória codifica, armazena e recupera informações em sistemas diferentes, como a memória de trabalho, a episódica e a procedural. Queixas de esquecimento e distração são comuns na clínica e muitas vezes refletem ansiedade, humor ou sono, e não um déficit primário.",
+        concepts: ["Atenção seletiva, sustentada e alternada", "Memória de trabalho", "Memória episódica e semântica", "Codificação e recuperação", "Queixa subjetiva de memória"],
+        lv: ["Conhecer os tipos de atenção e os sistemas de memória, com seus modelos teóricos principais.",
+             "Investigar queixas de memória e atenção diferenciando déficit cognitivo de efeito da ansiedade, da depressão ou do sono ruim.",
+             "Adaptar a terapia com resumos, registros escritos e lembretes, e encaminhar para avaliação quando a queixa não se explica pelo quadro emocional."],
+        prompt: "Como diferenciar um esquecimento ligado à ansiedade de um esquecimento que merece investigação neurológica?",
+        mats: [
+          { type: "Livro", ref: "Baddeley, A., Eysenck, M. W., & Anderson, M. C. <em>Memória.</em> Artmed.", q: "Baddeley Eysenck Anderson Memory" },
+          { type: "Artigo", ref: "Posner, M. I., & Petersen, S. E. (1990). <em>The attention system of the human brain.</em> Annual Review of Neuroscience.", q: "Posner Petersen 1990 The attention system of the human brain" } ] },
+      { id: "funcoes-executivas", title: "Funções executivas",
+        summary: "Funções executivas são processos que permitem controlar o próprio comportamento em direção a objetivos. Os componentes centrais são o controle inibitório, a memória de trabalho e a flexibilidade cognitiva, que sustentam planejamento, organização e autorregulação.",
+        concepts: ["Controle inibitório", "Flexibilidade cognitiva", "Memória de trabalho", "Planejamento", "Autorregulação"],
+        lv: ["Entender o modelo de unidade e diversidade das funções executivas e o papel de cada componente.",
+             "Reconhecer dificuldades de inibição, flexibilidade e planejamento no dia a dia do paciente e na própria sessão.",
+             "Ajustar tarefas de casa ao perfil executivo do paciente, com passos menores, apoios externos e treino de rotinas."],
+        prompt: "Por que um paciente com dificuldade de controle inibitório pode entender perfeitamente a tarefa e mesmo assim não conseguir fazê-la?",
+        mats: [
+          { type: "Artigo", ref: "Diamond, A. (2013). <em>Executive functions.</em> Annual Review of Psychology.", q: "Diamond 2013 Executive functions Annual Review of Psychology" },
+          { type: "Artigo", ref: "Miyake, A., et al. (2000). <em>The unity and diversity of executive functions and their contributions to complex frontal lobe tasks.</em> Cognitive Psychology.", q: "Miyake 2000 unity and diversity of executive functions" } ] },
+      { id: "decisao-recompensa", title: "Tomada de decisão e sistemas de recompensa",
+        summary: "Decidimos combinando processos rápidos e intuitivos com processos lentos e deliberados, e os sistemas de recompensa do cérebro diferenciam o quanto queremos algo do quanto gostamos dele. Isso ajuda a entender impulsividade, procrastinação, anedonia e comportamentos aditivos.",
+        concepts: ["Sistema 1 e sistema 2", "Desconto temporal", "Querer e gostar", "Dopamina e aprendizagem por recompensa", "Anedonia"],
+        lv: ["Conhecer os modelos de dois sistemas de decisão, o desconto temporal e a diferença entre querer e gostar.",
+             "Identificar no paciente preferência por recompensas imediatas, dificuldade de antecipar prazer ou busca compulsiva.",
+             "Planejar intervenções que aproximem as consequências de longo prazo, como metas curtas e reforço imediato para passos pequenos."],
+        prompt: "Como o desconto temporal ajuda a explicar por que alguém adia algo que sabe que é importante?",
+        mats: [
+          { type: "Livro", ref: "Kahneman, D. <em>Rápido e devagar: duas formas de pensar.</em> Objetiva.", q: "Kahneman Thinking fast and slow" },
+          { type: "Artigo", ref: "Berridge, K. C., & Kringelbach, M. L. (2015). <em>Pleasure systems in the brain.</em> Neuron.", q: "Berridge Kringelbach 2015 Pleasure systems in the brain" } ] }
+    ] },
+    { title: "Corpo, sono e estresse", topics: [
+      { id: "processamento-emocional", title: "Processamento emocional",
+        summary: "O processamento emocional envolve redes cerebrais que detectam relevância e ameaça, como a amígdala, e regiões pré-frontais que modulam essa resposta. Entender esse circuito ajuda a explicar por que reações emocionais podem ser rápidas, automáticas e difíceis de controlar só com argumentos.",
+        concepts: ["Amígdala e detecção de ameaça", "Córtex pré-frontal e modulação", "Vias rápida e lenta", "Interocepção", "Memória emocional"],
+        lv: ["Conhecer os circuitos básicos do processamento emocional e a relação entre detecção de ameaça e regulação.",
+             "Explicar ao paciente por que a reação emocional vem antes do pensamento elaborado, reduzindo a autocrítica por reagir.",
+             "Escolher intervenções experienciais, como exposição e treino interoceptivo, quando o problema está no processamento rápido e não no raciocínio."],
+        prompt: "Por que entender racionalmente que algo não é perigoso nem sempre reduz o medo?",
+        mats: [
+          { type: "Livro", ref: "LeDoux, J. <em>O cérebro emocional.</em> Objetiva.", q: "LeDoux The emotional brain" },
+          { type: "Artigo", ref: "Phelps, E. A., & LeDoux, J. E. (2005). <em>Contributions of the amygdala to emotion processing: From animal models to human behavior.</em> Neuron.", q: "Phelps LeDoux 2005 Contributions of the amygdala to emotion processing" } ] },
+      { id: "sono-ritmos", title: "Sono e ritmos circadianos",
+        summary: "O sono é regulado pela pressão homeostática e pelo relógio circadiano, e afeta humor, atenção, memória e regulação emocional. Problemas de sono são ao mesmo tempo sintoma e fator de manutenção de vários quadros, e por isso merecem avaliação em todo caso.",
+        concepts: ["Processo homeostático e circadiano", "Arquitetura do sono", "Cronotipo", "Higiene do sono", "Sono e regulação emocional"],
+        lv: ["Conhecer como o sono é regulado, suas fases e o papel do ritmo circadiano.",
+             "Investigar sono em toda avaliação, com horários, regularidade e qualidade, e perceber como ele influencia a queixa principal.",
+             "Incluir o sono na formulação como fator de manutenção e orientar mudanças de rotina antes de intervenções mais complexas."],
+        prompt: "Como uma semana de sono ruim pode piorar a regulação emocional de um paciente?",
+        mats: [
+          { type: "Livro", ref: "Walker, M. <em>Por que nós dormimos.</em> Intrínseca.", q: "Matthew Walker Why we sleep" },
+          { type: "Artigo", ref: "Harvey, A. G. (2002). <em>A cognitive model of insomnia.</em> Behaviour Research and Therapy.", q: "Harvey 2002 A cognitive model of insomnia" } ] },
+      { id: "estresse", title: "Estresse e funcionamento fisiológico",
+        summary: "A resposta de estresse mobiliza o eixo hipotálamo-hipófise-adrenal e o sistema nervoso autônomo para lidar com desafios. Quando ela se mantém ativa por muito tempo, gera carga alostática, com efeitos sobre sono, imunidade, humor e cognição.",
+        concepts: ["Eixo HHA e cortisol", "Sistema nervoso autônomo", "Alostase e carga alostática", "Estresse agudo e crônico", "Avaliação cognitiva do estresse"],
+        lv: ["Conhecer a fisiologia da resposta de estresse e a diferença entre estresse agudo e crônico.",
+             "Identificar sinais de carga alostática no paciente, como sono, queixas físicas, irritabilidade e esgotamento.",
+             "Combinar intervenções sobre as fontes de estresse com estratégias de recuperação fisiológica e acompanhar os efeitos."],
+        prompt: "Que sinais físicos ajudariam você a perceber que um paciente está há muito tempo em estresse crônico?",
+        mats: [
+          { type: "Livro", ref: "Sapolsky, R. M. <em>Por que as zebras não têm úlceras.</em> Francis.", q: "Sapolsky Why zebras don't get ulcers" },
+          { type: "Artigo", ref: "McEwen, B. S. (1998). <em>Protective and damaging effects of stress mediators.</em> New England Journal of Medicine.", q: "McEwen 1998 Protective and damaging effects of stress mediators" } ] }
+    ] }
+  ]
+});
+
+STAGES.push({
+  id: "ac", title: "Análise do Comportamento", short: "Análise do Comportamento", sub: "Princípios e função",
+  goal: "Compreender como comportamentos são aprendidos e mantidos.",
+  modules: [
+    { title: "Behaviorismo radical e comportamento respondente", topics: [
+      { id: "behaviorismo-radical", title: "Behaviorismo radical",
+        summary: "O behaviorismo radical de Skinner trata pensamentos e sentimentos como comportamentos, sujeitos às mesmas leis que as ações públicas. Ele adota uma visão selecionista, em que o comportamento é moldado pelas consequências ao longo da história de cada pessoa e da cultura.",
+        concepts: ["Eventos privados", "Seleção por consequências", "Monismo", "Pragmatismo", "Três níveis de seleção"],
+        lv: ["Entender os pressupostos do behaviorismo radical: monismo, seleção por consequências e eventos privados como comportamento.",
+             "Descrever pensamentos e sentimentos do paciente como comportamentos com história e função, sem tratá-los como causas internas.",
+             "Construir explicações do caso que apontem variáveis ambientais modificáveis, e não apenas estados internos."],
+        prompt: "Como o behaviorismo radical explicaria o ato de pensar sem recorrer a uma mente separada do comportamento?",
+        mats: [
+          { type: "Livro", ref: "Skinner, B. F. <em>Sobre o behaviorismo.</em> Cultrix.", q: "Skinner About behaviorism" },
+          { type: "Livro", ref: "Baum, W. M. <em>Compreender o behaviorismo: comportamento, cultura e evolução.</em> Artmed.", q: "Baum Understanding behaviorism" } ] },
+      { id: "respondente", title: "Condicionamento respondente",
+        summary: "No condicionamento respondente, um estímulo neutro passa a eliciar uma resposta depois de ser pareado com um estímulo que já a eliciava. É o processo por trás de muitas reações emocionais aprendidas, como medos específicos, e também da extinção que acontece na exposição.",
+        concepts: ["Estímulo incondicionado e condicionado", "Pareamento", "Extinção respondente", "Recuperação espontânea", "Generalização de estímulos"],
+        lv: ["Conhecer os elementos do condicionamento respondente, extinção, recuperação espontânea e generalização.",
+             "Identificar respostas emocionais condicionadas do paciente e os estímulos que passaram a eliciá-las.",
+             "Planejar exposição a estímulos condicionados de forma gradual, prevendo retorno do medo e trabalhando a generalização."],
+        prompt: "Como explicar pelo condicionamento respondente que alguém sinta enjoo ao ver o hospital onde fez quimioterapia?",
+        mats: [
+          { type: "Livro", ref: "Moreira, M. B., & Medeiros, C. A. <em>Princípios básicos de análise do comportamento.</em> Artmed.", q: "Moreira Medeiros Princípios básicos de análise do comportamento" },
+          { type: "Artigo", ref: "Rescorla, R. A. (1988). <em>Pavlovian conditioning: It's not what you think it is.</em> American Psychologist.", q: "Rescorla 1988 Pavlovian conditioning it's not what you think it is" } ] }
+    ] },
+    { title: "Comportamento operante", topics: [
+      { id: "operante", title: "Condicionamento operante",
+        summary: "Comportamentos operantes são aqueles que operam sobre o ambiente e têm sua frequência alterada pelas consequências que produzem. A unidade de análise é a contingência de três termos: o contexto antecedente, a resposta e a consequência.",
+        concepts: ["Contingência tríplice", "Resposta e classe de respostas", "Modelagem", "Extinção operante", "Variabilidade comportamental"],
+        lv: ["Dominar a contingência de três termos, modelagem, extinção e o conceito de classe de respostas.",
+             "Descrever os comportamentos-problema do paciente em contingências, com antecedentes e consequências concretas.",
+             "Usar modelagem e mudança de contingências para construir repertórios novos, em passos que o paciente consiga cumprir."],
+        prompt: "Descreva a contingência de três termos de um comportamento que você repete todos os dias.",
+        mats: [
+          { type: "Livro", ref: "Skinner, B. F. <em>Ciência e comportamento humano.</em> Martins Fontes.", q: "Skinner Science and human behavior" },
+          { type: "Livro", ref: "Moreira, M. B., & Medeiros, C. A. <em>Princípios básicos de análise do comportamento.</em> Artmed.", q: "Moreira Medeiros operante" } ] },
+      { id: "reforcamento", title: "Reforçamento",
+        summary: "Reforço é toda consequência que aumenta a probabilidade de um comportamento voltar a acontecer. No reforço positivo algo é acrescentado, e no negativo algo aversivo é retirado, como acontece com boa parte dos comportamentos de fuga e esquiva vistos na clínica.",
+        concepts: ["Reforço positivo e negativo", "Fuga e esquiva", "Reforçadores primários e condicionados", "Reforço intrínseco e arbitrário", "Imediaticidade"],
+        lv: ["Diferenciar reforço positivo e negativo, fuga e esquiva, e reforçadores naturais e arbitrários.",
+             "Identificar o que mantém os comportamentos do paciente, especialmente o alívio imediato que sustenta a esquiva.",
+             "Planejar fontes de reforço natural para comportamentos novos e reduzir o reforço que mantém o problema."],
+        prompt: "Por que a esquiva costuma ser tão difícil de abandonar, mesmo quando a pessoa sabe que ela atrapalha?",
+        mats: [
+          { type: "Livro", ref: "Catania, A. C. <em>Aprendizagem: comportamento, linguagem e cognição.</em> Artmed.", q: "Catania reinforcement" },
+          { type: "Livro", ref: "Skinner, B. F. <em>Ciência e comportamento humano.</em> Martins Fontes.", q: "Skinner Science and human behavior reinforcement" } ] },
+      { id: "punicao", title: "Punição",
+        summary: "Punição é a consequência que reduz a frequência de um comportamento. Ela costuma suprimir a resposta apenas temporariamente e gera efeitos colaterais como medo, contracontrole e esquiva de quem pune, o que explica por que relações coercitivas aparecem tanto nas histórias clínicas.",
+        concepts: ["Punição positiva e negativa", "Coerção", "Contracontrole", "Efeitos colaterais da punição", "Alternativas à punição"],
+        lv: ["Conhecer os tipos de punição, seus efeitos colaterais e o conceito de coerção.",
+             "Reconhecer na história do paciente os efeitos de ambientes punitivos, como inibição, autocrítica e esquiva de pessoas.",
+             "Evitar que a terapia funcione como mais uma fonte de punição e construir alternativas baseadas em reforço."],
+        prompt: "Que efeitos de uma história de punição você esperaria encontrar num adulto que cresceu num ambiente muito crítico?",
+        mats: [
+          { type: "Livro", ref: "Sidman, M. <em>Coerção e suas implicações.</em> Livro Pleno.", q: "Sidman Coercion and its fallout" },
+          { type: "Capítulo", ref: "Azrin, N. H., & Holz, W. C. (1966). <em>Punishment.</em> Em W. K. Honig (Org.), Operant behavior. Appleton-Century-Crofts.", q: "Azrin Holz 1966 punishment operant behavior" } ] }
+    ] },
+    { title: "Esquemas e controle de estímulos", topics: [
+      { id: "esquemas", title: "Esquemas de reforçamento",
+        summary: "Esquemas de reforçamento descrevem a regra que liga respostas e reforços, por razão ou intervalo, fixos ou variáveis. Eles explicam padrões como a persistência de comportamentos reforçados de forma intermitente, a exemplo do jogo de azar ou de checar o celular.",
+        concepts: ["Reforço contínuo e intermitente", "Razão fixa e variável", "Intervalo fixo e variável", "Resistência à extinção", "Esquemas concorrentes"],
+        lv: ["Conhecer os esquemas básicos de reforçamento e os padrões de resposta que cada um produz.",
+             "Identificar comportamentos do paciente mantidos por reforço intermitente, que resistem muito à extinção.",
+             "Prever a explosão de extinção ao mudar contingências e preparar o paciente para ela, usando esquemas concorrentes a favor."],
+        prompt: "Por que um relacionamento com afeto imprevisível pode ser tão difícil de deixar?",
+        mats: [
+          { type: "Livro", ref: "Ferster, C. B., & Skinner, B. F. (1957). <em>Schedules of reinforcement.</em> Appleton-Century-Crofts.", q: "Ferster Skinner Schedules of reinforcement" },
+          { type: "Livro", ref: "Catania, A. C. <em>Aprendizagem: comportamento, linguagem e cognição.</em> Artmed.", q: "Catania schedules of reinforcement" } ] },
+      { id: "controle-estimulos", title: "Controle de estímulos",
+        summary: "Um comportamento fica sob controle de estímulos quando acontece mais em certos contextos do que em outros, porque nesses contextos ele foi reforçado. Discriminação, generalização e equivalência de estímulos ajudam a entender por que reações aprendidas num lugar aparecem em outros.",
+        concepts: ["Estímulo discriminativo", "Discriminação e generalização", "Equivalência de estímulos", "Operações motivadoras", "Controle por regras"],
+        lv: ["Entender estímulo discriminativo, operações motivadoras, discriminação, generalização e equivalência.",
+             "Mapear em que contextos o problema aparece e desaparece, e que estado do organismo aumenta o valor das consequências.",
+             "Alterar antecedentes e operações motivadoras para tornar o comportamento desejado mais provável no ambiente real."],
+        prompt: "Que estímulos discriminativos sinalizam para um paciente que é seguro, ou perigoso, se expressar?",
+        mats: [
+          { type: "Livro", ref: "Moreira, M. B., & Medeiros, C. A. <em>Princípios básicos de análise do comportamento</em> (capítulo sobre controle de estímulos). Artmed.", q: "Moreira Medeiros controle de estímulos" },
+          { type: "Livro", ref: "Sidman, M. (1994). <em>Equivalence relations and behavior: A research story.</em> Authors Cooperative.", q: "Sidman 1994 Equivalence relations and behavior research story" } ] }
+    ] },
+    { title: "Linguagem e análise funcional", topics: [
+      { id: "comportamento-verbal", title: "Comportamento verbal",
+        summary: "Skinner tratou a linguagem como comportamento operante mantido pela mediação de outras pessoas, e descreveu operantes verbais como mando, tato e intraverbal. A RFT ampliou essa análise ao explicar como relacionamos estímulos de forma arbitrária, base das terapias contextuais.",
+        concepts: ["Mando e tato", "Intraverbal e autoclítico", "Comportamento governado por regras", "Relações arbitrárias", "Transformação de funções"],
+        lv: ["Conhecer os operantes verbais, o comportamento governado por regras e os princípios básicos da RFT.",
+             "Identificar regras rígidas no discurso do paciente e perceber quando ele segue a regra mesmo contra as consequências.",
+             "Trabalhar a flexibilização de regras com experiências que coloquem o paciente em contato direto com as consequências."],
+        prompt: "Que regras verbais um paciente segue que já não combinam com as consequências reais da vida dele?",
+        mats: [
+          { type: "Livro", ref: "Skinner, B. F. <em>O comportamento verbal.</em> Cultrix.", q: "Skinner Verbal behavior" },
+          { type: "Livro", ref: "Törneke, N. (2010). <em>Learning RFT: An introduction to relational frame theory and its clinical application.</em> New Harbinger.", q: "Törneke Learning RFT" } ] },
+      { id: "analise-funcional", title: "Análise funcional",
+        summary: "A análise funcional identifica as relações entre o comportamento e o contexto: o que vem antes, o que vem depois e que função aquele comportamento cumpre. Comportamentos com a mesma forma podem ter funções diferentes, e é a função que orienta a intervenção.",
+        concepts: ["Antecedentes e consequências", "Função e topografia", "Classes de resposta", "Operações motivadoras", "Hipóteses funcionais"],
+        lv: ["Diferenciar função e topografia e conhecer os passos de uma análise funcional.",
+             "Levantar com o paciente exemplos concretos do problema e organizar antecedentes, respostas e consequências de cada um.",
+             "Transformar a análise em hipóteses funcionais testáveis e escolher intervenções que mudem a função, e não só a forma."],
+        prompt: "Escolha um comportamento-problema e descreva duas funções diferentes que ele poderia ter.",
+        mats: [
+          { type: "Artigo", ref: "Matos, M. A. (1999). <em>Análise funcional do comportamento.</em> Estudos de Psicologia (Campinas).", q: "Matos 1999 Análise funcional do comportamento" },
+          { type: "Artigo", ref: "Neno, S. (2003). <em>Análise funcional: definição e aplicação na terapia analítico-comportamental.</em> Revista Brasileira de Terapia Comportamental e Cognitiva.", q: "Neno 2003 Análise funcional definição e aplicação na terapia analítico-comportamental" } ] }
+    ] }
+  ]
+});
+
+STAGES.push({
+  id: "tcc", title: "Terapia Cognitivo-Comportamental", short: "TCC", sub: "Conceitualização clínica",
+  goal: "Transformar teoria em hipóteses clínicas testáveis.",
+  modules: [
+    { title: "Modelo cognitivo", topics: [
+      { id: "modelo-cognitivo", title: "Modelo cognitivo",
+        summary: "O modelo cognitivo propõe que a forma como a pessoa interpreta uma situação influencia suas emoções, reações físicas e comportamentos. A mudança dessas interpretações, testadas como hipóteses, é um dos caminhos para reduzir o sofrimento.",
+        concepts: ["Situação, pensamento, emoção e comportamento", "Hipótese de conteúdo específico", "Empirismo colaborativo", "Níveis de cognição", "Modelo de diátese-estresse"],
+        lv: ["Compreender o modelo cognitivo, os níveis de cognição e a hipótese de conteúdo específico para cada quadro.",
+             "Montar com o paciente o ciclo situação, pensamento, emoção e comportamento a partir de episódios recentes.",
+             "Usar o modelo para socializar o paciente, definir alvos e escolher técnicas coerentes com o conteúdo cognitivo do caso."],
+        prompt: "Como você explicaria o modelo cognitivo a um paciente usando um exemplo da semana dele?",
+        mats: [
+          { type: "Livro", ref: "Beck, J. S. <em>Terapia cognitivo-comportamental: teoria e prática.</em> Artmed.", q: "Judith Beck Cognitive behavior therapy basics and beyond" },
+          { type: "Livro", ref: "Beck, A. T. (1976). <em>Cognitive therapy and the emotional disorders.</em> International Universities Press.", q: "Aaron Beck 1976 Cognitive therapy and the emotional disorders" } ] },
+      { id: "pensamentos-automaticos", title: "Pensamentos automáticos",
+        summary: "Pensamentos automáticos são avaliações rápidas que surgem espontaneamente nas situações e costumam ser aceitas como verdadeiras sem exame. Aprender a identificá-los, registrá-los e avaliá-los é uma das primeiras habilidades treinadas na TCC.",
+        concepts: ["Registro de pensamentos", "Distorções cognitivas", "Pensamentos quentes", "Questionamento socrático", "Respostas alternativas"],
+        lv: ["Conhecer as características dos pensamentos automáticos, as distorções mais comuns e o questionamento socrático.",
+             "Ajudar o paciente a encontrar o pensamento quente ligado à mudança de emoção, e não só descrições da situação.",
+             "Treinar registro e avaliação de pensamentos e medir se a crença e a emoção mudam depois do exame."],
+        prompt: "Que pergunta você faria para ajudar o paciente a encontrar o pensamento que veio logo antes da emoção?",
+        mats: [
+          { type: "Livro", ref: "Greenberger, D., & Padesky, C. A. <em>A mente vencendo o humor.</em> Artmed.", q: "Greenberger Padesky Mind over mood" },
+          { type: "Livro", ref: "Beck, J. S. <em>Terapia cognitivo-comportamental: teoria e prática.</em> Artmed.", q: "Judith Beck automatic thoughts" } ] }
+    ] },
+    { title: "Crenças, emoções e enfrentamento", topics: [
+      { id: "crencas", title: "Crenças intermediárias e centrais",
+        summary: "Crenças centrais são ideias amplas e rígidas sobre si, os outros e o mundo, como \"sou inadequado\". As crenças intermediárias são regras, atitudes e pressupostos que derivam delas e orientam o comportamento, como \"se eu errar, vão me rejeitar\".",
+        concepts: ["Crenças centrais", "Regras e pressupostos", "Técnica da flecha descendente", "Crenças de desamparo, desamor e desvalor", "Mudança de esquemas"],
+        lv: ["Diferenciar crenças centrais, regras e pressupostos e entender como se formam na história de vida.",
+             "Inferir crenças a partir de temas que se repetem nos pensamentos automáticos e confirmar com o paciente pela flecha descendente.",
+             "Trabalhar crenças com evidências ao longo do tempo, experimentos e construção de crenças alternativas mais flexíveis."],
+        prompt: "Que regra condicional (\"se..., então...\") parece orientar a vida de um paciente seu?",
+        mats: [
+          { type: "Livro", ref: "Beck, J. S. <em>Terapia cognitivo-comportamental: teoria e prática</em> (capítulos sobre crenças). Artmed.", q: "Judith Beck core beliefs intermediate beliefs" },
+          { type: "Artigo", ref: "Padesky, C. A. (1994). <em>Schema change processes in cognitive therapy.</em> Clinical Psychology & Psychotherapy.", q: "Padesky 1994 Schema change processes in cognitive therapy" } ] },
+      { id: "emocoes-tcc", title: "Emoções na TCC",
+        summary: "Na TCC, as emoções são o principal sinal de que há um pensamento importante a ser examinado. Identificar, nomear e medir a intensidade das emoções ajuda o paciente a diferenciar o que sente do que pensa e a acompanhar as mudanças ao longo do tratamento.",
+        concepts: ["Identificação de emoções", "Escala de intensidade", "Diferença entre pensar e sentir", "Esquemas emocionais", "Emoções e comportamento"],
+        lv: ["Entender o lugar da emoção no modelo cognitivo e o conceito de esquemas emocionais.",
+             "Ajudar o paciente a nomear emoções com precisão e a separar o que sente do que pensa sobre a situação.",
+             "Usar escalas de intensidade como medida contínua e trabalhar crenças sobre as próprias emoções quando elas mantêm o problema."],
+        prompt: "Como ajudar um paciente que só consegue descrever o que sente como \"mal\" ou \"estranho\"?",
+        mats: [
+          { type: "Livro", ref: "Greenberger, D., & Padesky, C. A. <em>A mente vencendo o humor</em> (capítulos sobre emoções). Artmed.", q: "Greenberger Padesky identifying moods" },
+          { type: "Livro", ref: "Leahy, R. L., Tirch, D., & Napolitano, L. A. <em>Regulação emocional em psicoterapia.</em> Artmed.", q: "Leahy Tirch Napolitano Emotion regulation in psychotherapy" } ] },
+      { id: "enfrentamento", title: "Estratégias de enfrentamento",
+        summary: "Estratégias de enfrentamento são as formas como a pessoa lida com situações difíceis e com suas próprias crenças. Na conceitualização de Beck, as estratégias compensatórias, como perfeccionismo ou evitação, protegem a pessoa no curto prazo e mantêm as crenças no longo prazo.",
+        concepts: ["Coping focado no problema e na emoção", "Estratégias compensatórias", "Evitação", "Comportamentos de segurança", "Custos de curto e longo prazo"],
+        lv: ["Conhecer os modelos de coping e o conceito de estratégia compensatória na conceitualização cognitiva.",
+             "Identificar as estratégias que o paciente usa para não confirmar suas crenças e o preço que elas cobram.",
+             "Reduzir gradualmente as estratégias compensatórias e testar o que acontece sem elas, com experimentos planejados."],
+        prompt: "Que estratégia compensatória de um paciente parece funcionar bem para ele hoje, mas cobra um preço depois?",
+        mats: [
+          { type: "Livro", ref: "Lazarus, R. S., & Folkman, S. (1984). <em>Stress, appraisal, and coping.</em> Springer.", q: "Lazarus Folkman 1984 Stress appraisal and coping" },
+          { type: "Livro", ref: "Beck, J. S. <em>Terapia cognitivo-comportamental: teoria e prática</em> (diagrama de conceitualização cognitiva). Artmed.", q: "Judith Beck cognitive conceptualization diagram compensatory strategies" } ] }
+    ] },
+    { title: "Conceitualização de caso", topics: [
+      { id: "conceitualizacao", title: "Conceitualização cognitiva",
+        summary: "A conceitualização cognitiva integra a história do paciente, suas crenças, estratégias e os ciclos atuais de pensamento, emoção e comportamento numa explicação útil para o tratamento. Ela é construída com o paciente e revista ao longo das sessões.",
+        concepts: ["Diagrama de conceitualização", "Fatores precipitantes e mantenedores", "Conceitualização colaborativa", "Níveis descritivo e explicativo", "Revisão de hipóteses"],
+        lv: ["Conhecer o diagrama de conceitualização cognitiva e os níveis descritivo, explicativo e longitudinal.",
+             "Preencher a conceitualização com dados concretos do paciente, separando o que foi observado do que é inferência.",
+             "Construir a conceitualização junto com o paciente e revisá-la sempre que um dado novo não se encaixa."],
+        prompt: "Que dado novo faria você mudar a conceitualização que montou para um caso?",
+        mats: [
+          { type: "Livro", ref: "Kuyken, W., Padesky, C. A., & Dudley, R. <em>Conceitualização de casos colaborativa.</em> Artmed.", q: "Kuyken Padesky Dudley collaborative case conceptualization" },
+          { type: "Livro", ref: "Persons, J. B. (2008). <em>The case formulation approach to cognitive-behavior therapy.</em> Guilford Press.", q: "Persons 2008 case formulation approach to cognitive-behavior therapy" } ] }
+    ] },
+    { title: "Experimentos e estrutura da sessão", topics: [
+      { id: "experimentos", title: "Experimentos comportamentais",
+        summary: "Experimentos comportamentais são atividades planejadas para testar na prática uma crença ou previsão do paciente. Eles costumam produzir mudanças mais profundas que a discussão verbal, porque a pessoa passa pela experiência e tira as próprias conclusões.",
+        concepts: ["Previsões testáveis", "Planejamento do experimento", "Comportamentos de segurança", "Revisão dos resultados", "Experimentos de descoberta"],
+        lv: ["Entender a lógica dos experimentos comportamentais e os tipos de experimento, como teste de hipótese e descoberta.",
+             "Transformar a crença do paciente numa previsão específica e observável, com grau de convicção antes e depois.",
+             "Planejar, executar e revisar experimentos sem comportamentos de segurança e registrar o que o paciente aprendeu."],
+        prompt: "Que experimento você planejaria para alguém que acredita que \"todo mundo vai rir de mim se eu falar\"?",
+        mats: [
+          { type: "Livro", ref: "Bennett-Levy, J., et al. (2004). <em>Oxford guide to behavioural experiments in cognitive therapy.</em> Oxford University Press.", q: "Bennett-Levy Oxford guide to behavioural experiments" },
+          { type: "Livro", ref: "Greenberger, D., & Padesky, C. A. <em>A mente vencendo o humor.</em> Artmed.", q: "Greenberger Padesky behavioral experiments" } ] },
+      { id: "estrutura-sessao", title: "Estrutura das sessões",
+        summary: "A sessão de TCC costuma seguir uma estrutura: checagem do humor, ponte com a sessão anterior, definição da agenda, revisão da tarefa, trabalho nos itens da agenda, resumo e nova tarefa. Essa estrutura dá foco e ensina o paciente a usar as ferramentas sozinho.",
+        concepts: ["Agenda colaborativa", "Checagem de humor", "Tarefas de casa", "Resumos e feedback", "Sessões de reforço"],
+        lv: ["Conhecer os elementos da sessão estruturada e a função de cada um.",
+             "Perceber quando a sessão perde foco e quando a estrutura está rígida demais para o momento do paciente.",
+             "Conduzir sessões com agenda colaborativa e tarefas ligadas à formulação, ajustando a estrutura em situações de crise."],
+        prompt: "Como manter a estrutura da sessão quando o paciente chega com uma crise nova?",
+        mats: [
+          { type: "Livro", ref: "Wright, J. H., Brown, G. K., Thase, M. E., & Basco, M. R. <em>Aprendendo a terapia cognitivo-comportamental: um guia ilustrado.</em> Artmed.", q: "Wright Learning cognitive-behavior therapy illustrated guide" },
+          { type: "Livro", ref: "Beck, J. S. <em>Terapia cognitivo-comportamental: teoria e prática</em> (estrutura da sessão). Artmed.", q: "Judith Beck session structure" } ] }
+    ] }
+  ]
+});
+
+STAGES.push({
+  id: "contextuais", title: "Terapias Contextuais Comportamentais", short: "Terapias Contextuais", sub: "Função da experiência",
+  goal: "Compreender a função da experiência e ampliar repertórios.",
+  modules: [
+    { title: "Ciência comportamental contextual", topics: [
+      { id: "cbs", title: "Ciência comportamental contextual",
+        summary: "A ciência comportamental contextual (CBS) é a tradição que reúne o contextualismo funcional, a RFT e terapias como a ACT. Ela busca princípios que permitam prever e influenciar o comportamento com precisão, abrangência e profundidade, sempre analisando o comportamento no seu contexto.",
+        concepts: ["Contextualismo funcional", "Critério pragmático de verdade", "RFT", "Desenvolvimento reticulado", "Precisão, abrangência e profundidade"],
+        lv: ["Entender o contextualismo funcional, o critério pragmático de verdade e o lugar da RFT na CBS.",
+             "Avaliar pensamentos e emoções do paciente pela função que cumprem no contexto, e não pela sua veracidade.",
+             "Formular perguntas clínicas em termos de funcionalidade e escolher intervenções pelo efeito que produzem na vida do paciente."],
+        prompt: "O que muda na clínica quando você pergunta \"para que serve esse pensamento?\" em vez de \"esse pensamento é verdadeiro?\"",
+        mats: [
+          { type: "Artigo", ref: "Hayes, S. C., Barnes-Holmes, D., & Wilson, K. G. (2012). <em>Contextual behavioral science: Creating a science more adequate to the challenge of the human condition.</em> Journal of Contextual Behavioral Science.", q: "Hayes Barnes-Holmes Wilson 2012 Contextual behavioral science creating a science more adequate" },
+          { type: "Livro", ref: "Hayes, S. C., Barnes-Holmes, D., & Roche, B. (2001). <em>Relational frame theory: A post-Skinnerian account of human language and cognition.</em> Kluwer.", q: "Relational frame theory post-Skinnerian account" } ] },
+      { id: "flexibilidade", title: "Flexibilidade psicológica",
+        summary: "Flexibilidade psicológica é a capacidade de estar em contato com o momento presente, inclusive com experiências difíceis, e persistir ou mudar o comportamento conforme os próprios valores. A inflexibilidade aparece em vários quadros e é um alvo transdiagnóstico de tratamento.",
+        concepts: ["Hexaflex", "Inflexibilidade psicológica", "Rigidez psicológica", "Fusão cognitiva", "Ação comprometida"],
+        lv: ["Compreender o modelo de flexibilidade e inflexibilidade psicológica e seus processos.",
+             "Identificar onde o repertório do paciente é rígido, repetindo a mesma resposta em contextos que pediriam outra.",
+             "Avaliar o perfil de flexibilidade do caso e priorizar os processos mais comprometidos na intervenção."],
+        prompt: "Que comportamento rígido de um paciente se repete em contextos muito diferentes da vida dele?",
+        mats: [
+          { type: "Artigo", ref: "Kashdan, T. B., & Rottenberg, J. (2010). <em>Psychological flexibility as a fundamental aspect of health.</em> Clinical Psychology Review.", q: "Kashdan Rottenberg 2010 Psychological flexibility fundamental aspect of health" },
+          { type: "Artigo", ref: "Hayes, S. C., Luoma, J. B., Bond, F. W., Masuda, A., & Lillis, J. (2006). <em>Acceptance and commitment therapy: Model, processes and outcomes.</em> Behaviour Research and Therapy.", q: "Hayes Luoma Bond Masuda Lillis 2006 ACT model processes outcomes" } ] }
+    ] },
+    { title: "ACT, aceitação e valores", topics: [
+      { id: "act", title: "ACT (Terapia de Aceitação e Compromisso)",
+        summary: "A ACT busca aumentar a flexibilidade psicológica por meio de seis processos: aceitação, desfusão, contato com o presente, eu como contexto, valores e ação comprometida. Usa metáforas, exercícios experienciais e o trabalho com valores para ampliar o repertório do paciente.",
+        concepts: ["Seis processos do hexaflex", "Desfusão cognitiva", "Eu como contexto", "Metáforas e exercícios experienciais", "Funcionalidade (workability)"],
+        lv: ["Conhecer os seis processos da ACT e as técnicas associadas a cada um.",
+             "Reconhecer na fala do paciente sinais de fusão, evitação, apego ao eu conceitualizado e falta de direção.",
+             "Escolher metáforas e exercícios conforme o processo mais comprometido e medir a mudança em flexibilidade."],
+        prompt: "Como a evitação experiencial aparece num caso que você conhece?",
+        mats: [
+          { type: "Livro", ref: "Hayes, S. C., Strosahl, K. D., & Wilson, K. G. <em>Terapia de aceitação e compromisso: o processo e a prática da mudança consciente.</em> Artmed.", q: "Hayes Strosahl Wilson Acceptance and commitment therapy process and practice" },
+          { type: "Livro", ref: "Harris, R. <em>ACT made simple.</em> New Harbinger.", q: "Russ Harris ACT made simple" } ] },
+      { id: "aceitacao", title: "Aceitação e evitação experiencial",
+        summary: "Aceitação psicológica é a disposição para experienciar pensamentos, emoções e sensações difíceis sem tentar controlá-los ou eliminá-los, quando isso ajuda a pessoa a viver de acordo com seus valores. Ela se opõe à evitação experiencial, cuja rigidez está ligada a vários problemas clínicos.",
+        concepts: ["Disposição (willingness)", "Evitação experiencial", "Aceitação radical", "Paradoxo do controle", "Metáforas de aceitação"],
+        lv: ["Entender evitação experiencial como processo transdiagnóstico e a aceitação como alternativa funcional.",
+             "Mapear o que o paciente faz para não sentir e quanto isso custa em tempo, energia e direção de vida.",
+             "Construir disposição gradual para o desconforto a serviço dos valores, com exercícios experienciais e prática fora da sessão."],
+        prompt: "Em que situações tentar controlar uma emoção faz sentido, e em quais isso piora o problema?",
+        mats: [
+          { type: "Artigo", ref: "Hayes, S. C., Wilson, K. G., Gifford, E. V., Follette, V. M., & Strosahl, K. (1996). <em>Experiential avoidance and behavioral disorders.</em> Journal of Consulting and Clinical Psychology.", q: "Hayes Wilson 1996 Experiential avoidance and behavioral disorders" },
+          { type: "Livro", ref: "Harris, R. <em>ACT made simple</em> (capítulos sobre aceitação). New Harbinger.", q: "Russ Harris ACT made simple acceptance" } ] },
+      { id: "valores", title: "Valores",
+        summary: "Valores são qualidades de ação escolhidas que dão direção à vida, como cuidar, aprender ou agir com honestidade. Diferente das metas, eles nunca ficam concluídos, e servem de guia para o comportamento justamente nos momentos de desconforto.",
+        concepts: ["Valores e metas", "Ação comprometida", "Avaliação de valores", "Reforço intrínseco", "Seguimento de regras por aprovação"],
+        lv: ["Diferenciar valores, metas e regras, e entender o papel dos valores como reforçadores construídos verbalmente.",
+             "Perceber quando o paciente fala de valores que são, na verdade, regras para agradar ou evitar culpa.",
+             "Traduzir valores em ações concretas e semanais e usar o contato com eles para sustentar a exposição ao desconforto."],
+        prompt: "Como ajudar um paciente a diferenciar o que ele valoriza do que acha que deveria valorizar?",
+        mats: [
+          { type: "Livro", ref: "Dahl, J., Plumb, J., Stewart, I., & Lundgren, T. (2009). <em>The art and science of valuing in psychotherapy.</em> New Harbinger.", q: "Dahl Plumb Stewart Lundgren art and science of valuing" },
+          { type: "Livro", ref: "Hayes, S. C., Strosahl, K. D., & Wilson, K. G. <em>Terapia de aceitação e compromisso</em> (capítulos sobre valores). Artmed.", q: "acceptance and commitment therapy values committed action" } ] }
+    ] },
+    { title: "DBT, mindfulness e regulação emocional", topics: [
+      { id: "dbt", title: "DBT (Terapia Comportamental Dialética)",
+        summary: "A DBT foi criada por Marsha Linehan para pessoas com comportamento suicida crônico e transtorno da personalidade borderline. Ela equilibra aceitação e mudança e combina terapia individual, treino de habilidades em grupo, coaching entre sessões e equipe de consultoria.",
+        concepts: ["Dialética entre aceitação e mudança", "Teoria biossocial", "Hierarquia de alvos", "Módulos de habilidades", "Análise em cadeia"],
+        lv: ["Conhecer a estrutura da DBT, a teoria biossocial, a hierarquia de alvos e os módulos de habilidades.",
+             "Reconhecer quando um caso pede o modelo da DBT, como comportamentos de risco recorrentes e desregulação intensa.",
+             "Usar análise em cadeia, validação e ensino de habilidades de forma integrada, mesmo fora de um programa completo."],
+        prompt: "Por que a validação tem o mesmo peso que as estratégias de mudança na DBT?",
+        mats: [
+          { type: "Livro", ref: "Linehan, M. M. <em>Treinamento de habilidades em DBT: manual de terapia comportamental dialética para o terapeuta.</em> Artmed.", q: "Linehan DBT skills training manual" },
+          { type: "Livro", ref: "Linehan, M. M. (1993). <em>Cognitive-behavioral treatment of borderline personality disorder.</em> Guilford Press.", q: "Linehan 1993 Cognitive-behavioral treatment of borderline personality disorder" } ] },
+      { id: "mindfulness", title: "Mindfulness",
+        summary: "Mindfulness é prestar atenção, de propósito, ao momento presente, com abertura e sem julgamento. Na clínica, aparece em práticas formais e informais e é treinado em programas como MBSR e MBCT, além de fazer parte da DBT e da ACT.",
+        concepts: ["Atenção ao momento presente", "Prática formal e informal", "Descentramento", "MBSR e MBCT", "Habilidades de mindfulness da DBT"],
+        lv: ["Conhecer definições de mindfulness, os mecanismos propostos e os programas com evidência.",
+             "Avaliar se o paciente tem condições de praticar, considerando trauma, dissociação e momento do tratamento.",
+             "Introduzir práticas curtas e adaptadas, ligadas a um objetivo clínico claro, e acompanhar a adesão."],
+        prompt: "Em que casos uma prática de mindfulness pode não ser indicada, ou precisar de adaptação?",
+        mats: [
+          { type: "Livro", ref: "Kabat-Zinn, J. <em>Viver a catástrofe total.</em> Palas Athena.", q: "Kabat-Zinn Full catastrophe living" },
+          { type: "Livro", ref: "Segal, Z. V., Williams, J. M. G., & Teasdale, J. D. <em>Terapia cognitiva baseada em mindfulness para depressão.</em> Artmed.", q: "Segal Williams Teasdale Mindfulness-based cognitive therapy for depression" } ] },
+      { id: "regulacao-emocional", title: "Regulação emocional",
+        summary: "Regulação emocional são os processos pelos quais influenciamos quais emoções temos, quando as temos e como as expressamos. O modelo de Gross descreve estratégias em momentos diferentes, como escolher a situação, mudar o foco da atenção, reavaliar e suprimir, cada uma com seus custos e benefícios.",
+        concepts: ["Modelo processual de Gross", "Reavaliação e supressão", "Habilidades de regulação da DBT", "Tolerância ao mal-estar", "Ação oposta"],
+        lv: ["Conhecer o modelo processual de Gross e as estratégias de regulação com seus custos.",
+             "Identificar as estratégias que o paciente usa com mais frequência e em que contextos elas funcionam ou falham.",
+             "Ampliar o repertório de regulação com habilidades específicas e treinar o uso flexível conforme a situação."],
+        prompt: "Que estratégia de regulação seu paciente usa com mais frequência, e qual é o custo dela?",
+        mats: [
+          { type: "Artigo", ref: "Gross, J. J. (1998). <em>The emerging field of emotion regulation: An integrative review.</em> Review of General Psychology.", q: "Gross 1998 emerging field of emotion regulation" },
+          { type: "Livro", ref: "Leahy, R. L., Tirch, D., & Napolitano, L. A. <em>Regulação emocional em psicoterapia.</em> Artmed.", q: "Leahy Tirch Napolitano Emotion regulation in psychotherapy" } ] }
+    ] },
+    { title: "FAP e relações interpessoais", topics: [
+      { id: "fap", title: "FAP (Psicoterapia Analítica Funcional)",
+        summary: "A FAP usa a própria relação terapêutica como contexto de mudança. O terapeuta observa na sessão os comportamentos clinicamente relevantes, os problemas e as melhoras, e responde a eles de forma natural e contingente, com coragem, consciência e cuidado.",
+        concepts: ["Comportamentos clinicamente relevantes (CRB 1, 2 e 3)", "Cinco regras da FAP", "Reforço natural", "Consciência, coragem e amor", "Paralelos dentro e fora da sessão"],
+        lv: ["Conhecer os CRBs, as cinco regras da FAP e o conceito de reforço natural na relação.",
+             "Notar na sessão os comportamentos do paciente que repetem os problemas e as melhoras de fora.",
+             "Responder de forma contingente aos CRBs e fazer paralelos com a vida do paciente para favorecer a generalização."],
+        prompt: "Que comportamento problemático do paciente poderia aparecer na relação com você?",
+        mats: [
+          { type: "Livro", ref: "Kohlenberg, R. J., & Tsai, M. <em>Psicoterapia analítica funcional: criando relações terapêuticas intensas e curativas.</em> ESETec.", q: "Kohlenberg Tsai Functional analytic psychotherapy" },
+          { type: "Livro", ref: "Tsai, M., et al. (2009). <em>A guide to functional analytic psychotherapy: Awareness, courage, love, and behaviorism.</em> Springer.", q: "Tsai 2009 guide to functional analytic psychotherapy awareness courage love behaviorism" } ] },
+      { id: "relacoes-interpessoais", title: "Relações e dificuldades interpessoais",
+        summary: "Boa parte do sofrimento que chega à clínica envolve relações: isolamento, conflitos repetidos, dificuldade de pedir, recusar ou se aproximar. Habilidades sociais e de efetividade interpessoal podem ser avaliadas, treinadas na sessão e generalizadas para a vida do paciente.",
+        concepts: ["Habilidades sociais", "Assertividade", "Efetividade interpessoal (DEAR MAN)", "Padrões relacionais", "Intimidade e vulnerabilidade"],
+        lv: ["Conhecer o campo das habilidades sociais e os modelos de efetividade interpessoal.",
+             "Diferenciar déficit de habilidade de inibição por ansiedade e identificar padrões que se repetem em várias relações.",
+             "Treinar habilidades com ensaio na sessão, tarefas graduais e revisão do que aconteceu nas interações reais."],
+        prompt: "Que habilidade interpessoal faltou num conflito recente que um paciente trouxe?",
+        mats: [
+          { type: "Livro", ref: "Del Prette, Z. A. P., & Del Prette, A. <em>Psicologia das habilidades sociais: terapia, educação e trabalho.</em> Vozes.", q: "Del Prette Psicologia das habilidades sociais" },
+          { type: "Livro", ref: "Linehan, M. M. <em>Treinamento de habilidades em DBT</em> (módulo de efetividade interpessoal). Artmed.", q: "Linehan interpersonal effectiveness skills" } ] }
+    ] }
+  ]
+});
+
+STAGES.push({
+  id: "psicopatologia", title: "Psicopatologia e diagnóstico", short: "Psicopatologia", sub: "Quadros clínicos",
+  goal: "Reconhecer os principais quadros clínicos, diferenciar hipóteses diagnósticas e saber o que a evidência indica para cada um.",
+  modules: [
+    { title: "Psicopatologia geral e diagnóstico", topics: [
+      { id: "psicopatologia", title: "Psicopatologia e semiologia",
+        summary: "A psicopatologia descreve e organiza as alterações do funcionamento mental, como as de consciência, humor, pensamento e sensopercepção. Dominar a semiologia permite fazer um exame do estado mental cuidadoso e conversar com outros profissionais numa linguagem comum.",
+        concepts: ["Semiologia", "Exame do estado mental", "Funções psíquicas", "Sinal e sintoma", "Normal e patológico"],
+        lv: ["Conhecer as funções psíquicas, suas alterações e os critérios para pensar o normal e o patológico.",
+             "Fazer o exame do estado mental e descrever o que observou em linguagem técnica, sem pular para o diagnóstico.",
+             "Usar a descrição semiológica para levantar hipóteses, decidir encaminhamentos e registrar a evolução no prontuário."],
+        prompt: "Como você descreveria em linguagem técnica o que observou numa primeira entrevista, sem se apressar para um diagnóstico?",
+        mats: [
+          { type: "Livro", ref: "Dalgalarrondo, P. <em>Psicopatologia e semiologia dos transtornos mentais.</em> Artmed.", q: "Dalgalarrondo Psicopatologia e semiologia dos transtornos mentais" },
+          { type: "Livro", ref: "Cheniaux, E. <em>Manual de psicopatologia.</em> Guanabara Koogan.", q: "Cheniaux Manual de psicopatologia" } ] },
+      { id: "diagnostico-diferencial", title: "Diagnóstico diferencial",
+        summary: "O diagnóstico diferencial compara hipóteses que podem explicar os mesmos sintomas, incluindo causas médicas, uso de substâncias e outros transtornos. O diagnóstico ajuda a comunicar e consultar a literatura, e a formulação completa o que ele não explica.",
+        concepts: ["DSM-5-TR e CID-11", "Árvores de decisão", "Comorbidade", "Condições médicas e substâncias", "Limites do modelo categorial"],
+        lv: ["Conhecer a lógica do DSM-5-TR e da CID-11, as árvores de decisão e os limites do modelo categorial.",
+             "Levantar hipóteses concorrentes para o mesmo quadro e investigar ativamente as que ainda não foram descartadas.",
+             "Registrar o diagnóstico com o grau de certeza que os dados permitem e usá-lo junto com a formulação para planejar o tratamento."],
+        prompt: "Que perguntas ajudam a diferenciar uma tristeza intensa de um episódio depressivo?",
+        mats: [
+          { type: "Livro", ref: "First, M. B. <em>Manual de diagnóstico diferencial do DSM-5-TR.</em> Artmed.", q: "First DSM-5-TR handbook of differential diagnosis" },
+          { type: "Manual", ref: "American Psychiatric Association. <em>DSM-5-TR: Manual diagnóstico e estatístico de transtornos mentais.</em> Artmed.", q: "DSM-5-TR Diagnostic and statistical manual" } ] }
+    ] },
+    { title: "Ansiedade, humor e TOC", topics: [
+      { id: "ansiedade", title: "Transtornos de ansiedade",
+        summary: "Os transtornos de ansiedade envolvem medo ou preocupação excessivos e evitação, como no pânico, na ansiedade social, na ansiedade generalizada e nas fobias. A exposição e o trabalho com a evitação e os comportamentos de segurança estão entre as intervenções mais eficazes.",
+        concepts: ["Ciclo da ansiedade", "Pânico, ansiedade social, TAG e fobias", "Evitação e comportamentos de segurança", "Exposição", "Modelos cognitivos específicos"],
+        lv: ["Conhecer os critérios e os modelos cognitivo-comportamentais de cada transtorno de ansiedade.",
+             "Diferenciar os quadros pelo foco do medo e mapear evitações e comportamentos de segurança de cada paciente.",
+             "Montar a hierarquia de exposição a partir da formulação e acompanhar a mudança com medidas específicas do transtorno."],
+        prompt: "Que comportamentos de segurança mantêm a ansiedade num caso que você conhece?",
+        mats: [
+          { type: "Livro", ref: "Clark, D. A., & Beck, A. T. <em>Terapia cognitiva para os transtornos de ansiedade.</em> Artmed.", q: "Clark Beck Cognitive therapy of anxiety disorders" },
+          { type: "Artigo", ref: "Craske, M. G., et al. (2014). <em>Maximizing exposure therapy: An inhibitory learning approach.</em> Behaviour Research and Therapy.", q: "Craske 2014 Maximizing exposure therapy inhibitory learning" } ] },
+      { id: "depressao", title: "Depressão",
+        summary: "A depressão envolve humor deprimido ou perda de prazer, junto com mudanças de sono, apetite, energia, concentração e autoavaliação. A ativação comportamental e a terapia cognitiva têm boa evidência, e a avaliação de risco deve acompanhar todo o tratamento.",
+        concepts: ["Episódio depressivo", "Perda de reforçadores", "Tríade cognitiva", "Ruminação", "Avaliação de risco"],
+        lv: ["Conhecer os critérios, os modelos comportamental e cognitivo da depressão e os tratamentos com evidência.",
+             "Avaliar gravidade, risco, histórico de episódios e possíveis sinais de bipolaridade antes de definir o plano.",
+             "Começar pela ativação quando a energia está muito baixa, monitorar sintomas a cada sessão e manter a avaliação de risco."],
+        prompt: "Como diferenciar uma atividade que ativa o paciente de uma que só o distrai enquanto ele continua evitando?",
+        mats: [
+          { type: "Livro", ref: "Martell, C. R., Dimidjian, S., & Herman-Dunn, R. <em>Ativação comportamental para depressão: guia clínico.</em> Artmed.", q: "Martell Dimidjian Behavioral activation for depression clinician's guide" },
+          { type: "Livro", ref: "Beck, A. T., Rush, A. J., Shaw, B. F., & Emery, G. <em>Terapia cognitiva da depressão.</em> Artmed.", q: "Beck Rush Shaw Emery Cognitive therapy of depression" } ] },
+      { id: "bipolar", title: "Transtornos bipolares",
+        summary: "Os transtornos bipolares envolvem episódios de mania ou hipomania, geralmente alternados com episódios depressivos. O tratamento tem base farmacológica, e a psicoterapia contribui com psicoeducação, regularidade de rotinas, identificação precoce de sinais e adesão ao tratamento.",
+        concepts: ["Mania e hipomania", "Bipolar tipo I e tipo II", "Sinais prodrômicos", "Ritmos sociais", "Adesão ao tratamento"],
+        lv: ["Conhecer os critérios de mania e hipomania, os tipos de transtorno bipolar e o curso típico.",
+             "Investigar ativamente episódios de energia elevada e pouca necessidade de sono em todo paciente com depressão.",
+             "Trabalhar em conjunto com o psiquiatra, com plano de sinais de alerta, regularidade de sono e rotina e envolvimento da família."],
+        prompt: "Que perguntas você faria para investigar uma hipomania que o paciente lembra como uma fase boa?",
+        mats: [
+          { type: "Artigo", ref: "Grande, I., Berk, M., Birmaher, B., & Vieta, E. (2016). <em>Bipolar disorder.</em> The Lancet.", q: "Grande Berk Birmaher Vieta 2016 Bipolar disorder Lancet" },
+          { type: "Livro", ref: "Goodwin, F. K., & Jamison, K. R. <em>Manic-depressive illness: Bipolar disorders and recurrent depression.</em> Oxford University Press.", q: "Goodwin Jamison Manic-depressive illness" } ] },
+      { id: "toc", title: "TOC",
+        summary: "No transtorno obsessivo-compulsivo, pensamentos, imagens ou impulsos intrusivos geram ansiedade, e as compulsões e neutralizações aliviam esse desconforto no curto prazo e mantêm o ciclo. O tratamento de primeira linha é a exposição com prevenção de resposta.",
+        concepts: ["Obsessões e compulsões", "Exposição com prevenção de resposta", "Neutralização", "Busca por reasseguramento", "Acomodação familiar"],
+        lv: ["Conhecer o modelo cognitivo-comportamental do TOC e os princípios da exposição com prevenção de resposta.",
+             "Identificar compulsões visíveis e mentais, rituais de reasseguramento e a acomodação da família.",
+             "Planejar uma hierarquia de exposição com prevenção de resposta e medir a mudança com instrumentos como a Y-BOCS."],
+        prompt: "Como identificar compulsões mentais ou pedidos de reasseguramento que o paciente não percebe como compulsão?",
+        mats: [
+          { type: "Livro", ref: "Cordioli, A. V. <em>TOC: manual de terapia cognitivo-comportamental para o transtorno obsessivo-compulsivo.</em> Artmed.", q: "Cordioli TOC manual de terapia cognitivo-comportamental" },
+          { type: "Artigo", ref: "Abramowitz, J. S., Taylor, S., & McKay, D. (2009). <em>Obsessive-compulsive disorder.</em> The Lancet.", q: "Abramowitz Taylor McKay 2009 Obsessive-compulsive disorder Lancet" } ] }
+    ] },
+    { title: "Trauma, luto e corpo", topics: [
+      { id: "trauma", title: "Trauma e estressores",
+        summary: "Depois de eventos traumáticos, parte das pessoas desenvolve sintomas como revivência, evitação, alterações de humor e hiperativação, que podem configurar TEPT. Também entram nesse grupo os transtornos de adaptação. Terapias focadas no trauma, como exposição prolongada e processamento cognitivo, têm forte evidência.",
+        concepts: ["TEPT", "Transtorno de adaptação", "Revivência e evitação", "Exposição prolongada", "Terapia de processamento cognitivo"],
+        lv: ["Conhecer os transtornos relacionados a trauma e estressores e os modelos que explicam sua manutenção.",
+             "Avaliar a exposição a eventos traumáticos e os sintomas atuais com cuidado, sem forçar o relato antes da hora.",
+             "Preparar o paciente, escolher uma terapia focada no trauma com evidência e acompanhar sintomas com medidas como a PCL-5."],
+        prompt: "Que cuidados você tomaria antes de começar um trabalho focado em memórias traumáticas?",
+        mats: [
+          { type: "Livro", ref: "Foa, E. B., Hembree, E. A., & Rothbaum, B. O. <em>Prolonged exposure therapy for PTSD.</em> Oxford University Press.", q: "Foa Hembree Rothbaum Prolonged exposure therapy for PTSD" },
+          { type: "Livro", ref: "Resick, P. A., Monson, C. M., & Chard, K. M. <em>Cognitive processing therapy for PTSD: A comprehensive manual.</em> Guilford Press.", q: "Resick Monson Chard Cognitive processing therapy PTSD manual" } ] },
+      { id: "luto", title: "Luto e transtorno do luto prolongado",
+        summary: "O luto é uma resposta esperada à perda e costuma oscilar entre momentos de dor e de reorganização da vida. Em parte das pessoas, a saudade intensa e a dificuldade de seguir permanecem por muito tempo e comprometem o funcionamento, o que hoje é descrito como transtorno do luto prolongado.",
+        concepts: ["Luto típico", "Modelo do processo dual", "Transtorno do luto prolongado", "Evitação e ruminação no luto", "Perdas não reconhecidas"],
+        lv: ["Conhecer os modelos de luto e os critérios do transtorno do luto prolongado no DSM-5-TR e na CID-11.",
+             "Diferenciar luto esperado, luto prolongado e depressão, considerando tempo, intensidade, cultura e prejuízo.",
+             "Acompanhar o luto sem patologizar e indicar tratamento específico quando há luto prolongado, com foco em evitação e reconstrução da vida."],
+        prompt: "O que diferencia uma saudade intensa e esperada de um luto que ficou travado?",
+        mats: [
+          { type: "Artigo", ref: "Shear, M. K. (2015). <em>Complicated grief.</em> New England Journal of Medicine.", q: "Shear 2015 Complicated grief New England Journal of Medicine" },
+          { type: "Artigo", ref: "Stroebe, M., & Schut, H. (1999). <em>The dual process model of coping with bereavement: Rationale and description.</em> Death Studies.", q: "Stroebe Schut 1999 dual process model of coping with bereavement" } ] },
+      { id: "somaticos", title: "Sintomas somáticos",
+        summary: "Nos transtornos de sintomas somáticos, sintomas físicos reais vêm acompanhados de preocupação, atenção e comportamentos desproporcionais em relação a eles. A ansiedade de doença envolve medo persistente de ter uma doença grave. O cuidado exige validar o sofrimento e trabalhar junto com a equipe médica.",
+        concepts: ["Transtorno de sintomas somáticos", "Ansiedade de doença", "Amplificação somatossensorial", "Checagem e busca por exames", "Trabalho com a equipe médica"],
+        lv: ["Conhecer os critérios e os modelos cognitivo-comportamentais dos sintomas somáticos e da ansiedade de doença.",
+             "Investigar como o paciente interpreta e monitora sensações físicas, sem negar o sintoma nem descartar causas médicas.",
+             "Combinar validação, psicoeducação sobre o ciclo de atenção e ameaça, redução de checagens e retomada gradual de atividades."],
+        prompt: "Como validar a dor física de um paciente e, ao mesmo tempo, trabalhar a preocupação excessiva com ela?",
+        mats: [
+          { type: "Artigo", ref: "Henningsen, P., Zipfel, S., & Herzog, W. (2007). <em>Management of functional somatic syndromes.</em> The Lancet.", q: "Henningsen Zipfel Herzog 2007 Management of functional somatic syndromes" },
+          { type: "Artigo", ref: "Salkovskis, P. M., & Warwick, H. M. C. (1986). <em>Morbid preoccupations, health anxiety and reassurance: A cognitive-behavioural approach to hypochondriasis.</em> Behaviour Research and Therapy.", q: "Salkovskis Warwick 1986 Morbid preoccupations health anxiety and reassurance hypochondriasis" } ] },
+      { id: "transtornos-sono", title: "Transtornos do sono",
+        summary: "A insônia é o transtorno do sono mais comum na clínica e muitas vezes se mantém por comportamentos e preocupações que surgem para compensar as noites ruins. A terapia cognitivo-comportamental para insônia é o tratamento de primeira linha, e outros transtornos, como apneia, pedem avaliação médica.",
+        concepts: ["Insônia", "TCC para insônia (TCC-I)", "Restrição de sono e controle de estímulos", "Hiperativação", "Apneia e outros transtornos"],
+        lv: ["Conhecer o modelo de manutenção da insônia e os componentes da TCC-I.",
+             "Avaliar o sono com diário, identificar comportamentos compensatórios e rastrear sinais de apneia e outros transtornos.",
+             "Aplicar controle de estímulos e restrição de sono com acompanhamento pelo diário, e encaminhar quando houver suspeita médica."],
+        prompt: "Que hábitos criados para compensar noites ruins acabam mantendo a insônia?",
+        mats: [
+          { type: "Artigo", ref: "Morin, C. M., et al. (2015). <em>Insomnia disorder.</em> Nature Reviews Disease Primers.", q: "Morin 2015 Insomnia disorder Nature Reviews Disease Primers" },
+          { type: "Livro", ref: "Perlis, M. L., Jungquist, C., Smith, M. T., & Posner, D. (2005). <em>Cognitive behavioral treatment of insomnia: A session-by-session guide.</em> Springer.", q: "Perlis Cognitive behavioral treatment of insomnia session-by-session guide" } ] }
+    ] },
+    { title: "Psicose, personalidade e neurodesenvolvimento", topics: [
+      { id: "psicoticos", title: "Transtornos psicóticos",
+        summary: "Os transtornos psicóticos envolvem delírios, alucinações, pensamento desorganizado e sintomas negativos, como apatia e retraimento. O tratamento combina medicação e intervenções psicossociais, e a psicoterapia ajuda na compreensão das experiências, no manejo do estresse e na prevenção de recaídas.",
+        concepts: ["Sintomas positivos e negativos", "Esquizofrenia e espectro", "Primeiro episódio", "TCC para psicose", "Intervenção precoce"],
+        lv: ["Conhecer os sintomas, o curso e os modelos cognitivos dos transtornos psicóticos.",
+             "Reconhecer sinais de psicose ou de risco na entrevista e encaminhar com rapidez para avaliação psiquiátrica.",
+             "Participar do cuidado em rede com psicoeducação, manejo de estresse, plano de recaída e trabalho com a família."],
+        prompt: "Que sinais numa entrevista indicam que você precisa encaminhar para avaliação psiquiátrica com urgência?",
+        mats: [
+          { type: "Artigo", ref: "Owen, M. J., Sawa, A., & Mortensen, P. B. (2016). <em>Schizophrenia.</em> The Lancet.", q: "Owen Sawa Mortensen 2016 Schizophrenia Lancet" },
+          { type: "Artigo", ref: "Garety, P. A., Kuipers, E., Fowler, D., Freeman, D., & Bebbington, P. E. (2001). <em>A cognitive model of the positive symptoms of psychosis.</em> Psychological Medicine.", q: "Garety Kuipers Fowler Freeman Bebbington 2001 cognitive model positive symptoms psychosis" } ] },
+      { id: "personalidade", title: "Transtornos de personalidade",
+        summary: "Transtornos de personalidade são padrões persistentes e inflexíveis de pensar, sentir e se relacionar que causam sofrimento e prejuízo. A CID-11 e o modelo alternativo do DSM-5-TR passaram a descrevê-los por gravidade e traços, o que aproxima o diagnóstico de uma leitura dimensional.",
+        concepts: ["Modelo categorial e dimensional", "Gravidade e traços (CID-11)", "Transtorno da personalidade borderline", "Padrões relacionais", "Tratamentos com evidência"],
+        lv: ["Conhecer os modelos categorial e dimensional dos transtornos de personalidade e as mudanças da CID-11.",
+             "Identificar padrões persistentes que atravessam contextos e aparecem na relação terapêutica, sem rotular cedo demais.",
+             "Planejar um tratamento de longo prazo com metas claras, manejo de crises e uso de abordagens com evidência, como a DBT."],
+        prompt: "Que cuidado você tomaria antes de comunicar a hipótese de um transtorno de personalidade ao paciente?",
+        mats: [
+          { type: "Artigo", ref: "Tyrer, P., Reed, G. M., & Crawford, M. J. (2015). <em>Classification, assessment, prevalence, and effect of personality disorder.</em> The Lancet.", q: "Tyrer Reed Crawford 2015 Classification assessment prevalence effect of personality disorder" },
+          { type: "Livro", ref: "Young, J. E., Klosko, J. S., & Weishaar, M. E. <em>Terapia do esquema: guia de técnicas cognitivo-comportamentais inovadoras.</em> Artmed.", q: "Young Klosko Weishaar Schema therapy practitioner's guide" } ] },
+      { id: "neurodesenvolvimento", title: "Transtornos do neurodesenvolvimento",
+        summary: "Os transtornos do neurodesenvolvimento, como TEA, TDAH e deficiência intelectual, começam no período do desenvolvimento e afetam funcionamento pessoal, social e acadêmico. Muitas pessoas recebem o diagnóstico só na vida adulta, e a clínica precisa considerar o perfil de cada uma, além dos quadros que costumam aparecer junto.",
+        concepts: ["TEA", "TDAH", "Deficiência intelectual", "Diagnóstico na vida adulta", "Comorbidades e adaptações"],
+        lv: ["Conhecer os critérios, o curso e o perfil cognitivo e comportamental dos principais transtornos do neurodesenvolvimento.",
+             "Investigar história de desenvolvimento e sinais desde a infância quando a queixa adulta sugere TEA ou TDAH.",
+             "Encaminhar para avaliação multiprofissional quando indicado e adaptar a terapia ao perfil sensorial, executivo e comunicativo do paciente."],
+        prompt: "Que dados da infância ajudariam a diferenciar TDAH de dificuldades de atenção causadas por ansiedade?",
+        mats: [
+          { type: "Artigo", ref: "Lord, C., Elsabbagh, M., Baird, G., & Veenstra-VanderWeele, J. (2018). <em>Autism spectrum disorder.</em> The Lancet.", q: "Lord Elsabbagh Baird Veenstra-VanderWeele 2018 Autism spectrum disorder Lancet" },
+          { type: "Artigo", ref: "Faraone, S. V., et al. (2015). <em>Attention-deficit/hyperactivity disorder.</em> Nature Reviews Disease Primers.", q: "Faraone 2015 Attention-deficit/hyperactivity disorder Nature Reviews Disease Primers" } ] }
+    ] },
+    { title: "Alimentação e substâncias", topics: [
+      { id: "alimentares", title: "Transtornos alimentares",
+        summary: "Os transtornos alimentares, como anorexia, bulimia e transtorno de compulsão alimentar, envolvem padrões alimentares alterados e preocupação central com peso, forma corporal e controle. Têm risco clínico importante e exigem cuidado multiprofissional, com acompanhamento médico e nutricional.",
+        concepts: ["Anorexia, bulimia e compulsão alimentar", "Modelo transdiagnóstico de Fairburn", "Supervalorização de peso e forma", "Risco clínico", "Cuidado multiprofissional"],
+        lv: ["Conhecer os critérios e o modelo cognitivo-comportamental transdiagnóstico dos transtornos alimentares.",
+             "Rastrear sinais de transtorno alimentar mesmo quando não são a queixa principal e avaliar risco clínico.",
+             "Trabalhar em equipe com médico e nutricionista e seguir protocolos com evidência, como a TCC-E."],
+        prompt: "Que perguntas ajudam a rastrear um transtorno alimentar num paciente que veio por outra queixa?",
+        mats: [
+          { type: "Livro", ref: "Fairburn, C. G. <em>Terapia cognitivo-comportamental e transtornos da alimentação.</em> Artmed.", q: "Fairburn Cognitive behavior therapy and eating disorders" },
+          { type: "Artigo", ref: "Treasure, J., Duarte, T. A., & Schmidt, U. (2020). <em>Eating disorders.</em> The Lancet.", q: "Treasure Duarte Schmidt 2020 Eating disorders Lancet" } ] },
+      { id: "substancias", title: "Transtornos por uso de substâncias",
+        summary: "Os transtornos por uso de substâncias envolvem perda de controle, prejuízos e persistência do uso apesar das consequências. Fatores biológicos, de aprendizagem e de contexto se combinam, e abordagens como a entrevista motivacional e a prevenção de recaída têm boa evidência.",
+        concepts: ["Critérios de gravidade", "Tolerância e abstinência", "Estágios de mudança", "Entrevista motivacional", "Redução de danos"],
+        lv: ["Conhecer os critérios, os modelos de dependência e as abordagens de tratamento com evidência.",
+             "Investigar o padrão de uso em todo paciente, avaliar gravidade, risco de abstinência e motivação para mudar.",
+             "Combinar entrevista motivacional, análise funcional do uso e prevenção de recaída, articulando com a rede de saúde."],
+        prompt: "Que função o uso de substância parece cumprir na vida de um paciente que você acompanha?",
+        mats: [
+          { type: "Artigo", ref: "Volkow, N. D., Koob, G. F., & McLellan, A. T. (2016). <em>Neurobiologic advances from the brain disease model of addiction.</em> New England Journal of Medicine.", q: "Volkow Koob McLellan 2016 Neurobiologic advances brain disease model of addiction" },
+          { type: "Livro", ref: "Diehl, A., Cordeiro, D. C., & Laranjeira, R. (Orgs.). <em>Dependência química: prevenção, tratamento e políticas públicas.</em> Artmed.", q: "Diehl Cordeiro Laranjeira Dependência química prevenção tratamento políticas públicas" } ] }
+    ] }
+  ]
+});
+
+STAGES.push({
+  id: "transdiagnosticos", title: "Processos transdiagnósticos", short: "Transdiagnósticos", sub: "O que atravessa os quadros",
+  goal: "Identificar os processos que mantêm o sofrimento em diferentes quadros e usá-los como alvo direto da formulação e da intervenção.",
+  modules: [
+    { title: "Fundamentos transdiagnósticos", topics: [
+      { id: "modelos-transdiagnosticos", title: "Modelos transdiagnósticos",
+        summary: "A abordagem transdiagnóstica parte da observação de que processos como evitação, pensamento repetitivo e desregulação emocional aparecem em muitos transtornos diferentes. Modelos como o Protocolo Unificado de Barlow propõem tratar esses processos em comum, em vez de um manual para cada diagnóstico.",
+        concepts: ["Processos em comum entre transtornos", "Protocolo Unificado", "Comorbidade como regra", "Fator geral de psicopatologia", "Formulação por processos"],
+        lv: ["Entender por que os processos se repetem entre transtornos e conhecer os principais modelos transdiagnósticos.",
+             "Procurar na avaliação os processos que mantêm vários problemas do paciente ao mesmo tempo.",
+             "Organizar a formulação a partir dos processos centrais e escolher intervenções que atuem sobre eles em diferentes queixas."],
+        prompt: "Que processo aparece em mais de um problema de um paciente seu, mesmo que as queixas pareçam diferentes?",
+        mats: [
+          { type: "Livro", ref: "Harvey, A. G., Watkins, E., Mansell, W., & Shafran, R. (2004). <em>Cognitive behavioural processes across psychological disorders.</em> Oxford University Press.", q: "Harvey Watkins Mansell Shafran 2004 Cognitive behavioural processes across psychological disorders" },
+          { type: "Livro", ref: "Barlow, D. H., et al. <em>Protocolo unificado para tratamento transdiagnóstico dos transtornos emocionais: manual do terapeuta.</em> Artmed.", q: "Barlow Unified protocol for transdiagnostic treatment of emotional disorders therapist guide" } ] },
+      { id: "metacognicao", title: "Metacognição",
+        summary: "Metacognição é o pensar sobre o próprio pensamento: as crenças sobre preocupação, ruminação e controle mental. O modelo de Wells mostra que crenças como \"preocupar-se me protege\" ou \"não consigo parar de pensar\" mantêm o pensamento repetitivo e a ameaça.",
+        concepts: ["Crenças metacognitivas positivas e negativas", "Síndrome cognitivo-atencional", "Monitoramento de ameaça", "Atenção desapegada", "Terapia metacognitiva"],
+        lv: ["Conhecer o modelo metacognitivo, a síndrome cognitivo-atencional e as crenças positivas e negativas sobre o pensar.",
+             "Investigar o que o paciente acredita sobre a própria preocupação ou ruminação, e não só o conteúdo dos pensamentos.",
+             "Trabalhar crenças metacognitivas com experimentos, como adiar a preocupação, e treinar formas de se relacionar com os pensamentos."],
+        prompt: "Que vantagem um paciente acredita que tem em se preocupar tanto?",
+        mats: [
+          { type: "Livro", ref: "Wells, A. <em>Terapia metacognitiva para ansiedade e depressão.</em> Artmed.", q: "Wells Metacognitive therapy for anxiety and depression" },
+          { type: "Artigo", ref: "Wells, A., & Matthews, G. (1996). <em>Modelling cognition in emotional disorder: The S-REF model.</em> Behaviour Research and Therapy.", q: "Wells Matthews 1996 Modelling cognition in emotional disorder S-REF model" } ] }
+    ] },
+    { title: "Pensamento repetitivo", topics: [
+      { id: "ruminacao", title: "Ruminação",
+        summary: "Ruminação é o pensamento repetitivo e passivo sobre sintomas, causas e consequências do próprio sofrimento, geralmente voltado ao passado. Ela prolonga o humor deprimido, piora a solução de problemas e prevê novos episódios de depressão.",
+        concepts: ["Ruminação depressiva", "Pensamento abstrato e concreto", "Função de evitação", "Gatilhos da ruminação", "Terapia focada na ruminação"],
+        lv: ["Conhecer os modelos de ruminação e a diferença entre pensamento repetitivo construtivo e improdutivo.",
+             "Identificar quando, onde e com que gatilho o paciente rumina, e o que a ruminação parece evitar.",
+             "Usar análise funcional da ruminação, treino de pensamento concreto e ações alternativas, e medir o tempo gasto ruminando."],
+        prompt: "O que um paciente deixa de fazer enquanto está ruminando?",
+        mats: [
+          { type: "Artigo", ref: "Nolen-Hoeksema, S., Wisco, B. E., & Lyubomirsky, S. (2008). <em>Rethinking rumination.</em> Perspectives on Psychological Science.", q: "Nolen-Hoeksema Wisco Lyubomirsky 2008 Rethinking rumination" },
+          { type: "Artigo", ref: "Watkins, E. R. (2008). <em>Constructive and unconstructive repetitive thought.</em> Psychological Bulletin.", q: "Watkins 2008 Constructive and unconstructive repetitive thought" } ] },
+      { id: "preocupacao", title: "Preocupação",
+        summary: "Preocupação é a cadeia de pensamentos sobre possíveis problemas futuros, predominantemente verbal. A teoria da evitação propõe que ela reduz a ativação emocional e as imagens ameaçadoras no curto prazo, o que a reforça negativamente e impede o processamento do medo.",
+        concepts: ["Teoria da evitação da preocupação", "Pensamento verbal e imagens", "TAG", "Pensamento negativo repetitivo", "Adiamento da preocupação"],
+        lv: ["Conhecer a teoria da evitação da preocupação e as diferenças entre preocupação e ruminação.",
+             "Avaliar frequência, temas e função da preocupação, e as crenças do paciente sobre a utilidade dela.",
+             "Aplicar adiamento da preocupação, exposição a imagens temidas e resolução de problemas para o que é controlável."],
+        prompt: "Que problema real um paciente evita resolver enquanto se preocupa com ele?",
+        mats: [
+          { type: "Capítulo", ref: "Borkovec, T. D., Alcaine, O. M., & Behar, E. (2004). <em>Avoidance theory of worry and generalized anxiety disorder.</em> Em R. G. Heimberg et al. (Orgs.), Generalized anxiety disorder: Advances in research and practice. Guilford Press.", q: "Borkovec Alcaine Behar 2004 Avoidance theory of worry and generalized anxiety disorder" },
+          { type: "Artigo", ref: "Ehring, T., & Watkins, E. R. (2008). <em>Repetitive negative thinking as a transdiagnostic process.</em> International Journal of Cognitive Therapy.", q: "Ehring Watkins 2008 Repetitive negative thinking as a transdiagnostic process" } ] },
+      { id: "supressao", title: "Supressão de pensamentos",
+        summary: "Tentar não pensar em algo tende a aumentar a frequência do pensamento ou fazê-lo voltar com mais força depois. A supressão de pensamentos é uma forma de evitação experiencial presente em TOC, trauma, ansiedade e uso de substâncias.",
+        concepts: ["Efeito paradoxal da supressão", "Efeito rebote", "Processos irônicos de controle", "Supressão e evitação experiencial", "Alternativas à supressão"],
+        lv: ["Conhecer os estudos sobre os efeitos paradoxais da supressão e a teoria dos processos irônicos.",
+             "Identificar pensamentos que o paciente tenta afastar e o que acontece com a frequência deles ao longo do tempo.",
+             "Fazer experimentos de supressão na sessão e treinar alternativas como desfusão, aceitação e exposição ao pensamento."],
+        prompt: "Como demonstrar na sessão, de forma simples, o efeito de tentar não pensar em algo?",
+        mats: [
+          { type: "Artigo", ref: "Wegner, D. M., Schneider, D. J., Carter, S. R., & White, T. L. (1987). <em>Paradoxical effects of thought suppression.</em> Journal of Personality and Social Psychology.", q: "Wegner Schneider Carter White 1987 Paradoxical effects of thought suppression" },
+          { type: "Artigo", ref: "Wenzlaff, R. M., & Wegner, D. M. (2000). <em>Thought suppression.</em> Annual Review of Psychology.", q: "Wenzlaff Wegner 2000 Thought suppression Annual Review of Psychology" } ] }
+    ] },
+    { title: "Ameaça e incerteza", topics: [
+      { id: "intolerancia-incerteza", title: "Intolerância à incerteza",
+        summary: "Intolerância à incerteza é a tendência a perceber a incerteza como inaceitável e ameaçadora, independentemente da probabilidade de algo ruim acontecer. Ela aparece na ansiedade generalizada, no TOC, na ansiedade social e na depressão, e alimenta preocupação, checagem e busca por certeza.",
+        concepts: ["Incerteza como ameaça", "Modelo de Dugas", "Medo do desconhecido", "Busca por certeza", "Exposição à incerteza"],
+        lv: ["Compreender os modelos teóricos da intolerância à incerteza e sua relação com preocupação e ansiedade.",
+             "Identificar no paciente comportamentos de busca por certeza, como checar, pesquisar, adiar decisões e pedir garantias.",
+             "Construir uma hipótese de manutenção, planejar exposições graduais à incerteza e monitorar a mudança com a escala IUS."],
+        prompt: "Que comportamentos um paciente usa para não ter que conviver com a dúvida?",
+        mats: [
+          { type: "Artigo", ref: "Carleton, R. N. (2016). <em>Into the unknown: A review and synthesis of contemporary models involving uncertainty.</em> Journal of Anxiety Disorders.", q: "Carleton 2016 Into the unknown review synthesis models involving uncertainty" },
+          { type: "Livro", ref: "Dugas, M. J., & Robichaud, M. (2007). <em>Cognitive-behavioral treatment for generalized anxiety disorder: From science to practice.</em> Routledge.", q: "Dugas Robichaud 2007 Cognitive-behavioral treatment for generalized anxiety disorder" } ] },
+      { id: "sensibilidade-ansiedade", title: "Sensibilidade à ansiedade",
+        summary: "Sensibilidade à ansiedade é o medo das próprias sensações de ansiedade, pela crença de que elas trazem consequências físicas, mentais ou sociais graves. É um fator de risco para pânico e outros quadros, e responde bem à exposição interoceptiva.",
+        concepts: ["Medo do medo", "Dimensões física, cognitiva e social", "Interpretação catastrófica de sensações", "Exposição interoceptiva", "Índice de Sensibilidade à Ansiedade"],
+        lv: ["Conhecer o conceito de sensibilidade à ansiedade, suas dimensões e sua relação com o pânico.",
+             "Investigar o que o paciente acredita que vai acontecer quando o coração acelera ou a cabeça fica estranha.",
+             "Planejar exposição interoceptiva gradual às sensações temidas e acompanhar a mudança nas interpretações."],
+        prompt: "Que exercício simples na sessão poderia provocar a sensação que o paciente mais teme?",
+        mats: [
+          { type: "Livro", ref: "Taylor, S. (Org.). (1999). <em>Anxiety sensitivity: Theory, research, and treatment of the fear of anxiety.</em> Lawrence Erlbaum.", q: "Taylor 1999 Anxiety sensitivity theory research and treatment of the fear of anxiety" },
+          { type: "Artigo", ref: "Olatunji, B. O., & Wolitzky-Taylor, K. B. (2009). <em>Anxiety sensitivity and the anxiety disorders: A meta-analytic review and synthesis.</em> Psychological Bulletin.", q: "Olatunji Wolitzky-Taylor 2009 Anxiety sensitivity and the anxiety disorders meta-analytic review" } ] },
+      { id: "seguranca-reasseguramento", title: "Comportamentos de segurança e reasseguramento",
+        summary: "Comportamentos de segurança são ações feitas para prevenir uma catástrofe temida, como segurar algo para não desmaiar ou ensaiar falas. O reasseguramento é a busca repetida de garantias com outras pessoas. Ambos aliviam no momento e impedem que a pessoa descubra que a ameaça não se confirma.",
+        concepts: ["Comportamentos de segurança", "Busca por reasseguramento", "Atribuição errada da não ocorrência", "Checagem", "Retirada gradual"],
+        lv: ["Entender como comportamentos de segurança e reasseguramento mantêm a ameaça pelo mecanismo de atribuição errada.",
+             "Mapear todos os comportamentos de segurança do paciente, inclusive os sutis e os mentais, e quem participa do reasseguramento.",
+             "Retirar esses comportamentos de forma planejada durante a exposição e orientar familiares a não fornecer garantias."],
+        prompt: "Que comportamento de segurança sutil um paciente usa sem perceber que ele mantém o medo?",
+        mats: [
+          { type: "Artigo", ref: "Salkovskis, P. M. (1991). <em>The importance of behaviour in the maintenance of anxiety and panic: A cognitive account.</em> Behavioural Psychotherapy.", q: "Salkovskis 1991 importance of behaviour in the maintenance of anxiety and panic" },
+          { type: "Artigo", ref: "Rachman, S., Radomsky, A. S., & Shafran, R. (2008). <em>Safety behaviour: A reconsideration.</em> Behaviour Research and Therapy.", q: "Rachman Radomsky Shafran 2008 Safety behaviour a reconsideration" } ] }
+    ] },
+    { title: "Emoção, self e relações", topics: [
+      { id: "desregulacao", title: "Desregulação emocional",
+        summary: "Desregulação emocional é a dificuldade de perceber, compreender e modular emoções, com reações intensas, lentas para voltar ao normal e comportamentos impulsivos. A teoria biossocial da DBT explica esse padrão como resultado da interação entre vulnerabilidade emocional e ambiente invalidante.",
+        concepts: ["Teoria biossocial", "Vulnerabilidade emocional", "Ambiente invalidante", "Impulsividade", "Medidas de desregulação (DERS)"],
+        lv: ["Conhecer a teoria biossocial e as dimensões da desregulação emocional medidas pela DERS.",
+             "Identificar sinais de vulnerabilidade emocional e de ambiente invalidante na história e nas reações atuais do paciente.",
+             "Priorizar alvos pela hierarquia da DBT, ensinar habilidades de regulação e tolerância e acompanhar a frequência de crises."],
+        prompt: "Que sinais na história do paciente sugerem um ambiente invalidante?",
+        mats: [
+          { type: "Artigo", ref: "Gratz, K. L., & Roemer, L. (2004). <em>Multidimensional assessment of emotion regulation and dysregulation.</em> Journal of Psychopathology and Behavioral Assessment.", q: "Gratz Roemer 2004 Multidimensional assessment of emotion regulation and dysregulation" },
+          { type: "Livro", ref: "Linehan, M. M. (1993). <em>Cognitive-behavioral treatment of borderline personality disorder.</em> Guilford Press.", q: "Linehan 1993 biosocial theory" } ] },
+      { id: "perfeccionismo", title: "Perfeccionismo",
+        summary: "O perfeccionismo clínico é a supervalorização da busca por padrões exigentes, com a autoavaliação dependendo de alcançá-los apesar dos custos. Ele mantém ansiedade, depressão e transtornos alimentares, e costuma vir junto com procrastinação, checagem e autocrítica.",
+        concepts: ["Perfeccionismo clínico", "Padrões elevados e autoavaliação", "Procrastinação e evitação", "Viés de atenção para falhas", "Mudança dos padrões"],
+        lv: ["Conhecer o modelo cognitivo-comportamental do perfeccionismo clínico e por que ele é transdiagnóstico.",
+             "Diferenciar busca saudável de excelência de perfeccionismo, observando o custo e a base da autoestima do paciente.",
+             "Usar experimentos com padrões mais flexíveis, ampliar as fontes de autoavaliação e medir mudança com escalas específicas."],
+        prompt: "Como diferenciar um paciente dedicado de um paciente cujo valor pessoal depende de não errar?",
+        mats: [
+          { type: "Artigo", ref: "Shafran, R., Cooper, Z., & Fairburn, C. G. (2002). <em>Clinical perfectionism: A cognitive-behavioural analysis.</em> Behaviour Research and Therapy.", q: "Shafran Cooper Fairburn 2002 Clinical perfectionism cognitive-behavioural analysis" },
+          { type: "Artigo", ref: "Egan, S. J., Wade, T. D., & Shafran, R. (2011). <em>Perfectionism as a transdiagnostic process: A clinical review.</em> Clinical Psychology Review.", q: "Egan Wade Shafran 2011 Perfectionism as a transdiagnostic process clinical review" } ] },
+      { id: "autocritica", title: "Autocrítica",
+        summary: "A autocrítica é a forma dura e hostil com que a pessoa se avalia e se trata diante de falhas. Alta autocrítica está associada a depressão, ansiedade e vergonha, e a terapia focada na compaixão propõe desenvolver uma relação mais acolhedora consigo sem abrir mão da responsabilidade.",
+        concepts: ["Autocrítica e vergonha", "Sistemas de ameaça, impulso e afiliação", "Autocompaixão", "Função da autocrítica", "Terapia focada na compaixão"],
+        lv: ["Conhecer os modelos de autocrítica e vergonha e os fundamentos da terapia focada na compaixão.",
+             "Observar o tom e o conteúdo da fala do paciente sobre si mesmo e perguntar o que ele acredita que a autocrítica garante.",
+             "Treinar respostas autocompassivas, com exercícios graduais, e acompanhar a intensidade da autocrítica ao longo do tratamento."],
+        prompt: "O que um paciente teme que aconteceria se ele parasse de se criticar?",
+        mats: [
+          { type: "Livro", ref: "Gilbert, P. <em>Terapia focada na compaixão.</em> Artmed.", q: "Gilbert Compassion focused therapy distinctive features" },
+          { type: "Artigo", ref: "Gilbert, P., & Procter, S. (2006). <em>Compassionate mind training for people with high shame and self-criticism.</em> Clinical Psychology & Psychotherapy.", q: "Gilbert Procter 2006 Compassionate mind training high shame self-criticism" } ] },
+      { id: "sensibilidade-rejeicao", title: "Sensibilidade à rejeição",
+        summary: "Sensibilidade à rejeição é a tendência a esperar rejeição com ansiedade, percebê-la rapidamente em sinais ambíguos e reagir de forma intensa. Ela se associa a depressão, ansiedade social, dificuldades nos relacionamentos e desregulação emocional.",
+        concepts: ["Expectativa ansiosa de rejeição", "Interpretação de sinais ambíguos", "Reações de afastamento e hostilidade", "Profecia autorrealizável", "Relação terapêutica"],
+        lv: ["Conhecer o modelo de sensibilidade à rejeição e sua relação com quadros clínicos e relacionamentos.",
+             "Identificar como o paciente interpreta silêncios, atrasos e mensagens curtas, inclusive na relação com o terapeuta.",
+             "Trabalhar interpretações alternativas, experimentos de aproximação e respostas mais efetivas, usando a relação como campo de treino."],
+        prompt: "Como uma mensagem não respondida pode desencadear um ciclo de rejeição percebida e afastamento real?",
+        mats: [
+          { type: "Artigo", ref: "Downey, G., & Feldman, S. I. (1996). <em>Implications of rejection sensitivity for intimate relationships.</em> Journal of Personality and Social Psychology.", q: "Downey Feldman 1996 Implications of rejection sensitivity for intimate relationships" },
+          { type: "Artigo", ref: "Gao, S., Assink, M., Cipriani, A., & Lin, K. (2017). <em>Associations between rejection sensitivity and mental health outcomes: A meta-analytic review.</em> Clinical Psychology Review.", q: "Gao Assink Cipriani Lin 2017 rejection sensitivity mental health outcomes meta-analytic review" } ] }
+    ] }
+  ]
+});
+
+STAGES.push({
+  id: "avaliacao", title: "Avaliação psicológica e formulação", short: "Avaliação e Formulação", sub: "Raciocínio clínico",
+  goal: "Aprender a avaliar com instrumentos e entrevistas confiáveis, integrar as informações e decidir o que trabalhar.",
+  modules: [
+    { title: "Avaliação clínica", topics: [
+      { id: "entrevista-clinica", title: "Entrevista clínica",
+        summary: "A entrevista clínica é o principal instrumento de avaliação: reúne a queixa, a história, o funcionamento atual e as metas do paciente, enquanto constrói a relação. Combinar perguntas abertas e fechadas, escuta atenta e observação do estado mental torna a entrevista mais completa.",
+        concepts: ["Queixa principal", "Anamnese", "Perguntas abertas e fechadas", "Exame do estado mental", "Entrevistas estruturadas e semiestruturadas"],
+        lv: ["Conhecer as etapas da entrevista inicial, os tipos de pergunta e as entrevistas estruturadas disponíveis.",
+             "Conduzir a entrevista equilibrando acolhimento e coleta de dados, e perceber o que o paciente evita contar.",
+             "Sair da primeira etapa com uma lista de problemas, hipóteses iniciais e um plano de avaliação para as próximas sessões."],
+        prompt: "Que informações você precisa ter ao fim da primeira sessão para decidir os próximos passos?",
+        mats: [
+          { type: "Livro", ref: "Morrison, J. <em>Entrevista inicial em saúde mental.</em> Artmed.", q: "Morrison The first interview" },
+          { type: "Livro", ref: "Miller, W. R., & Rollnick, S. <em>Entrevista motivacional: ajudando as pessoas a mudar.</em> Artmed.", q: "Miller Rollnick Motivational interviewing" } ] },
+      { id: "analise-funcional-clinica", title: "Análise funcional na clínica",
+        summary: "Na avaliação, a análise funcional organiza o que foi coletado em hipóteses sobre as variáveis que controlam os problemas do paciente. Ela ajuda a escolher alvos de intervenção que tenham maior impacto, porque atuam sobre o que mantém o problema.",
+        concepts: ["Hipóteses funcionais", "Variáveis controladoras", "Modificabilidade", "Análise em cadeia", "Formulação funcional"],
+        lv: ["Conhecer os modelos de análise funcional clínica e os critérios de importância e modificabilidade das variáveis.",
+             "Coletar dados de episódios específicos com o paciente e com registros, e não só descrições gerais.",
+             "Priorizar as variáveis mantenedoras de maior impacto e testar as hipóteses funcionais com mudanças planejadas."],
+        prompt: "Qual variável mantenedora, se mudasse, teria mais impacto no caso que você está acompanhando?",
+        mats: [
+          { type: "Livro", ref: "Haynes, S. N., O'Brien, W. H., & Kaholokula, J. K. (2011). <em>Behavioral assessment and case formulation.</em> Wiley.", q: "Haynes O'Brien Kaholokula Behavioral assessment and case formulation" },
+          { type: "Artigo", ref: "Haynes, S. N., & O'Brien, W. H. (1990). <em>Functional analysis in behavior therapy.</em> Clinical Psychology Review.", q: "Haynes O'Brien 1990 Functional analysis in behavior therapy" } ] },
+      { id: "avaliacao-risco", title: "Avaliação de risco",
+        summary: "Avaliar risco envolve perguntar diretamente sobre ideação suicida, autolesão e risco a outras pessoas, considerando fatores de risco e de proteção. A partir disso, o terapeuta constrói com o paciente um plano de segurança e decide a intensidade do cuidado necessário.",
+        concepts: ["Ideação, plano e intenção", "Fatores de risco e de proteção", "Plano de segurança", "CAMS", "Perguntar diretamente não aumenta o risco"],
+        lv: ["Conhecer os fatores de risco e proteção, os modelos de avaliação colaborativa e a estrutura do plano de segurança.",
+             "Perguntar de forma direta e acolhedora sobre ideação, plano e intenção, e reavaliar sempre que o quadro mudar.",
+             "Construir o plano de segurança com o paciente, definir a intensidade do cuidado e registrar a avaliação no prontuário."],
+        prompt: "Como você faria a primeira pergunta direta sobre ideação suicida numa sessão?",
+        note: "No Brasil, o CVV atende 24 horas pelo telefone 188, e emergências podem ser acionadas pelo SAMU (192).",
+        mats: [
+          { type: "Livro", ref: "Jobes, D. A. <em>Managing suicidal risk: A collaborative approach.</em> Guilford Press.", q: "Jobes Managing suicidal risk collaborative approach" },
+          { type: "Artigo", ref: "Stanley, B., & Brown, G. K. (2012). <em>Safety planning intervention: A brief intervention to mitigate suicide risk.</em> Cognitive and Behavioral Practice.", q: "Stanley Brown 2012 Safety planning intervention" } ] }
+    ] },
+    { title: "Psicometria", topics: [
+      { id: "psicometria", title: "Teoria dos testes, validade e precisão",
+        summary: "A psicometria estuda como medir construtos psicológicos com qualidade. A teoria clássica dos testes e a teoria de resposta ao item descrevem o erro de medida, e as evidências de validade e precisão indicam se um instrumento mede o que diz medir e com que consistência.",
+        concepts: ["Teoria clássica dos testes", "Teoria de resposta ao item", "Evidências de validade", "Precisão e erro de medida", "Normas e padronização"],
+        lv: ["Conhecer os fundamentos da teoria clássica dos testes, os tipos de evidência de validade e os indicadores de precisão.",
+             "Ler o manual de um instrumento e avaliar se as normas e os estudos de validade servem para o paciente que você atende.",
+             "Escolher instrumentos com evidência adequada, considerar o erro de medida ao interpretar escores e checar a situação no SATEPSI."],
+        prompt: "Por que um instrumento muito preciso pode, ainda assim, não ser válido para o que você quer avaliar?",
+        mats: [
+          { type: "Livro", ref: "Pasquali, L. <em>Psicometria: teoria dos testes na psicologia e na educação.</em> Vozes.", q: "Pasquali Psicometria teoria dos testes na psicologia e na educação" },
+          { type: "Livro", ref: "American Educational Research Association, American Psychological Association, & National Council on Measurement in Education (2014). <em>Standards for educational and psychological testing.</em> AERA.", q: "Standards for educational and psychological testing 2014" } ] },
+      { id: "rastreio", title: "Rastreio, sensibilidade e especificidade",
+        summary: "Instrumentos de rastreio identificam pessoas com maior probabilidade de ter um quadro, e não fecham diagnóstico. Sensibilidade, especificidade, valores preditivos e ponto de corte mostram quanto o resultado de um teste muda a probabilidade de uma hipótese ser verdadeira.",
+        concepts: ["Sensibilidade e especificidade", "Valores preditivos", "Ponto de corte", "Taxa de base", "Rastreio e diagnóstico"],
+        lv: ["Entender sensibilidade, especificidade, valores preditivos e a influência da taxa de base sobre o resultado.",
+             "Interpretar um escore de rastreio como mudança de probabilidade, e não como confirmação do diagnóstico.",
+             "Usar rastreios na triagem inicial e decidir, a partir deles, que entrevista ou avaliação complementar é necessária."],
+        prompt: "Por que um rastreio positivo significa coisas diferentes num ambulatório especializado e na população geral?",
+        mats: [
+          { type: "Artigo", ref: "Kroenke, K., Spitzer, R. L., & Williams, J. B. W. (2001). <em>The PHQ-9: Validity of a brief depression severity measure.</em> Journal of General Internal Medicine.", q: "Kroenke Spitzer Williams 2001 PHQ-9 validity brief depression severity measure" },
+          { type: "Artigo", ref: "Youngstrom, E. A. (2013). <em>Future directions in psychological assessment: Combining evidence-based medicine innovations with psychology's historical strengths to enhance utility.</em> Journal of Clinical Child & Adolescent Psychology.", q: "Youngstrom 2013 Future directions in psychological assessment evidence-based medicine" } ] },
+      { id: "dimensional", title: "Avaliação dimensional",
+        summary: "Modelos dimensionais descrevem o sofrimento psicológico em contínuos, e não em categorias de presença ou ausência. Propostas como a HiTOP e o RDoC organizam sintomas e processos em dimensões, o que ajuda a explicar comorbidades e a medir mudanças sutis.",
+        concepts: ["Modelo categorial e dimensional", "HiTOP", "RDoC", "Espectros de psicopatologia", "Medidas contínuas"],
+        lv: ["Conhecer os limites do modelo categorial e as propostas dimensionais como HiTOP e RDoC.",
+             "Descrever o paciente também em termos de intensidade e dimensões, especialmente quando ele não cabe bem numa categoria.",
+             "Escolher medidas contínuas para acompanhar o caso e usar as dimensões para pensar alvos que atravessam diagnósticos."],
+        prompt: "Que informação sobre um paciente se perde quando você só diz que ele tem ou não tem um transtorno?",
+        mats: [
+          { type: "Artigo", ref: "Kotov, R., et al. (2017). <em>The Hierarchical Taxonomy of Psychopathology (HiTOP): A dimensional alternative to traditional nosologies.</em> Journal of Abnormal Psychology.", q: "Kotov 2017 Hierarchical Taxonomy of Psychopathology HiTOP dimensional alternative" },
+          { type: "Artigo", ref: "Insel, T., et al. (2010). <em>Research Domain Criteria (RDoC): Toward a new classification framework for research on mental disorders.</em> American Journal of Psychiatry.", q: "Insel 2010 Research Domain Criteria RDoC new classification framework" } ] }
+    ] },
+    { title: "Instrumentos e integração dos dados", topics: [
+      { id: "avaliacao-personalidade", title: "Avaliação da personalidade",
+        summary: "A avaliação da personalidade pode descrever traços normais, como no modelo dos cinco fatores, e traços desadaptativos, como no modelo alternativo do DSM-5-TR. Ela ajuda a entender o estilo do paciente, a planejar a relação terapêutica e a sustentar hipóteses sobre padrões persistentes.",
+        concepts: ["Modelo dos cinco fatores", "Traços desadaptativos (PID-5)", "Inventários de autorrelato", "Fontes múltiplas de informação", "Instrumentos aprovados pelo SATEPSI"],
+        lv: ["Conhecer os modelos de traços de personalidade e os principais instrumentos de avaliação.",
+             "Combinar resultados de inventários com observação e história, sem reduzir o paciente a um perfil.",
+             "Usar o perfil de personalidade para ajustar o estilo terapêutico e apoiar hipóteses sobre padrões duradouros."],
+        prompt: "Como o perfil de traços de um paciente poderia mudar a forma como você conduz as sessões?",
+        mats: [
+          { type: "Artigo", ref: "Krueger, R. F., Derringer, J., Markon, K. E., Watson, D., & Skodol, A. E. (2012). <em>Initial construction of a maladaptive personality trait model and inventory for DSM-5.</em> Psychological Medicine.", q: "Krueger Derringer Markon Watson Skodol 2012 maladaptive personality trait model inventory DSM-5" },
+          { type: "Capítulo", ref: "John, O. P., Naumann, L. P., & Soto, C. J. (2008). <em>Paradigm shift to the integrative Big Five trait taxonomy.</em> Em O. P. John et al. (Orgs.), Handbook of personality. Guilford Press.", q: "John Naumann Soto 2008 Paradigm shift to the integrative Big Five trait taxonomy" } ] },
+      { id: "avaliacao-neuropsicologica", title: "Avaliação neuropsicológica e seus limites",
+        summary: "A avaliação neuropsicológica investiga o funcionamento cognitivo com testes, entrevista e observação, e interpreta os resultados à luz da história, da escolaridade e do contexto. Ela tem limites: desempenho em teste não é o mesmo que funcionamento no dia a dia, e fatores como ansiedade, sono e motivação afetam os escores.",
+        concepts: ["Hipóteses de avaliação", "Testes e normas", "Validade ecológica", "Fatores que afetam o desempenho", "Devolutiva e laudo"],
+        lv: ["Conhecer as etapas da avaliação neuropsicológica, os principais domínios avaliados e os limites dos testes.",
+             "Formular a pergunta de encaminhamento com clareza e ler um laudo considerando o contexto do paciente.",
+             "Integrar os achados ao plano terapêutico, adaptando intervenções às forças e dificuldades cognitivas identificadas."],
+        prompt: "Que fatores, além de um déficit real, podem levar um paciente a ir mal num teste de memória?",
+        mats: [
+          { type: "Livro", ref: "Lezak, M. D., Howieson, D. B., Bigler, E. D., & Tranel, D. <em>Neuropsychological assessment.</em> Oxford University Press.", q: "Lezak Howieson Bigler Tranel Neuropsychological assessment" },
+          { type: "Livro", ref: "Strauss, E., Sherman, E. M. S., & Spreen, O. (2006). <em>A compendium of neuropsychological tests.</em> Oxford University Press.", q: "Strauss Sherman Spreen 2006 compendium of neuropsychological tests" } ] },
+      { id: "integracao-dados", title: "Integração de múltiplas fontes",
+        summary: "Uma avaliação de qualidade combina entrevista, observação, instrumentos, registros e informações de outras pessoas. Quando as fontes discordam, a discordância também é um dado, e a interpretação final deve ser explícita sobre o grau de certeza e as hipóteses alternativas.",
+        concepts: ["Avaliação multimétodo", "Informantes múltiplos", "Convergência e divergência", "Viés de confirmação", "Comunicação de resultados"],
+        lv: ["Conhecer os princípios da avaliação baseada em evidências e o valor de usar métodos e informantes diferentes.",
+             "Comparar o que o paciente relata, o que os instrumentos mostram e o que outras pessoas observam, e investigar as diferenças.",
+             "Escrever uma síntese que integre os dados, indique o grau de certeza e leve a decisões claras de tratamento."],
+        prompt: "O que você faria se o relato do paciente e o resultado de uma escala apontassem para direções opostas?",
+        mats: [
+          { type: "Artigo", ref: "Hunsley, J., & Mash, E. J. (2007). <em>Evidence-based assessment.</em> Annual Review of Clinical Psychology.", q: "Hunsley Mash 2007 Evidence-based assessment Annual Review of Clinical Psychology" },
+          { type: "Artigo", ref: "Meyer, G. J., et al. (2001). <em>Psychological testing and psychological assessment: A review of evidence and issues.</em> American Psychologist.", q: "Meyer 2001 Psychological testing and psychological assessment review of evidence and issues" } ] }
+    ] },
+    { title: "Formulação de caso", topics: [
+      { id: "formulacao", title: "Formulação de caso",
+        summary: "A formulação é uma hipótese sobre as causas, os gatilhos e os fatores que mantêm os problemas de uma pessoa, construída para guiar o tratamento. Ela organiza a lista de problemas, propõe uma explicação para eles e é revista sempre que surgem dados novos.",
+        concepts: ["Lista de problemas", "Hipótese explicativa", "Fatores predisponentes, precipitantes e mantenedores", "Plano de tratamento", "Formulação colaborativa"],
+        lv: ["Conhecer modelos de formulação, como o de Eells, e os componentes de lista de problemas, hipótese e plano.",
+             "Organizar os dados do caso em fatores predisponentes, precipitantes e mantenedores, ligados aos processos identificados.",
+             "Apresentar a formulação ao paciente, transformá-la em plano de tratamento e revisá-la a partir dos resultados."],
+        prompt: "Como você apresentaria a formulação ao paciente de forma que ele se reconheça nela?",
+        mats: [
+          { type: "Livro", ref: "Eells, T. D. (Org.). <em>Handbook of psychotherapy case formulation.</em> Guilford Press.", q: "Eells Handbook of psychotherapy case formulation" },
+          { type: "Livro", ref: "Kuyken, W., Padesky, C. A., & Dudley, R. <em>Conceitualização de casos colaborativa.</em> Artmed.", q: "Kuyken Padesky Dudley collaborative case conceptualization" } ] },
+      { id: "formulacao-cultural", title: "Formulação cultural e contextual",
+        summary: "A formulação cultural considera como identidade, classe, raça, gênero, religião, território e condições de vida influenciam a expressão do sofrimento, a forma de buscar ajuda e a relação com o terapeuta. Ela evita que a formulação trate como individual um problema que também é contextual.",
+        concepts: ["Entrevista de formulação cultural (DSM-5-TR)", "Idiomas culturais de sofrimento", "Determinantes sociais", "Interseccionalidade", "Humildade cultural"],
+        lv: ["Conhecer a entrevista de formulação cultural do DSM-5-TR e os conceitos de determinantes sociais e humildade cultural.",
+             "Perguntar como o paciente e seu grupo entendem o problema, e considerar condições concretas de vida na leitura do caso.",
+             "Incluir fatores culturais e sociais na formulação e adaptar metas e intervenções ao contexto real do paciente."],
+        prompt: "Que aspecto do contexto de vida de um paciente você deixaria de ver se olhasse só para os sintomas?",
+        mats: [
+          { type: "Manual", ref: "American Psychiatric Association. <em>DSM-5-TR</em> (seção sobre formulação cultural e Entrevista de Formulação Cultural). Artmed.", q: "DSM-5 Cultural Formulation Interview" },
+          { type: "Livro", ref: "Hays, P. A. <em>Addressing cultural complexities in counseling and clinical practice: An intersectional approach.</em> American Psychological Association.", q: "Hays Addressing cultural complexities in practice" } ] }
+    ] }
+  ]
+});
+
+STAGES.push({
+  id: "mudanca", title: "Mecanismos de mudança terapêutica", short: "Mecanismos de Mudança", sub: "Por que a terapia funciona",
+  goal: "Compreender os mecanismos pelos quais as intervenções produzem mudança, para escolher e ajustar técnicas com critério.",
+  modules: [
+    { title: "Aprendizagem e extinção", topics: [
+      { id: "aprendizagem-inibitoria", title: "Aprendizagem inibitória e extinção do medo",
+        summary: "A extinção não apaga a aprendizagem original do medo: ela cria uma nova aprendizagem que compete com a antiga e depende do contexto. Por isso o medo pode voltar por renovação, recuperação espontânea ou reinstalação, e a exposição deve ser planejada para fortalecer a nova aprendizagem.",
+        concepts: ["Extinção como nova aprendizagem", "Renovação, recuperação e reinstalação", "Violação de expectativa", "Variabilidade e contexto", "Retorno do medo"],
+        lv: ["Compreender os estudos de extinção e o modelo de aprendizagem inibitória.",
+             "Prever em que situações o medo do paciente pode voltar e reconhecer o retorno como esperado, e não como fracasso.",
+             "Planejar exposições que maximizem a violação de expectativas, variem contextos e preparem o paciente para recaídas."],
+        prompt: "Por que um medo tratado no consultório pode voltar numa situação diferente?",
+        mats: [
+          { type: "Artigo", ref: "Bouton, M. E. (2004). <em>Context and behavioral processes in extinction.</em> Learning & Memory.", q: "Bouton 2004 Context and behavioral processes in extinction" },
+          { type: "Artigo", ref: "Craske, M. G., et al. (2008). <em>Optimizing inhibitory learning during exposure therapy.</em> Behaviour Research and Therapy.", q: "Craske 2008 Optimizing inhibitory learning during exposure therapy" } ] },
+      { id: "exposicao", title: "Exposição e habituação",
+        summary: "A exposição coloca o paciente em contato planejado com o que ele teme ou evita. Os modelos explicam seus efeitos por habituação, processamento emocional e aprendizagem inibitória, e as pesquisas recentes mostram que a redução do medo durante a sessão não é o único indicador de sucesso.",
+        concepts: ["Exposição ao vivo, imaginária e interoceptiva", "Habituação", "Teoria do processamento emocional", "Hierarquia ou exposição variada", "Tolerância ao desconforto"],
+        lv: ["Conhecer os tipos de exposição e os modelos de habituação, processamento emocional e aprendizagem inibitória.",
+             "Identificar o que o paciente evita e quais exposições atingem a expectativa central que mantém o medo.",
+             "Conduzir exposições com objetivo de aprendizagem claro, sem comportamentos de segurança, e revisar o que mudou nas expectativas."],
+        prompt: "O que você observaria numa exposição para saber se ela funcionou, além de o medo ter diminuído?",
+        mats: [
+          { type: "Livro", ref: "Abramowitz, J. S., Deacon, B. J., & Whiteside, S. P. H. <em>Exposure therapy for anxiety: Principles and practice.</em> Guilford Press.", q: "Abramowitz Deacon Whiteside Exposure therapy for anxiety principles and practice" },
+          { type: "Artigo", ref: "Foa, E. B., & Kozak, M. J. (1986). <em>Emotional processing of fear: Exposure to corrective information.</em> Psychological Bulletin.", q: "Foa Kozak 1986 Emotional processing of fear exposure to corrective information" } ] },
+      { id: "generalizacao", title: "Generalização da aprendizagem",
+        summary: "O que se aprende na sessão não se transfere automaticamente para a vida. A generalização precisa ser programada, com treino em contextos variados, uso de estímulos comuns aos dois ambientes e consequências naturais que mantenham os novos comportamentos.",
+        concepts: ["Generalização de estímulos e respostas", "Programação da generalização", "Múltiplos exemplares", "Reforço natural", "Manutenção"],
+        lv: ["Conhecer as estratégias clássicas para programar generalização e manutenção.",
+             "Verificar se as mudanças aparecem fora da sessão e em quais contextos ainda não aparecem.",
+             "Planejar tarefas em ambientes variados e ligar novos comportamentos a reforçadores naturais da vida do paciente."],
+        prompt: "Que mudança de um paciente aparece na sessão mas ainda não aparece em casa ou no trabalho?",
+        mats: [
+          { type: "Artigo", ref: "Stokes, T. F., & Baer, D. M. (1977). <em>An implicit technology of generalization.</em> Journal of Applied Behavior Analysis.", q: "Stokes Baer 1977 An implicit technology of generalization" },
+          { type: "Artigo", ref: "Vervliet, B., Craske, M. G., & Hermans, D. (2013). <em>Fear extinction and relapse: State of the art.</em> Annual Review of Clinical Psychology.", q: "Vervliet Craske Hermans 2013 Fear extinction and relapse state of the art" } ] }
+    ] },
+    { title: "Mudança cognitiva e comportamental", topics: [
+      { id: "mudanca-cognitiva", title: "Processos de mudança cognitiva",
+        summary: "A pesquisa sobre terapia cognitiva investiga se a mudança nas crenças precede e explica a melhora dos sintomas. Os resultados mostram que a mudança cognitiva está associada à melhora, mas que a relação é complexa e pode acontecer por caminhos como reavaliação, descentramento e novas experiências.",
+        concepts: ["Mudança cognitiva como mediador", "Ganhos súbitos", "Reavaliação e descentramento", "Habilidades compensatórias", "Ordem temporal da mudança"],
+        lv: ["Conhecer as evidências e os debates sobre a mudança cognitiva como mecanismo da TCC.",
+             "Acompanhar se a convicção nas crenças do paciente muda antes, junto ou depois da melhora dos sintomas.",
+             "Escolher a via de mudança mais útil para o caso, como reestruturação, experimento ou descentramento, e medir seu efeito."],
+        prompt: "Como saber se a melhora do paciente veio da mudança de crença ou de outra coisa que aconteceu no processo?",
+        mats: [
+          { type: "Artigo", ref: "Lorenzo-Luaces, L., German, R. E., & DeRubeis, R. J. (2015). <em>It's complicated: The relation between cognitive change procedures, cognitive change, and symptom change in cognitive therapy for depression.</em> Clinical Psychology Review.", q: "Lorenzo-Luaces German DeRubeis 2015 It's complicated cognitive change procedures symptom change" },
+          { type: "Artigo", ref: "Hofmann, S. G., Asmundson, G. J. G., & Beck, A. T. (2013). <em>The science of cognitive therapy.</em> Behavior Therapy.", q: "Hofmann Asmundson Beck 2013 The science of cognitive therapy" } ] },
+      { id: "ativacao-mecanismos", title: "Ativação comportamental como mecanismo",
+        summary: "A ativação comportamental parte da ideia de que a depressão se mantém pela perda de contato com fontes de reforço e pela esquiva. Estudos de componentes mostraram que a ativação sozinha pode ser tão eficaz quanto o pacote completo de terapia cognitiva para muitos pacientes.",
+        concepts: ["Contato com reforçadores", "Esquiva e ruminação", "Estudo de componentes", "Monitoramento de atividades", "Ação guiada por valores"],
+        lv: ["Conhecer o racional da ativação comportamental e os estudos que avaliaram seus componentes.",
+             "Identificar no monitoramento de atividades quais ações trazem prazer, domínio ou alívio de esquiva.",
+             "Planejar ativação baseada em função, e não só em agenda cheia, e medir o efeito sobre humor e engajamento."],
+        prompt: "Por que encher a agenda de um paciente deprimido nem sempre melhora o humor dele?",
+        mats: [
+          { type: "Artigo", ref: "Jacobson, N. S., et al. (1996). <em>A component analysis of cognitive-behavioral treatment for depression.</em> Journal of Consulting and Clinical Psychology.", q: "Jacobson 1996 A component analysis of cognitive-behavioral treatment for depression" },
+          { type: "Artigo", ref: "Dimidjian, S., et al. (2006). <em>Randomized trial of behavioral activation, cognitive therapy, and antidepressant medication in the acute treatment of adults with major depression.</em> Journal of Consulting and Clinical Psychology.", q: "Dimidjian 2006 Randomized trial of behavioral activation cognitive therapy antidepressant medication" } ] }
+    ] },
+    { title: "Fatores relacionais e contextuais", topics: [
+      { id: "alianca", title: "Aliança terapêutica",
+        summary: "A aliança terapêutica envolve acordo sobre objetivos, acordo sobre tarefas e o vínculo entre terapeuta e paciente. Ela é um dos preditores mais consistentes de resultado em diferentes abordagens, e as rupturas, quando reconhecidas e reparadas, podem fortalecer o processo.",
+        concepts: ["Objetivos, tarefas e vínculo", "Rupturas e reparos", "Aliança como preditor", "Responsividade do terapeuta", "Feedback do paciente"],
+        lv: ["Conhecer o modelo de aliança de Bordin e as evidências sobre aliança e resultado.",
+             "Perceber sinais de ruptura, como concordância excessiva, faltas, silêncios e tarefas não feitas.",
+             "Pedir feedback de forma rotineira, reparar rupturas abertamente e ajustar objetivos e tarefas quando a aliança enfraquece."],
+        prompt: "Que sinal de ruptura na aliança você costuma perceber tarde demais?",
+        mats: [
+          { type: "Artigo", ref: "Flückiger, C., Del Re, A. C., Wampold, B. E., & Horvath, A. O. (2018). <em>The alliance in adult psychotherapy: A meta-analytic synthesis.</em> Psychotherapy.", q: "Flückiger Del Re Wampold Horvath 2018 alliance in adult psychotherapy meta-analytic synthesis" },
+          { type: "Livro", ref: "Wampold, B. E., & Imel, Z. E. <em>The great psychotherapy debate: The evidence for what makes psychotherapy work.</em> Routledge.", q: "Wampold Imel The great psychotherapy debate" } ] },
+      { id: "expectativas", title: "Expectativas e efeitos contextuais",
+        summary: "As expectativas do paciente sobre a terapia e a credibilidade que ele atribui ao tratamento influenciam o resultado. O modelo contextual propõe que relação, explicação convincente do problema e procedimentos coerentes com essa explicação são ingredientes ativos de qualquer psicoterapia.",
+        concepts: ["Expectativa de resultado", "Credibilidade do tratamento", "Modelo contextual", "Racional terapêutico", "Esperança e engajamento"],
+        lv: ["Conhecer o modelo contextual e as evidências sobre expectativas e credibilidade do tratamento.",
+             "Investigar o que o paciente espera da terapia e se o racional proposto faz sentido para ele.",
+             "Construir um racional compartilhado, ajustar expectativas irreais e usar ganhos iniciais para fortalecer o engajamento."],
+        prompt: "Como a explicação que você dá ao paciente sobre o problema dele pode influenciar o resultado do tratamento?",
+        mats: [
+          { type: "Artigo", ref: "Constantino, M. J., Vîslă, A., Coyne, A. E., & Boswell, J. F. (2018). <em>A meta-analysis of the association between patients' early treatment outcome expectation and their posttreatment outcomes.</em> Psychotherapy.", q: "Constantino Visla Coyne Boswell 2018 meta-analysis outcome expectation posttreatment outcomes" },
+          { type: "Livro", ref: "Frank, J. D., & Frank, J. B. <em>Persuasion and healing: A comparative study of psychotherapy.</em> Johns Hopkins University Press.", q: "Frank Frank Persuasion and healing comparative study of psychotherapy" } ] },
+      { id: "mediadores", title: "Mediadores e moderadores",
+        summary: "Mediadores são processos que explicam como um tratamento produz mudança, e moderadores são características que indicam para quem ou em que condições ele funciona melhor. Entender essa diferença ajuda a ler a pesquisa e a personalizar o tratamento.",
+        concepts: ["Mediador e mecanismo", "Moderador", "Ordem temporal", "Análise de processos", "Personalização do tratamento"],
+        lv: ["Diferenciar mediadores, moderadores e mecanismos, e conhecer os critérios para afirmar um mecanismo de mudança.",
+             "Considerar características do paciente que, segundo a pesquisa, moderam a resposta ao tratamento escolhido.",
+             "Medir os processos que você espera mudar, além dos sintomas, para verificar se a intervenção está agindo pelo caminho previsto."],
+        prompt: "Que processo você mediria num caso para saber se a intervenção está funcionando pelo motivo que você imagina?",
+        mats: [
+          { type: "Artigo", ref: "Kazdin, A. E. (2007). <em>Mediators and mechanisms of change in psychotherapy research.</em> Annual Review of Clinical Psychology.", q: "Kazdin 2007 Mediators and mechanisms of change in psychotherapy research" },
+          { type: "Artigo", ref: "Kraemer, H. C., Wilson, G. T., Fairburn, C. G., & Agras, W. S. (2002). <em>Mediators and moderators of treatment effects in randomized clinical trials.</em> Archives of General Psychiatry.", q: "Kraemer Wilson Fairburn Agras 2002 Mediators and moderators of treatment effects" } ] }
+    ] }
+  ]
+});
+
+STAGES.push({
+  id: "pratica", title: "Prática clínica avançada e aperfeiçoamento", short: "Prática Clínica", sub: "Integração",
+  goal: "Aplicar, avaliar e revisar hipóteses, tomar decisões em casos complexos e sustentar uma prática ética e em constante aperfeiçoamento.",
+  modules: [
+    { title: "Planejamento e decisão clínica", topics: [
+      { id: "planejamento", title: "Planejamento terapêutico",
+        summary: "O planejamento traduz a formulação em metas claras, alvos priorizados e uma sequência de intervenções, combinados com o paciente. Ele define também como o progresso será medido e quando o plano será revisto.",
+        concepts: ["Metas mensuráveis", "Priorização de alvos", "Contrato terapêutico", "Sequência de intervenções", "Critérios de alta"],
+        lv: ["Conhecer os componentes de um plano terapêutico e os critérios para priorizar alvos.",
+             "Negociar com o paciente quais problemas trabalhar primeiro, considerando risco, impacto e motivação.",
+             "Escrever um plano com metas mensuráveis, medidas definidas e datas de revisão, e atualizá-lo conforme os resultados."],
+        prompt: "Como decidir por qual problema começar quando o paciente traz vários ao mesmo tempo?",
+        mats: [
+          { type: "Livro", ref: "Persons, J. B. (2008). <em>The case formulation approach to cognitive-behavior therapy.</em> Guilford Press.", q: "Persons case formulation approach treatment planning" },
+          { type: "Livro", ref: "Eells, T. D. (Org.). <em>Handbook of psychotherapy case formulation.</em> Guilford Press.", q: "Eells Handbook of psychotherapy case formulation" } ] },
+      { id: "escolha-intervencoes", title: "Escolha de intervenções",
+        summary: "Escolher intervenções envolve olhar para a evidência disponível, para os processos que mantêm o problema e para as preferências do paciente. A abordagem por processos propõe selecionar componentes que atuem sobre os processos identificados na formulação, em vez de aplicar pacotes fechados.",
+        concepts: ["Elementos comuns", "Processos de mudança", "Terapia baseada em processos", "Preferências do paciente", "Protocolos e flexibilidade"],
+        lv: ["Conhecer a terapia baseada em processos e a abordagem de elementos comuns das intervenções com evidência.",
+             "Ligar cada intervenção cogitada a um processo específico da formulação do paciente.",
+             "Selecionar componentes de forma justificada, combinar com o paciente e trocar de estratégia quando o processo não muda."],
+        prompt: "Que intervenção você escolheria para o principal processo mantenedor de um caso seu, e por quê?",
+        mats: [
+          { type: "Livro", ref: "Hofmann, S. G., & Hayes, S. C. (Orgs.). <em>Terapia cognitivo-comportamental baseada em processos.</em> Artmed.", q: "Hayes Hofmann Process-based CBT core clinical competencies" },
+          { type: "Artigo", ref: "Chorpita, B. F., Daleiden, E. L., & Weisz, J. R. (2005). <em>Identifying and selecting the common elements of evidence based interventions.</em> Mental Health Services Research.", q: "Chorpita Daleiden Weisz 2005 common elements" } ] },
+      { id: "decisao-evidencias", title: "Decisão clínica baseada em evidências",
+        summary: "A prática baseada em evidências integra a melhor pesquisa disponível, a experiência clínica e as características, valores e preferências do paciente. Diretrizes clínicas, revisões sistemáticas e metanálises ajudam, mas não substituem o raciocínio sobre o caso individual.",
+        concepts: ["Três pilares da prática baseada em evidências", "Hierarquia de evidências", "Diretrizes clínicas (NICE, APA)", "Revisões Cochrane", "Vieses do raciocínio clínico"],
+        lv: ["Conhecer o modelo de prática baseada em evidências e onde encontrar diretrizes e revisões confiáveis.",
+             "Formular perguntas clínicas a partir do caso e checar se a evidência encontrada se aplica àquele paciente.",
+             "Tomar decisões explícitas, registrar o raciocínio e rever a escolha quando os dados do paciente contrariarem a expectativa."],
+        prompt: "Que pergunta clínica de um caso seu você poderia levar a uma diretriz ou revisão sistemática esta semana?",
+        mats: [
+          { type: "Artigo", ref: "APA Presidential Task Force on Evidence-Based Practice (2006). <em>Evidence-based practice in psychology.</em> American Psychologist.", q: "APA Presidential Task Force 2006 Evidence-based practice in psychology" },
+          { type: "Artigo", ref: "Spring, B. (2007). <em>Evidence-based practice in clinical psychology: What it is, why it matters; what you need to know.</em> Journal of Clinical Psychology.", q: "Spring 2007 Evidence-based practice in clinical psychology what it is why it matters" } ] }
+    ] },
+    { title: "Monitoramento e manutenção", topics: [
+      { id: "acompanhamento-resultados", title: "Acompanhamento de resultados",
+        summary: "Medir sintomas e funcionamento ao longo das sessões ajuda a perceber cedo quando o paciente não está melhorando. As pesquisas sobre feedback de rotina mostram que esse acompanhamento reduz pioras e abandonos, principalmente entre os pacientes que vinham evoluindo mal.",
+        concepts: ["Medidas de resultado de rotina", "Índice de mudança confiável", "Significância clínica", "Feedback ao terapeuta", "Medidas idiográficas"],
+        lv: ["Conhecer o índice de mudança confiável, a significância clínica e as evidências sobre feedback de rotina.",
+             "Escolher medidas curtas que façam sentido para a queixa do paciente e aplicá-las com regularidade.",
+             "Usar os dados para identificar casos sem progresso e revisar formulação, plano ou aliança a partir deles."],
+        prompt: "Quais duas medidas você usaria para acompanhar um caso de ansiedade, e com que frequência?",
+        mats: [
+          { type: "Livro", ref: "Lambert, M. J. (2010). <em>Prevention of treatment failure: The use of measuring, monitoring, and feedback in clinical practice.</em> APA.", q: "Lambert Prevention of treatment failure" },
+          { type: "Artigo", ref: "Jacobson, N. S., & Truax, P. (1991). <em>Clinical significance: A statistical approach to defining meaningful change in psychotherapy research.</em> Journal of Consulting and Clinical Psychology.", q: "Jacobson Truax 1991 clinical significance" } ] },
+      { id: "ema", title: "Avaliação ecológica momentânea",
+        summary: "A avaliação ecológica momentânea coleta dados várias vezes ao dia, no ambiente natural do paciente, geralmente pelo celular. Ela reduz o viés de memória e permite ver como emoções, pensamentos e comportamentos variam e se influenciam no dia a dia, o que alimenta a formulação por processos.",
+        concepts: ["Coleta em tempo real", "Viés de recordação", "Dinâmica intraindividual", "Redes idiográficas", "Adesão e carga para o paciente"],
+        lv: ["Conhecer os princípios da avaliação ecológica e o que ela acrescenta às medidas retrospectivas.",
+             "Definir com o paciente poucas perguntas relevantes para o caso, num formato que ele consiga manter.",
+             "Analisar os padrões dos registros para testar hipóteses de manutenção e ajustar alvos de intervenção."],
+        prompt: "Que perguntas você colocaria num registro diário de três minutos para um paciente seu?",
+        mats: [
+          { type: "Artigo", ref: "Shiffman, S., Stone, A. A., & Hufford, M. R. (2008). <em>Ecological momentary assessment.</em> Annual Review of Clinical Psychology.", q: "Shiffman Stone Hufford 2008 Ecological momentary assessment" },
+          { type: "Artigo", ref: "Trull, T. J., & Ebner-Priemer, U. (2013). <em>Ambulatory assessment.</em> Annual Review of Clinical Psychology.", q: "Trull Ebner-Priemer 2013 Ambulatory assessment" } ] },
+      { id: "prevencao-recaida", title: "Prevenção de recaídas",
+        summary: "Prevenir recaídas envolve identificar situações de alto risco, sinais de alerta e estratégias de enfrentamento antes do fim da terapia. Lapsos são tratados como oportunidades de aprendizagem, e sessões de reforço espaçadas ajudam a manter os ganhos.",
+        concepts: ["Situações de alto risco", "Lapso e recaída", "Efeito de violação da abstinência", "Plano de manutenção", "Sessões de reforço"],
+        lv: ["Conhecer o modelo de prevenção de recaída e a diferença entre lapso e recaída.",
+             "Identificar com o paciente os sinais precoces de piora e as situações em que ele fica mais vulnerável.",
+             "Construir um plano de manutenção escrito, espaçar as sessões no fim e combinar quando retomar o acompanhamento."],
+        prompt: "Que sinais de alerta você combinaria com um paciente perto da alta?",
+        mats: [
+          { type: "Livro", ref: "Marlatt, G. A., & Donovan, D. M. (Orgs.). <em>Prevenção de recaída: estratégias de manutenção no tratamento de comportamentos adictivos.</em> Artmed.", q: "Marlatt Donovan Relapse prevention maintenance strategies" },
+          { type: "Artigo", ref: "Witkiewitz, K., & Marlatt, G. A. (2004). <em>Relapse prevention for alcohol and drug problems: That was Zen, this is Tao.</em> American Psychologist.", q: "Witkiewitz Marlatt 2004 Relapse prevention that was Zen this is Tao" } ] }
+    ] },
+    { title: "Casos complexos e trabalho em rede", topics: [
+      { id: "manejo-crises", title: "Manejo de crises",
+        summary: "Crises envolvem um aumento agudo de sofrimento ou risco que pede resposta imediata, como ideação suicida intensa, autolesão, episódios dissociativos ou eventos de vida graves. O manejo prioriza segurança, estabilização, acionamento da rede de apoio e retomada do plano terapêutico depois.",
+        concepts: ["Avaliação rápida de risco", "Estabilização", "Plano de segurança", "Rede de apoio e serviços de urgência", "Retomada após a crise"],
+        lv: ["Conhecer os modelos de intervenção em crise e os recursos de urgência disponíveis no território.",
+             "Reconhecer quando a sessão precisa sair do plano para o manejo de risco, e o que precisa ser avaliado naquele momento.",
+             "Conduzir a crise com foco em segurança, acionar a rede quando necessário, registrar as decisões e integrar o episódio à formulação."],
+        prompt: "O que precisa estar definido antes da primeira crise de um paciente com histórico de risco?",
+        note: "No Brasil, o CVV atende 24 horas pelo telefone 188, e emergências podem ser acionadas pelo SAMU (192).",
+        mats: [
+          { type: "Livro", ref: "Botega, N. J. <em>Crise suicida: avaliação e manejo.</em> Artmed.", q: "Botega Crise suicida avaliação e manejo" },
+          { type: "Livro", ref: "Roberts, A. R. (Org.). <em>Crisis intervention handbook: Assessment, treatment, and research.</em> Oxford University Press.", q: "Roberts Crisis intervention handbook assessment treatment research" } ] },
+      { id: "comorbidades", title: "Comorbidades e casos complexos",
+        summary: "Na clínica real, a comorbidade é a regra: muitos pacientes apresentam mais de um quadro, além de problemas médicos, sociais e relacionais. Casos complexos pedem uma formulação que mostre como os problemas se influenciam e decisões claras sobre o que tratar primeiro.",
+        concepts: ["Comorbidade", "Fator geral de psicopatologia (p)", "Interação entre problemas", "Sequenciamento do tratamento", "Determinantes sociais"],
+        lv: ["Conhecer os dados epidemiológicos sobre comorbidade e a proposta de um fator geral de psicopatologia.",
+             "Mapear como os diferentes problemas do paciente se alimentam e quais processos são comuns a eles.",
+             "Decidir a sequência do tratamento com base em risco, impacto e processos compartilhados, e revisar essa decisão com dados."],
+        prompt: "Num paciente com depressão e uso de álcool, como você decidiria o que tratar primeiro?",
+        mats: [
+          { type: "Artigo", ref: "Kessler, R. C., Chiu, W. T., Demler, O., & Walters, E. E. (2005). <em>Prevalence, severity, and comorbidity of 12-month DSM-IV disorders in the National Comorbidity Survey Replication.</em> Archives of General Psychiatry.", q: "Kessler Chiu Demler Walters 2005 Prevalence severity comorbidity 12-month DSM-IV disorders" },
+          { type: "Artigo", ref: "Caspi, A., et al. (2014). <em>The p factor: One general psychopathology factor in the structure of psychiatric disorders?</em> Clinical Psychological Science.", q: "Caspi 2014 The p factor one general psychopathology factor" } ] },
+      { id: "encaminhamento", title: "Encaminhamento interdisciplinar",
+        summary: "Muitos casos precisam de cuidado compartilhado com psiquiatria, clínica médica, nutrição, neurologia, serviço social ou a rede pública de saúde mental. Encaminhar bem envolve saber quando, para quem e como comunicar o caso, preservando o sigilo e mantendo o paciente no centro das decisões.",
+        concepts: ["Critérios de encaminhamento", "Rede de atenção psicossocial (RAPS)", "Comunicação entre profissionais", "Sigilo e consentimento", "Cuidado compartilhado"],
+        lv: ["Conhecer os serviços da rede de saúde e os critérios mais comuns para encaminhar a outros profissionais.",
+             "Identificar no caso o que está fora da sua competência ou precisa de outro olhar profissional.",
+             "Fazer encaminhamentos com relatório adequado, consentimento do paciente e acompanhamento do que foi decidido."],
+        prompt: "O que você escreveria num encaminhamento ao psiquiatra para que ele entenda o caso em poucas linhas?",
+        mats: [
+          { type: "Documento", ref: "Brasil, Ministério da Saúde (2013). <em>Cadernos de Atenção Básica nº 34: Saúde mental.</em> Ministério da Saúde.", q: "Cadernos de Atenção Básica 34 Saúde mental Ministério da Saúde 2013" },
+          { type: "Documento", ref: "Conselho Federal de Psicologia. <em>Referências técnicas para atuação de psicólogas(os) no CAPS.</em> CFP/CREPOP.", q: "Referências técnicas atuação de psicólogas CAPS CREPOP" } ] },
+      { id: "psicofarmacologia", title: "Interface com a psicofarmacologia",
+        summary: "O psicólogo não prescreve, mas precisa conhecer as principais classes de psicofármacos, seus efeitos esperados e colaterais, e como eles interagem com a psicoterapia. Isso melhora a comunicação com o psiquiatra e ajuda a perceber problemas de adesão ou efeitos que interferem nas sessões.",
+        concepts: ["Antidepressivos", "Ansiolíticos e hipnóticos", "Estabilizadores do humor", "Antipsicóticos", "Adesão e efeitos colaterais"],
+        lv: ["Conhecer as principais classes de psicofármacos, seus usos e efeitos colaterais mais comuns.",
+             "Perceber quando efeitos da medicação, mudanças de dose ou problemas de adesão interferem no quadro do paciente.",
+             "Conversar com o psiquiatra de forma objetiva, apoiar a adesão e integrar o tratamento combinado ao plano terapêutico."],
+        prompt: "Que efeito colateral de um medicamento poderia ser confundido com piora do quadro psicológico?",
+        mats: [
+          { type: "Livro", ref: "Stahl, S. M. <em>Psicofarmacologia: bases neurocientíficas e aplicações práticas.</em> Guanabara Koogan.", q: "Stahl Essential psychopharmacology neuroscientific basis practical applications" },
+          { type: "Livro", ref: "Cordioli, A. V., Gallois, C. B., & Isolan, L. (Orgs.). <em>Psicofármacos: consulta rápida.</em> Artmed.", q: "Cordioli Psicofármacos consulta rápida" } ] }
+    ] },
+    { title: "Ética, supervisão e registros", topics: [
+      { id: "etica", title: "Ética",
+        summary: "A prática clínica é orientada pelo Código de Ética Profissional do Psicólogo, que trata de sigilo, consentimento, limites de competência, relações com pacientes e publicidade. Dilemas éticos pedem reflexão, consulta a colegas e, quando necessário, orientação do Conselho Regional.",
+        concepts: ["Sigilo e seus limites", "Consentimento informado", "Limites de competência", "Relações múltiplas", "Atendimento on-line"],
+        lv: ["Conhecer o Código de Ética e as resoluções do CFP que orientam a prática clínica.",
+             "Reconhecer dilemas éticos no dia a dia, como pedidos de familiares, relações múltiplas e exposição em redes.",
+             "Seguir um processo de decisão ética, consultar colegas ou o Conselho quando preciso e registrar o raciocínio."],
+        prompt: "Em que situação você teria que quebrar o sigilo, e como conversaria com o paciente sobre isso?",
+        mats: [
+          { type: "Documento", ref: "Conselho Federal de Psicologia (2005). <em>Código de Ética Profissional do Psicólogo.</em> CFP.", q: "Código de Ética Profissional do Psicólogo CFP 2005" },
+          { type: "Livro", ref: "Koocher, G. P., & Keith-Spiegel, P. <em>Ethics in psychology and the mental health professions: Standards and cases.</em> Oxford University Press.", q: "Koocher Keith-Spiegel Ethics in psychology and the mental health professions" } ] },
+      { id: "supervisao", title: "Supervisão",
+        summary: "A supervisão é um espaço para discutir casos, revisar hipóteses, desenvolver competências e cuidar do próprio terapeuta. Modelos baseados em competências ajudam a definir objetivos claros e a usar gravações, role-play e feedback de forma estruturada.",
+        concepts: ["Supervisão baseada em competências", "Aliança de supervisão", "Feedback e role-play", "Autocuidado do terapeuta", "Consultoria entre pares"],
+        lv: ["Conhecer os modelos de supervisão baseada em competências e o papel da aliança de supervisão.",
+             "Identificar os casos e as competências em que você mais precisa de outro olhar.",
+             "Levar à supervisão perguntas específicas, material concreto e metas de aprendizagem, e aplicar o que foi discutido."],
+        prompt: "Que tipo de caso você levaria primeiro para a supervisão, e o que gostaria de aprender com ele?",
+        mats: [
+          { type: "Livro", ref: "Falender, C. A., & Shafranske, E. P. (2004). <em>Clinical supervision: A competency-based approach.</em> APA.", q: "Falender Shafranske Clinical supervision competency-based approach" },
+          { type: "Livro", ref: "Bernard, J. M., & Goodyear, R. K. <em>Fundamentals of clinical supervision.</em> Pearson.", q: "Bernard Goodyear Fundamentals of clinical supervision" } ] },
+      { id: "prontuarios", title: "Elaboração de prontuários",
+        summary: "O registro documental é obrigatório e deve conter a identificação, a demanda, os procedimentos, a evolução e o encerramento do atendimento, com guarda segura por pelo menos cinco anos. Bons registros protegem o paciente e o profissional e ajudam a acompanhar a formulação ao longo do tempo.",
+        concepts: ["Registro documental obrigatório", "Evolução das sessões", "Sigilo e guarda", "Documentos psicológicos", "Prontuário eletrônico"],
+        lv: ["Conhecer as resoluções do CFP sobre registro documental e documentos escritos.",
+             "Escrever evoluções objetivas, que separem observação de interpretação e registrem decisões importantes.",
+             "Usar o prontuário como ferramenta clínica, ligado à formulação, às medidas e às revisões do plano."],
+        prompt: "O que precisa estar na evolução de uma sessão para que outro profissional entenda o caso?",
+        mats: [
+          { type: "Documento", ref: "Conselho Federal de Psicologia. <em>Resolução CFP nº 001/2009</em>, sobre a obrigatoriedade do registro documental.", q: "Resolução CFP 001/2009 registro documental" },
+          { type: "Documento", ref: "Conselho Federal de Psicologia. <em>Resolução CFP nº 006/2019</em>, sobre a elaboração de documentos escritos produzidos pelo psicólogo.", q: "Resolução CFP 06/2019 documentos escritos psicólogo" } ] }
+    ] }
+  ]
+});
+
+
+const LV = ["Fundamental", "Clínico", "Aplicado"];
+const TOPIC = {}, MODS = [];
+STAGES.forEach((s, si) => {
+  s.n = si + 1;
+  const first = MODS.length + 1;
+  s.modules.forEach(m => {
+    m.n = MODS.length + 1; m.key = "m-" + m.topics[0].id; m.stage = s;
+    m.topics.forEach((t, i) => { t.code = m.n + "." + (i + 1); t.stage = s; t.mod = m; TOPIC[t.id] = t; });
+    MODS.push(m);
+  });
+  s.range = first === MODS.length ? `Módulo ${first}` : `Módulos ${first}–${MODS.length}`;
+  s.all = s.modules.flatMap(m => m.topics);
+});
+const FLAT = MODS.flatMap(m => m.topics);
+const pad = n => String(n).padStart(2, "0");
+
+const KEY = "trilha-clinica-v4";
+let state = { done: {}, open: {} };
+try { const raw = localStorage.getItem(KEY); if (raw) state = Object.assign(state, JSON.parse(raw)); } catch (e) {}
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} };
+const nextTopic = () => FLAT.find(t => !state.done[t.id]) || null;
+
+let current = null;
+const mapEl = document.getElementById("map"), drawer = document.getElementById("drawer"), scrim = document.getElementById("scrim");
+const TICK = '<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2.2 6.3l2.5 2.4 5-5.2" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+const CHEV = '<svg class="chev" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3.5L10.5 8 6 12.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+function card(m, nx) {
+  const n = m.topics.filter(t => state.done[t.id]).length, full = n === m.topics.length, open = !!state.open[m.key];
+  return `<div class="card" data-open="${open}" style="order:${m.n}">
+    <div class="head">
+      <button class="box" type="button" role="checkbox" aria-checked="${full}" aria-label="Concluir módulo ${pad(m.n)}" data-mod-check="${m.key}">${TICK}</button>
+      <button class="head-btn" type="button" aria-expanded="${open}" data-toggle="${m.key}">
+        <span class="head-text"><span class="eyebrow">Módulo ${pad(m.n)}</span><span class="mname">${m.title}</span></span>
+        <span class="count ${full ? "full" : ""}">${n}/${m.topics.length}</span>${CHEV}
+      </button>
+    </div>
+    <div class="chips">${m.topics.map(t => `<span class="chip ${state.done[t.id] ? "done" : ""} ${current === t.id ? "active" : ""}">
+      <button class="box" type="button" role="checkbox" aria-checked="${!!state.done[t.id]}" aria-label="Concluir ${t.title}" data-check="${t.id}">${TICK}</button>
+      <button class="chip-label" type="button" data-topic="${t.id}">${t.title}</button>${nx && nx.id === t.id ? '<span class="tag-next">Próximo</span>' : ""}
+    </span>`).join("")}</div>
+  </div>`;
+}
+
+function render() {
+  const nx = nextTopic();
+  mapEl.innerHTML = '<div class="spine" id="spine"></div>' + STAGES.map(s => {
+    const n = s.all.filter(t => state.done[t.id]).length;
+    const L = s.modules.filter((_, i) => i % 2 === 0), R = s.modules.filter((_, i) => i % 2 === 1);
+    return `<section class="row">
+      <svg class="links" aria-hidden="true"></svg>
+      <div class="col left">${L.map(m => card(m, nx)).join("")}</div>
+      <button class="node" type="button" data-stage="${s.id}" aria-label="Etapa ${s.n}: ${s.title}">
+        <span class="node-top"><span class="node-step">Etapa ${s.n}</span><span class="node-count">${n}/${s.all.length}</span></span>
+        <span class="node-title">${s.short}</span>
+        <span class="node-bar"><span style="width:${n / s.all.length * 100}%"></span></span>
+      </button>
+      <div class="col right">${R.map(m => card(m, nx)).join("")}</div>
+    </section>`;
+  }).join("");
+  document.getElementById("sub").textContent = `${STAGES.length} etapas · ${MODS.length} módulos · ${FLAT.length} tópicos`;
+  document.getElementById("toggleLabel").textContent = MODS.some(m => !state.open[m.key]) ? "Expandir tudo" : "Recolher tudo";
+  drawLinks();
+}
+
+function drawLinks() {
+  const M = mapEl.getBoundingClientRect();
+  const nodes = mapEl.querySelectorAll(".node");
+  const spine = document.getElementById("spine");
+  if (nodes.length) {
+    const a = nodes[0].getBoundingClientRect(), b = nodes[nodes.length - 1].getBoundingClientRect();
+    const narrow = window.matchMedia("(max-width: 760px)").matches;
+    spine.style.top = (narrow ? a.top : a.top + a.height / 2) - M.top + "px";
+    spine.style.height = (narrow ? b.bottom - a.top : (b.top + b.height / 2) - (a.top + a.height / 2)) + "px";
+  }
+  mapEl.querySelectorAll(".row").forEach(row => {
+    const svg = row.querySelector("svg.links");
+    if (getComputedStyle(svg).display === "none") return;
+    const R = row.getBoundingClientRect(), N = row.querySelector(".node").getBoundingClientRect();
+    const ny = N.top + N.height / 2 - R.top;
+    let d = "";
+    row.querySelectorAll(".col.left .card").forEach(c => {
+      const C = c.getBoundingClientRect(), H = c.querySelector(".head").getBoundingClientRect();
+      const x1 = C.right - R.left, y1 = H.top + H.height / 2 - R.top, x2 = N.left - R.left, mx = (x1 + x2) / 2;
+      d += `M${x1},${y1} C${mx},${y1} ${mx},${ny} ${x2},${ny} `;
+    });
+    row.querySelectorAll(".col.right .card").forEach(c => {
+      const C = c.getBoundingClientRect(), H = c.querySelector(".head").getBoundingClientRect();
+      const x1 = N.right - R.left, x2 = C.left - R.left, y2 = H.top + H.height / 2 - R.top, mx = (x1 + x2) / 2;
+      d += `M${x1},${ny} C${mx},${ny} ${mx},${y2} ${x2},${y2} `;
+    });
+    svg.innerHTML = `<path d="${d}"/>`;
+  });
+}
+
+const scholar = q => "https://scholar.google.com/scholar?q=" + encodeURIComponent(q);
+
+function showDrawer(html) {
+  drawer.innerHTML = html; drawer.hidden = false; scrim.hidden = false; drawer.scrollTop = 0;
+  document.body.style.overflow = "hidden";
+}
+function openTopic(id) {
+  current = id;
+  const t = TOPIC[id];
+  if (!state.open[t.mod.key]) { state.open[t.mod.key] = true; save(); }
+  render();
+  const i = FLAT.indexOf(t), prev = FLAT[i - 1], next = FLAT[i + 1], done = !!state.done[t.id];
+  showDrawer(`
+    <div class="d-bar">
+      <div class="crumbs"><span>Etapa ${t.stage.n}</span><span>${t.stage.short}</span><span>${t.mod.title}</span></div>
+      <button class="x" type="button" aria-label="Fechar" data-close>✕</button>
+    </div>
+    <div class="d-eyebrow">Módulo ${pad(t.mod.n)} · Tópico ${t.code}</div>
+    <h2>${t.title}</h2>
+    <p class="lead">${t.summary}</p>
+    <p class="label">Conceitos-chave</p>
+    <ul class="tags">${t.concepts.map(c => `<li>${c}</li>`).join("")}</ul>
+    <p class="label">Níveis de aprendizagem</p>
+    <ol class="levels">${t.lv.map((x, k) => `<li class="lvl"><span class="lvl-n">${k + 1}</span><div><span class="lvl-name">${LV[k]}</span><p>${x}</p></div></li>`).join("")}</ol>
+    <p class="label">Para fixar</p>
+    <div class="prompt">${t.prompt}</div>
+    ${t.note ? `<p class="note">${t.note}</p>` : ""}
+    <p class="label">Material ${t.mats.length}</p>
+    <ul class="mats">${t.mats.map(m => `<li class="mat"><span class="mat-type">${m.type}</span><span class="mat-ref">${m.ref}</span><a href="${scholar(m.q)}" target="_blank" rel="noopener">Buscar no Google Acadêmico ↗</a></li>`).join("")}</ul>
+    <div class="d-actions">
+      <button class="mark" type="button" aria-pressed="${done}" data-check="${t.id}">${done ? "✓ Concluído" : "Marcar como concluído"}</button>
+      <div class="nav">
+        <button type="button" ${prev ? `data-topic="${prev.id}"` : "disabled"}>← Anterior</button>
+        <button type="button" ${next ? `data-topic="${next.id}"` : "disabled"}>Próximo →</button>
+      </div>
+    </div>`);
+}
+function openStage(id) {
+  current = null;
+  const s = STAGES.find(x => x.id === id);
+  showDrawer(`
+    <div class="d-bar">
+      <div class="crumbs"><span>Etapa ${s.n}</span><span>${s.range}</span></div>
+      <button class="x" type="button" aria-label="Fechar" data-close>✕</button>
+    </div>
+    <div class="d-eyebrow">Etapa ${s.n} · ${s.sub}</div>
+    <h2>${s.title}</h2>
+    <p class="lead">${s.goal}</p>
+    <p class="label">Módulos</p>
+    <ul class="mlist">${s.modules.map(m => `<li><button type="button" data-topic="${m.topics[0].id}"><span class="eyebrow">Módulo ${pad(m.n)} · ${m.topics.filter(t => state.done[t.id]).length}/${m.topics.length}</span><span class="mname">${m.title}</span><span class="sub">${m.topics.map(t => t.title).join(" · ")}</span></button></li>`).join("")}</ul>`);
+}
+function closeDrawer() { drawer.hidden = true; scrim.hidden = true; document.body.style.overflow = ""; current = null; render(); }
+
+document.addEventListener("click", e => {
+  const mc = e.target.closest("[data-mod-check]");
+  if (mc) {
+    const m = MODS.find(x => x.key === mc.dataset.modCheck), all = m.topics.every(t => state.done[t.id]);
+    m.topics.forEach(t => { if (all) delete state.done[t.id]; else state.done[t.id] = true; });
+    save(); render(); return;
+  }
+  const ck = e.target.closest("[data-check]");
+  if (ck) {
+    const id = ck.dataset.check;
+    if (state.done[id]) delete state.done[id]; else state.done[id] = true;
+    save(); if (!drawer.hidden && current) openTopic(current); else render(); return;
+  }
+  const tp = e.target.closest("[data-topic]"); if (tp) { openTopic(tp.dataset.topic); return; }
+  const st = e.target.closest("[data-stage]"); if (st) { openStage(st.dataset.stage); return; }
+  if (e.target.closest("[data-close]") || e.target === scrim) { closeDrawer(); return; }
+  const tg = e.target.closest("[data-toggle]");
+  if (tg) { state.open[tg.dataset.toggle] = !state.open[tg.dataset.toggle]; save(); render(); }
+});
+document.getElementById("toggleAll").addEventListener("click", () => {
+  const expand = MODS.some(m => !state.open[m.key]);
+  MODS.forEach(m => state.open[m.key] = expand); save(); render();
+});
+document.addEventListener("keydown", e => { if (e.key === "Escape" && !drawer.hidden) closeDrawer(); });
+window.addEventListener("resize", drawLinks);
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(drawLinks);
+render();
+</script>
+
+</body>
+</html>
