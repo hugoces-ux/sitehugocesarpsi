@@ -209,39 +209,81 @@ h1 { margin: 0; font-family: var(--serif); font-size: 27px; font-weight: 400; le
 const STAGES = [];
 STAGES.push({
   id: "fundamentos", title: "Fundamentos da Psicologia", short: "Fundamentos", sub: "Base científica",
-  goal: "A base para entender o ser humano e ler com critério a ciência que sustenta a clínica.",
+  goal: "De onde vem a Psicologia, como ela produz conhecimento e o que se sabe sobre aprendizagem, emoção e desenvolvimento.",
   modules: [
-    { title: "Ciência e pesquisa", topics: [
-      { id: "historia-psicologia", title: "História e abordagens",
-        summary: "A Psicologia nasce como ciência no fim do século XIX e se divide em escolas como funcionalismo, psicanálise, behaviorismo, Gestalt, humanismo e cognitivismo. Conhecer essa história ajuda a entender por que as abordagens atuais explicam o ser humano e intervêm de formas tão diferentes.",
-        subs: ["Nascimento da Psicologia científica", "Grandes escolas", "Revolução cognitiva", "Psicologia no Brasil"],
+    { title: "História e filosofia da Psicologia", topics: [
+      { id: "raizes-filosoficas", title: "Raízes filosóficas da Psicologia",
+        summary: "Muito antes de ser ciência, a Psicologia era uma parte da filosofia. Perguntas como a relação entre mente e corpo, de onde vem o conhecimento e se agimos por escolha ou somos determinados continuam presentes nas teorias atuais, muitas vezes sem que a gente perceba.",
+        subs: ["Mente e corpo", "Empirismo e racionalismo", "Liberdade e determinismo", "Natureza e ambiente"],
+        lv: ["Conhecer as grandes questões filosóficas que deram origem à Psicologia e as respostas clássicas para cada uma.",
+             "Perceber que posição sobre mente e corpo ou sobre liberdade aparece, mesmo sem ser dita, na forma como você explica um caso.",
+             "Explicitar os pressupostos filosóficos da sua abordagem e considerar o que eles permitem e o que limitam na intervenção."],
+        prompt: "Quando você diz que um paciente \"escolheu\" algo, que ideia de liberdade está por trás dessa frase?",
+        mats: [
+          { type: "Livro", ref: "Robinson, D. N. (1995). <em>An intellectual history of psychology.</em> University of Wisconsin Press.", q: "Robinson An intellectual history of psychology" },
+          { type: "Livro", ref: "Japiassu, H. <em>Introdução à epistemologia da psicologia.</em> Imago.", q: "Japiassu Introdução à epistemologia da psicologia" } ] },
+      { id: "historia-psicologia", title: "História das escolas",
+        summary: "A Psicologia nasce como ciência no fim do século XIX, com o laboratório de Wundt, e se divide em escolas como funcionalismo, psicanálise, behaviorismo, Gestalt, humanismo e cognitivismo. Cada escola surgiu respondendo às limitações da anterior, e conhecer essa sequência ajuda a entender por que as abordagens atuais são tão diferentes.",
+        subs: ["Nascimento da Psicologia científica", "Grandes escolas", "Revolução cognitiva", "Terapias contemporâneas"],
         lv: ["Situar as principais escolas no tempo e entender a pergunta que cada uma tentou responder sobre o ser humano.",
              "Perceber de que tradição vêm os conceitos que você usa ao descrever um caso, e quando está misturando linguagens diferentes.",
              "Escolher conscientemente o modelo que vai orientar a formulação, sabendo o que ele explica bem e o que deixa de fora."],
         prompt: "Que pergunta central cada escola tentou responder sobre o ser humano?",
         mats: [
           { type: "Livro", ref: "Schultz, D. P., & Schultz, S. E. <em>História da psicologia moderna.</em> Cengage.", q: "Schultz História da psicologia moderna" },
-          { type: "Livro", ref: "Figueiredo, L. C., & Santi, P. L. R. <em>Psicologia: uma (nova) introdução.</em> EDUC.", q: "Figueiredo Santi Psicologia uma nova introdução" } ] },
-      { id: "epistemologia", title: "O que torna algo científico",
+          { type: "Livro", ref: "Hothersall, D. <em>História da psicologia.</em> AMGH.", q: "Hothersall History of psychology" } ] },
+      { id: "psicologia-brasil", title: "Psicologia no Brasil",
+        summary: "A Psicologia brasileira tem raízes na medicina, na educação e no trabalho, e foi regulamentada como profissão em 1962. A criação dos conselhos, a entrada no SUS e o compromisso social da profissão ajudam a entender o lugar que o psicólogo ocupa hoje no país.",
+        subs: ["Primeiras influências", "Regulamentação da profissão", "Conselhos de Psicologia", "Compromisso social"],
+        lv: ["Conhecer os principais momentos da história da Psicologia no Brasil e da regulamentação da profissão.",
+             "Reconhecer como essa história aparece nas normas, nos espaços de atuação e nas expectativas que as pessoas têm sobre o psicólogo.",
+             "Situar a própria prática no contexto brasileiro, considerando políticas públicas, acesso ao cuidado e o papel social da profissão."],
+        prompt: "O que muda na sua prática quando você pensa a Psicologia como profissão com compromisso social?",
+        mats: [
+          { type: "Livro", ref: "Antunes, M. A. M. <em>A psicologia no Brasil: leitura histórica sobre sua constituição.</em> Educ.", q: "Antunes A psicologia no Brasil leitura histórica sobre sua constituição" },
+          { type: "Livro", ref: "Jacó-Vilela, A. M., Ferreira, A. A. L., & Portugal, F. T. (Orgs.). <em>História da psicologia: rumos e percursos.</em> Nau.", q: "Jacó-Vilela Ferreira Portugal História da psicologia rumos e percursos" } ] },
+      { id: "epistemologia", title: "Epistemologia e ciência",
         summary: "A epistemologia estuda como o conhecimento científico é produzido e justificado. Ideias como a falseabilidade de Popper e os paradigmas de Kuhn ajudam a avaliar teorias psicológicas e a entender por que nem toda explicação plausível é científica.",
-        subs: ["Teoria e evidência", "Explicações testáveis", "Paradigmas", "Visão contextualista"],
-        lv: ["Entender o que torna uma teoria testável e diferenciar critérios de verdade, como correspondência e utilidade.",
+        subs: ["Teoria e evidência", "Explicações testáveis", "Paradigmas", "Limites da ciência"],
+        lv: ["Entender o que torna uma teoria testável e conhecer os principais debates sobre o que é ciência.",
              "Notar quando uma explicação sobre o paciente é tão ampla que serve para qualquer resultado e, por isso, não pode ser testada.",
              "Escrever hipóteses clínicas que possam ser contrariadas pelos dados e definir antes o que mudaria sua leitura do caso."],
         prompt: "Que tipo de evidência faria você abandonar uma teoria em que acredita?",
         mats: [
           { type: "Livro", ref: "Chalmers, A. F. <em>O que é ciência afinal?</em> Brasiliense.", q: "Chalmers What is this thing called science" },
           { type: "Livro", ref: "Kuhn, T. S. <em>A estrutura das revoluções científicas.</em> Perspectiva.", q: "Kuhn structure of scientific revolutions" } ] },
+      { id: "visoes-de-mundo", title: "Visões de mundo e abordagens",
+        summary: "Cada abordagem parte de uma visão de mundo, com ideias próprias sobre o que é verdade e o que conta como explicação. Algumas buscam as peças de uma máquina, outras olham o comportamento no seu contexto e avaliam uma ideia pela sua utilidade. Isso explica por que abordagens diferentes podem descrever o mesmo paciente de formas que parecem incompatíveis.",
+        subs: ["Mecanicismo", "Contextualismo", "Critérios de verdade", "Diálogo entre abordagens"],
+        lv: ["Conhecer as principais visões de mundo descritas por Pepper e as matrizes do pensamento psicológico.",
+             "Identificar a visão de mundo por trás de uma explicação clínica e perceber quando duas abordagens discordam por partirem de pressupostos diferentes.",
+             "Usar essa clareza para integrar técnicas com coerência, sem misturar pressupostos que se contradizem."],
+        prompt: "Por que a ACT e a TCC tradicional podem olhar para o mesmo pensamento e propor caminhos diferentes?",
+        mats: [
+          { type: "Artigo", ref: "Hayes, S. C., Hayes, L. J., & Reese, H. W. (1988). <em>Finding the philosophical core: A review of Stephen C. Pepper's World Hypotheses.</em> Journal of the Experimental Analysis of Behavior.", q: "Hayes Hayes Reese 1988 Finding the philosophical core Pepper World Hypotheses" },
+          { type: "Livro", ref: "Figueiredo, L. C. M. <em>Matrizes do pensamento psicológico.</em> Vozes.", q: "Figueiredo Matrizes do pensamento psicológico" } ] }
+    ] },
+    { title: "Ciência e pesquisa", topics: [
       { id: "metodos", title: "Como ler uma pesquisa",
-        summary: "A Psicologia usa estudos experimentais, correlacionais, de caso único e qualitativos para responder perguntas diferentes. Saber reconhecer o tipo de estudo, seus limites e o tamanho do efeito é o que permite usar a pesquisa na clínica com critério.",
+        summary: "A Psicologia usa estudos experimentais, correlacionais e qualitativos para responder perguntas diferentes. Saber reconhecer o tipo de estudo, seus limites e o tamanho do efeito é o que permite usar a pesquisa na clínica com critério.",
         subs: ["Tipos de estudo", "Ensaios clínicos e metanálises", "Tamanho de efeito", "Limites e vieses de um estudo"],
         lv: ["Conhecer os principais tipos de estudo, o que cada um permite concluir e o que significa tamanho de efeito.",
              "Avaliar se os participantes de um estudo se parecem com o paciente à sua frente antes de generalizar os resultados.",
-             "Tratar cada caso como um pequeno estudo, com linha de base, intervenção e medidas repetidas."],
+             "Consultar a pesquisa para decisões concretas do caso e saber quando a evidência disponível não se aplica a ele."],
         prompt: "Por que um resultado estatisticamente significativo pode ter pouca relevância clínica?",
         mats: [
           { type: "Livro", ref: "Cozby, P. C. <em>Métodos de pesquisa em ciências do comportamento.</em> Atlas.", q: "Cozby Methods in behavioral research" },
-          { type: "Livro", ref: "Kazdin, A. E. <em>Research design in clinical psychology.</em> Cambridge University Press.", q: "Kazdin Research design in clinical psychology" } ] }
+          { type: "Livro", ref: "Kazdin, A. E. <em>Research design in clinical psychology.</em> Cambridge University Press.", q: "Kazdin Research design in clinical psychology" } ] },
+      { id: "caso-unico", title: "O caso único como pesquisa",
+        summary: "Delineamentos de caso único medem o comportamento de uma pessoa repetidas vezes, antes e durante a intervenção, para ver se a mudança acompanha o que foi feito. Eles aproximam pesquisa e clínica e são a base do acompanhamento por medidas repetidas usado na Terapia Baseada em Processos.",
+        subs: ["Linha de base", "Medidas repetidas", "Delineamentos AB e ABA", "Análise visual"],
+        lv: ["Conhecer a lógica dos delineamentos de caso único e o que eles permitem concluir.",
+             "Definir com o paciente uma medida simples e repetida do problema e registrar uma linha de base antes de intervir.",
+             "Tratar cada caso como um pequeno estudo, comparando as fases do tratamento e ajustando a intervenção a partir dos dados."],
+        prompt: "Que medida simples você poderia registrar toda semana para saber se um paciente está mudando?",
+        mats: [
+          { type: "Livro", ref: "Kazdin, A. E. <em>Single-case research designs: Methods for clinical and applied settings.</em> Oxford University Press.", q: "Kazdin Single-case research designs methods for clinical and applied settings" },
+          { type: "Livro", ref: "Barlow, D. H., Nock, M. K., & Hersen, M. (2009). <em>Single case experimental designs: Strategies for studying behavior change.</em> Pearson.", q: "Barlow Nock Hersen 2009 Single case experimental designs" } ] }
     ] },
     { title: "Aprendizagem, emoção e cognição", topics: [
       { id: "aprendizagem", title: "Aprendizagem",
