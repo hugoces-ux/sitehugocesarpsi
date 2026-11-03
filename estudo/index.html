@@ -114,6 +114,8 @@ h1 { margin: 0; font-family: var(--serif); font-size: 27px; font-weight: 400; le
 }
 .pill svg { width: 12px; height: 12px; }
 .pill:hover { border-color: var(--box); }
+.actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+a.pill { text-decoration: none; color: var(--ink); }
 
 /* Mapa */
 .map { position: relative; }
@@ -246,7 +248,10 @@ h1 { margin: 0; font-family: var(--serif); font-size: 27px; font-weight: 400; le
       <span><b>2</b>Clínico: reconhecer no paciente</span>
       <span><b>3</b>Aplicado: formular, intervir e avaliar</span>
     </div>
+    <div class="actions">
     <button class="pill" id="toggleAll" type="button"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3.5 4.5L6 2l2.5 2.5M3.5 7.5L6 10l2.5-2.5" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg><span id="toggleLabel"></span></button>
+    <a class="pill" href="/estudo/trilha-da-faculdade-a-clinica.pdf" download="trilha-da-faculdade-a-clinica.pdf"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 1.5v6.2M3.4 5.3L6 7.9l2.6-2.6M2 10.3h8" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Baixar a trilha em PDF</a>
+    </div>
   </header>
   <main class="map" id="map"></main>
   <footer class="foot"><a href="/">hugocesarpsi.com.br</a> · Hugo César, psicólogo · CRP 05/79287</footer>
